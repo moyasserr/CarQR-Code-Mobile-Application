@@ -1,1 +1,0 @@
-# CarQR-Code-Mobile-Application
