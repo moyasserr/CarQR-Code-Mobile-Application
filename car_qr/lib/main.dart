@@ -1,7 +1,22 @@
+import 'package:car_qr/myappbar.dart';
+import 'package:car_qr/history.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(Nav());
+}
+
+class Nav extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      routes: {
+        ',hist/': (context) => MyApp(),
+        '/history': (context) => History(),
+      },
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -9,40 +24,59 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          //backgroundColor: Color.fromRGBO(99, 190, 220, 1),
-          title: Row(
+          backgroundColor: Colors.white,
+          appBar: MyAppBar(
+            titlex: new Text(
+              'Car Showroom',
+              style: TextStyle(fontSize: 22.0),
+            ),
+            history: () => Navigator.pushNamed(context, '/history'),
+          ),
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Container(
-                margin: const EdgeInsets.only(right: 20.0),
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                      width: 2, color: Color.fromRGBO(32, 150, 243, 1)),
-                  image: DecorationImage(
-                      image: AssetImage('assets/logo.jpg'), fit: BoxFit.fill),
+              Center(
+                child: Text(
+                  'All Your Car Details In Just A Scan',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.lato(
+                    textStyle: TextStyle(color: Colors.blue),
+                    fontSize: 45,
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.italic,
+                  ),
                 ),
               ),
-              Text('Car Showroom',
-                  style: TextStyle(fontSize: 25, color: Colors.white)),
-              Container(
-                margin: const EdgeInsets.only(left: 100.0),
-                child: Icon(Icons.more_vert),
+              Center(
+                child: Image(
+                  image: AssetImage('assets/homelogo.png'),
+                  height: 250.0,
+                  width: 300.0,
+                ),
               ),
+              Center(
+                  child: RaisedButton(
+                padding: EdgeInsets.all(15),
+                shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(30.0),
+                ),
+                textColor: Colors.white,
+                color: Colors.blue,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/history');
+                },
+                child: Text(
+                  'Start Scanning',
+                  style: GoogleFonts.lato(
+                    textStyle: TextStyle(color: Colors.white),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ))
             ],
-          ),
-        ),
-        body: Center(
-          child: Image(
-            image: AssetImage('assets/homelogo.png'),
-            height: 250.0,
-            width: 300.0,
-          ),
-        ),
-      ),
+          )),
     );
   }
 }
