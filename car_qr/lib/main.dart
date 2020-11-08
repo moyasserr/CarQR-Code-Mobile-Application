@@ -1,5 +1,7 @@
+import 'package:car_qr/carshowroom.dart';
 import 'package:car_qr/myappbar.dart';
 import 'package:car_qr/history.dart';
+import 'package:car_qr/signin.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,8 +14,10 @@ class Nav extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        ',hist/': (context) => MyApp(),
+        '/': (context) => MyApp(),
         '/history': (context) => History(),
+        '/signin': (context) => Signin(),
+        '/showrooms': (context) => Carshowroom(),
       },
     );
   }
@@ -31,6 +35,7 @@ class MyApp extends StatelessWidget {
               style: TextStyle(fontSize: 22.0),
             ),
             history: () => Navigator.pushNamed(context, '/history'),
+            showrooms: () => Navigator.pushNamed(context, '/showrooms'),
           ),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -63,7 +68,7 @@ class MyApp extends StatelessWidget {
                 textColor: Colors.white,
                 color: Colors.blue,
                 onPressed: () {
-                  Navigator.pushNamed(context, '/history');
+                  Navigator.pushNamed(context, '/signin');
                 },
                 child: Text(
                   'Start Scanning',

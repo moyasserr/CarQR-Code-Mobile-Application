@@ -1,3 +1,4 @@
+import 'package:car_qr/myappbar.dart';
 import 'package:flutter/material.dart';
 
 class Carshowroom extends StatelessWidget {
@@ -6,21 +7,13 @@ class Carshowroom extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: Row(
-            children: [
-              Container(
-                margin: const EdgeInsets.only(right: 20.0),
-                child: Icon(Icons.arrow_back),
-              ),
-              Text('Car Showroom',
-                  style: TextStyle(fontSize: 25, color: Colors.white)),
-              Container(
-                margin: const EdgeInsets.only(left: 100.0),
-                child: Icon(Icons.more_vert),
-              ),
-            ],
+        appBar: MyAppBar(
+          titlex: new Text(
+            'Car Showrooms',
+            style: TextStyle(fontSize: 22.0),
           ),
+          history: () => Navigator.pushNamed(context, '/history'),
+          showrooms: () => Navigator.pushNamed(context, '/showrooms'),
         ),
         body: SafeArea(
           child: Column(

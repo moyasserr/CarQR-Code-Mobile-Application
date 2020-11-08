@@ -14,6 +14,7 @@ class History extends StatelessWidget {
               style: TextStyle(fontSize: 22.0),
             ),
             history: () => Navigator.pushNamed(context, '/history'),
+            showrooms: () => Navigator.pushNamed(context, '/showrooms'),
           ),
           body: ListView(
             children: [

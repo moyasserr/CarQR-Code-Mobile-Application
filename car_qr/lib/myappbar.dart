@@ -5,7 +5,12 @@ import 'package:car_qr/popmenupages.dart';
 class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Widget titlex;
   final Function history;
-  MyAppBar({Key key, @required this.titlex, @required this.history})
+  final Function showrooms;
+  MyAppBar(
+      {Key key,
+      @required this.titlex,
+      @required this.history,
+      @required this.showrooms})
       : preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
 
@@ -51,6 +56,8 @@ class _CustomAppBarState extends State<MyAppBar> {
   void choiceaction(String choice) {
     if (choice == Sidemenu.history) {
       widget.history();
+    } else if (choice == Sidemenu.showrooms) {
+      widget.showrooms();
     }
   }
 }
