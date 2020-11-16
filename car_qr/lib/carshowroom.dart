@@ -14,6 +14,7 @@ class Carshowroom extends StatelessWidget {
           ),
           history: () => Navigator.pushNamed(context, '/history'),
           showrooms: () => Navigator.pushNamed(context, '/showrooms'),
+          settings: () => Navigator.pushNamed(context, '/settings'),
         ),
         body: SafeArea(
           child: Column(

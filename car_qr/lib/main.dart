@@ -2,7 +2,9 @@ import 'package:car_qr/carshowroom.dart';
 import 'package:car_qr/myappbar.dart';
 import 'package:car_qr/history.dart';
 import 'package:car_qr/signin.dart';
+import 'package:car_qr/settings.dart';
 import 'package:flutter/material.dart';
+import 'package:car_qr/car_description.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -18,6 +20,8 @@ class Nav extends StatelessWidget {
         '/history': (context) => History(),
         '/signin': (context) => Signin(),
         '/showrooms': (context) => Carshowroom(),
+        '/settings': (context) => Settings(),
+        '/car_description': (context) => CarDetails(),
       },
     );
   }
@@ -36,6 +40,7 @@ class MyApp extends StatelessWidget {
             ),
             history: () => Navigator.pushNamed(context, '/history'),
             showrooms: () => Navigator.pushNamed(context, '/showrooms'),
+            settings: () => Navigator.pushNamed(context, '/settings'),
           ),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,

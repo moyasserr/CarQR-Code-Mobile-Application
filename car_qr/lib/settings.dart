@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:car_qr/myappbar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-void main() {
-  runApp(Settings());
-}
-
 class Settings extends StatefulWidget {
   @override
   _SettingsState createState() => _SettingsState();
@@ -39,6 +35,7 @@ class _SettingsState extends State<Settings> {
           ),
           history: () => Navigator.pushNamed(context, '/history'),
           showrooms: () => Navigator.pushNamed(context, '/showrooms'),
+          settings: () => Navigator.pushNamed(context, '/settings'),
         ),
         body: Stack(
           fit: StackFit.expand,

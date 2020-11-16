@@ -8,6 +8,6 @@ class Sidemenu {
     history,
     showrooms,
     settings,
-    help
+    help,
   ];
 }

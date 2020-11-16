@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:car_qr/myappbar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'car_description.dart';
 
 class History extends StatelessWidget {
   @override
@@ -15,6 +16,7 @@ class History extends StatelessWidget {
             ),
             history: () => Navigator.pushNamed(context, '/history'),
             showrooms: () => Navigator.pushNamed(context, '/showrooms'),
+            settings: () => Navigator.pushNamed(context, '/settings'),
           ),
           body: ListView(
             children: [
@@ -88,32 +90,39 @@ class Carhistory extends StatelessWidget {
             ),
           ],
         ),
-        Container(
-          child: Text(
-            'Car Image',
-            textAlign: TextAlign.center,
-            style: GoogleFonts.lato(
-              textStyle: TextStyle(color: Colors.blue),
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-          width: 180.0,
-          margin: const EdgeInsets.all(10.0),
-          padding: EdgeInsets.all(45.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(width: 2, color: Colors.black45),
-            borderRadius: BorderRadius.circular(8.0),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: Offset(0, 3), // changes position of shadow
+        GestureDetector(
+          onTap: () {
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return CarDetails();
+            }));
+          },
+          child: Container(
+            child: Text(
+              'Car Image',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.lato(
+                textStyle: TextStyle(color: Colors.blue),
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+                fontStyle: FontStyle.italic,
               ),
-            ],
+            ),
+            width: 180.0,
+            margin: const EdgeInsets.all(10.0),
+            padding: EdgeInsets.all(45.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              border: Border.all(width: 2, color: Colors.black45),
+              borderRadius: BorderRadius.circular(8.0),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 2,
+                  blurRadius: 5,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
           ),
         )
       ],

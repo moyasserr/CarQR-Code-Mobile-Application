@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:car_qr/myappbar.dart';
+
 void main() {
   runApp(CarDetails());
 }
@@ -7,17 +8,11 @@ void main() {
 class CarDetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
-      appBar: MyAppBar(
-            titlex: new Text(
-              'Car Description',
-              style: TextStyle(fontSize: 22.0),
-            ),
-            history: () => Navigator.pushNamed(context, '/history'),
-            showrooms: () => Navigator.pushNamed(context, '/showrooms'),
-          ),
+      appBar: AppBar(
+        title: Text('Car Description'),
+      ),
       body: ListView(padding: const EdgeInsets.all(8), children: <Widget>[
         Center(
           child: Column(
@@ -395,8 +390,7 @@ class CarDetails extends StatelessWidget {
                     borderRadius: BorderRadius.circular(5.0),
                     color: const Color(0xff2c2c2c),
                   ),
-                  child: Column(
-                    children: <Widget>[
+                  child: Column(children: <Widget>[
                     Text(
                       'Reviews',
                       style: TextStyle(
@@ -412,7 +406,7 @@ class CarDetails extends StatelessWidget {
           ),
         ),
       ]),
-    ));
+    );
   }
 }
 

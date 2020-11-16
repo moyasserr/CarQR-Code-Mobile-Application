@@ -6,11 +6,13 @@ class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Widget titlex;
   final Function history;
   final Function showrooms;
+  final Function settings;
   MyAppBar(
       {Key key,
       @required this.titlex,
       @required this.history,
-      @required this.showrooms})
+      @required this.showrooms,
+      @required this.settings})
       : preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
 
@@ -58,6 +60,8 @@ class _CustomAppBarState extends State<MyAppBar> {
       widget.history();
     } else if (choice == Sidemenu.showrooms) {
       widget.showrooms();
+    } else if (choice == Sidemenu.settings) {
+      widget.settings();
     }
   }
 }
