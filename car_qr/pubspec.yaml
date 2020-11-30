@@ -43,10 +43,12 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/logo.jpg
-    - assets/homelogo.png
-    - assets/porsche.png
-    - assets/messi.jpg
+    - assets/images/logo.jpg
+    - assets/images/homelogo.png
+    - assets/images/porsche.png
+    - assets/images/messi.jpg
+    - assets/images/facicon.png
+    - assets/images/instaicon.png
      
 
   # An image asset can refer to one or more resolution-specific "variants", see

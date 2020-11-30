@@ -6,33 +6,23 @@ import 'package:car_qr/app_info.dart';
 void main() {
   runApp(About());
 }
-class Nav extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: {
-        '/': (context) => About(),
-        '/app_info': (context) => AppInfo(),
-      },
-    );
-  }
-}
 
 class About extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        home: Scaffold(
-      backgroundColor: Colors.white,
-      appBar: MyAppBar(
-            titlex: new Text(
-              'Help',
-              style: TextStyle(fontSize: 22.0),
-            ),
-            history: () => Navigator.pushNamed(context, '/history'),
-            showrooms: () => Navigator.pushNamed(context, '/showrooms'),
+      home: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: MyAppBar(
+          titlex: new Text(
+            'Help',
+            style: TextStyle(fontSize: 22.0),
           ),
-          
+          history: () => Navigator.pushNamed(context, '/history'),
+          showrooms: () => Navigator.pushNamed(context, '/showrooms'),
+          settings: () => Navigator.pushNamed(context, '/settings'),
+          about: () => Navigator.pushNamed(context, '/about'),
+        ),
         body: Stack(
           fit: StackFit.expand,
           children: <Widget>[
@@ -75,33 +65,32 @@ class About extends StatelessWidget {
                         _buildDivider(),
                         ListTile(
                             leading: Icon(
-                            FontAwesomeIcons.fileContract,
-                            color: Colors.blue,
-                          ),
+                              FontAwesomeIcons.fileContract,
+                              color: Colors.blue,
+                            ),
                             title: Text("Terms and Conditions"),
                             trailing: Icon(Icons.keyboard_arrow_right),
                             onTap: () {}),
                         _buildDivider(),
-                        GestureDetector(onTap: () {Navigator.pushNamed(context, '/app_info'
-                            );},
-                            child:
-                        ListTile(
-                            leading: Icon(
-                            FontAwesomeIcons.infoCircle,
-                            color: Colors.blue,
-                          ),
-                            title: Text("App Info"),
-                            trailing: Icon(Icons.keyboard_arrow_right),
-                            
-                            
-                            )
-                        )
-                          
+                        GestureDetector(
+                            onTap: () {
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: (context) {
+                                return AppInfo();
+                              }));
+                            },
+                            child: ListTile(
+                              leading: Icon(
+                                FontAwesomeIcons.infoCircle,
+                                color: Colors.blue,
+                              ),
+                              title: Text("App Info"),
+                              trailing: Icon(Icons.keyboard_arrow_right),
+                            ))
                       ],
                     ),
                   ),
                   const SizedBox(height: 20.0),
-                  
                   const SizedBox(height: 60.0),
                 ],
               ),

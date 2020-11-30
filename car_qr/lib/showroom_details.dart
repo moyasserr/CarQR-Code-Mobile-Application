@@ -1,51 +1,95 @@
-import 'package:flutter/material.dart';
 import 'package:car_qr/myappbar.dart';
+import 'package:car_qr/car_description.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'car_description.dart';
+import 'package:flutter/material.dart';
 
-class History extends StatelessWidget {
+class Showroomdetails extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-          appBar: MyAppBar(
-            titlex: new Text(
-              'History',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 22.0),
-            ),
-            history: () => Navigator.pushNamed(context, '/history'),
-            showrooms: () => Navigator.pushNamed(context, '/showrooms'),
-            settings: () => Navigator.pushNamed(context, '/settings'),
-            about: () => Navigator.pushNamed(context, '/about'),
-          ),
-          body: ListView(
+        home: Scaffold(
+      backgroundColor: Colors.white,
+      appBar: MyAppBar(
+        titlex: new Text(
+          'Car Showroom Name',
+          style: TextStyle(fontSize: 22.0),
+        ),
+        history: () => Navigator.pushNamed(context, '/history'),
+        showrooms: () => Navigator.pushNamed(context, '/showrooms'),
+        settings: () => Navigator.pushNamed(context, '/settings'),
+        about: () => Navigator.pushNamed(context, '/about'),
+      ),
+      body: Column(
+        children: [
+          Row(
             children: [
               Container(
-                  child: Padding(
-                padding: EdgeInsets.all(15),
-                child: TextField(
-                  decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.symmetric(horizontal: 10.0),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(50),
+                padding: EdgeInsets.all(20.0),
+                margin: const EdgeInsets.all(15.0),
+                width: 100,
+                height: 100,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      width: 2, color: Color.fromRGBO(32, 150, 243, 1)),
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/logo.jpg'),
+                      fit: BoxFit.fill),
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'PhoneNumber: 01000775996',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.lato(
+                      textStyle: TextStyle(color: Colors.blue),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.italic,
                     ),
-                    suffixIcon: Icon(
-                      Icons.search,
+                  ),
+                  Text(
+                    'Location:',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.lato(
+                      textStyle: TextStyle(color: Colors.blue),
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      fontStyle: FontStyle.italic,
                     ),
-                    labelText: 'Search For Cars',
+                  ),
+                ],
+              )
+            ],
+          ),
+          Row(
+            children: [
+              Container(
+                padding: EdgeInsets.all(20.0),
+                margin: EdgeInsets.symmetric(vertical: 15.0),
+                child: Text(
+                  'Latest Cars: ',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.lato(
+                    textStyle: TextStyle(color: Colors.blue),
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.italic,
                   ),
                 ),
-              )),
-              for (var i = 0; i < 4; i++) Carhistory(),
+              ),
             ],
-          )),
-    );
+          ),
+          for (var i = 0; i < 3; i++) Showroomcars(),
+        ],
+      ),
+    ));
   }
 }
 
-class Carhistory extends StatelessWidget {
+class Showroomcars extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(

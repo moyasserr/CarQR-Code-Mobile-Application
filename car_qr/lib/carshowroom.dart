@@ -1,4 +1,5 @@
 import 'package:car_qr/myappbar.dart';
+import 'package:car_qr/showroom_details.dart';
 import 'package:flutter/material.dart';
 
 class Carshowroom extends StatelessWidget {
@@ -15,6 +16,7 @@ class Carshowroom extends StatelessWidget {
           history: () => Navigator.pushNamed(context, '/history'),
           showrooms: () => Navigator.pushNamed(context, '/showrooms'),
           settings: () => Navigator.pushNamed(context, '/settings'),
+          about: () => Navigator.pushNamed(context, '/about'),
         ),
         body: SafeArea(
           child: Column(
@@ -31,39 +33,46 @@ class Carshowroom extends StatelessWidget {
 class Car extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(10.0),
-      padding: EdgeInsets.all(15.0),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(width: 2, color: Colors.black45),
-        borderRadius: BorderRadius.circular(5.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: Offset(0, 3), // changes position of shadow
+    return GestureDetector(
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return Showroomdetails();
+          }));
+        },
+        child: Container(
+          margin: const EdgeInsets.all(10.0),
+          padding: EdgeInsets.all(15.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            border: Border.all(width: 2, color: Colors.black45),
+            borderRadius: BorderRadius.circular(5.0),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: Offset(0, 3),
+              ),
+            ],
           ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Container(
-            margin: const EdgeInsets.only(right: 30.0),
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(width: 2, color: Colors.black),
-              image: DecorationImage(
-                  image: AssetImage('assets/logo.jpg'), fit: BoxFit.fill),
-            ),
+          child: Row(
+            children: [
+              Container(
+                margin: const EdgeInsets.only(right: 30.0),
+                width: 50,
+                height: 50,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(width: 2, color: Colors.black),
+                  image: DecorationImage(
+                      image: AssetImage('assets/images/logo.jpg'),
+                      fit: BoxFit.fill),
+                ),
+              ),
+              Text('Car Showroom',
+                  style: TextStyle(fontSize: 25, color: Colors.blue)),
+            ],
           ),
-          Text('Car Showroom',
-              style: TextStyle(fontSize: 25, color: Colors.blue)),
-        ],
-      ),
-    );
+        ));
   }
 }

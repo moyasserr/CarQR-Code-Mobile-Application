@@ -36,6 +36,7 @@ class _SettingsState extends State<Settings> {
           history: () => Navigator.pushNamed(context, '/history'),
           showrooms: () => Navigator.pushNamed(context, '/showrooms'),
           settings: () => Navigator.pushNamed(context, '/settings'),
+          about: () => Navigator.pushNamed(context, '/about'),
         ),
         body: Stack(
           fit: StackFit.expand,

@@ -7,12 +7,14 @@ class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
   final Function history;
   final Function showrooms;
   final Function settings;
+  final Function about;
   MyAppBar(
       {Key key,
       @required this.titlex,
       @required this.history,
       @required this.showrooms,
-      @required this.settings})
+      @required this.settings,
+      @required this.about})
       : preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
 
@@ -35,7 +37,7 @@ class _CustomAppBarState extends State<MyAppBar> {
           shape: BoxShape.circle,
           border: Border.all(width: 2, color: Color.fromRGBO(32, 150, 243, 1)),
           image: DecorationImage(
-              image: AssetImage('assets/logo.jpg'), fit: BoxFit.fill),
+              image: AssetImage('assets/images/logo.jpg'), fit: BoxFit.fill),
         ),
       ),
       title: widget.titlex,
@@ -62,6 +64,8 @@ class _CustomAppBarState extends State<MyAppBar> {
       widget.showrooms();
     } else if (choice == Sidemenu.settings) {
       widget.settings();
+    } else if (choice == Sidemenu.about) {
+      widget.about();
     }
   }
 }
