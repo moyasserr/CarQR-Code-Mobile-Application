@@ -115,7 +115,9 @@ class UcarreviewState extends State<Ucarreview> {
             onPressed: () {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
-                _scaffoldKey.currentState.showSnackBar(new SnackBar());
+                _scaffoldKey.currentState.showSnackBar(new SnackBar(
+                  content: new Text("Your review have been submited"),
+                ));
               }
             },
             color: Colors.blue,

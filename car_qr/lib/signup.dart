@@ -202,7 +202,7 @@ class SignupState extends State<Signup> {
             onSaved: (val) => _password = val,
           ),
           new Text(
-            'Conferm Password',
+            'Confirm Password',
             style: TextStyle(
                 color: Colors.blue, fontWeight: FontWeight.w500, fontSize: 19),
           ),
@@ -218,7 +218,7 @@ class SignupState extends State<Signup> {
                   style: BorderStyle.none,
                 ),
               ),
-              labelText: 'conferm password',
+              labelText: 'confirm password',
             ),
             obscureText: true,
             validator: (val) {
@@ -237,8 +237,7 @@ class SignupState extends State<Signup> {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 _scaffoldKey.currentState.showSnackBar(new SnackBar(
-                  content:
-                      new Text("Your email: $_email and Password: $_password"),
+                  content: new Text("Processing Data ..."),
                 ));
               }
             },

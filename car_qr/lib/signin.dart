@@ -122,8 +122,7 @@ class SigninState extends State<Signin> {
               if (_formKey.currentState.validate()) {
                 _formKey.currentState.save();
                 _scaffoldKey.currentState.showSnackBar(new SnackBar(
-                  content: new Text(
-                      "Your username: $_username and Password: $_password"),
+                  content: new Text("Processing Data..."),
                 ));
               }
             },
@@ -144,6 +143,7 @@ class SigninState extends State<Signin> {
             color: Colors.blue,
             highlightColor: Colors.blueGrey,
           ),
+          new FlatButton(onPressed: () {}, child: Text('Login as a Guest')),
         ],
       ),
     );

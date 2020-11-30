@@ -63,7 +63,8 @@ class _SettingsState extends State<Settings> {
                         ),
                       ),
                       leading: CircleAvatar(
-                        backgroundImage: ExactAssetImage('assets/messi.jpg'),
+                        backgroundImage:
+                            ExactAssetImage('assets/images/messi.jpg'),
                       ),
                       trailing: Icon(
                         Icons.edit,
