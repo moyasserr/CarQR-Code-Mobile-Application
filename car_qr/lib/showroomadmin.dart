@@ -13,6 +13,8 @@ class ShowroomAdmin extends StatelessWidget {
           ),
           history: () => Navigator.pushNamed(context, '/history'),
           showrooms: () => Navigator.pushNamed(context, '/showrooms'),
+          settings: () => Navigator.pushNamed(context, '/settings'),
+          about: () => Navigator.pushNamed(context, '/about'),
         ),
         body: SafeArea(
           child: Column(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:car_qr/user_car_review.dart';
 
 class Carreviews extends StatelessWidget {
   @override
@@ -7,7 +8,6 @@ class Carreviews extends StatelessWidget {
       home: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          //backgroundColor: Color.fromRGBO(99, 190, 220, 1),
           title: Row(
             children: [
               Container(
@@ -19,7 +19,8 @@ class Carreviews extends StatelessWidget {
                   border: Border.all(
                       width: 2, color: Color.fromRGBO(32, 150, 243, 1)),
                   image: DecorationImage(
-                      image: AssetImage('assets/logo.jpg'), fit: BoxFit.fill),
+                      image: AssetImage('assets/images/logo.jpg'),
+                      fit: BoxFit.fill),
                 ),
               ),
               Text('Car Showroom',
@@ -39,7 +40,9 @@ class Carreviews extends StatelessWidget {
               padding: EdgeInsets.only(left: 175),
               child: FloatingActionButton.extended(
                 onPressed: () {
-                  // Add your onPressed code here!
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return Ucarreview();
+                  }));
                 },
                 label: Text('Add your comment'),
                 backgroundColor: Colors.blue,

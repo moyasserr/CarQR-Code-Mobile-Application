@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'carreviews.dart';
 
 class CarDetails extends StatefulWidget {
   @override
@@ -399,26 +401,29 @@ class _CarDetailsState extends State<CarDetails> with TickerProviderStateMixin {
                       BuildButtonColumn(Colors.green, Icons.circle, 'Green'),
                     ]),
                 Divider(color: Colors.black),
-                Container(
-                    width: 100.0,
-                    height: 40.0,
-                    padding: EdgeInsets.all(5.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5.0),
-                      color: const Color(0xff2c2c2c),
+                RaisedButton(
+                  padding: EdgeInsets.all(15),
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(30.0),
+                  ),
+                  textColor: Colors.white,
+                  color: Colors.blue,
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return Carreviews();
+                    }));
+                  },
+                  child: Text(
+                    'Reviews',
+                    style: GoogleFonts.lato(
+                      textStyle: TextStyle(color: Colors.white),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      fontStyle: FontStyle.italic,
                     ),
-                    child: Column(children: <Widget>[
-                      Text(
-                        'Reviews',
-                        style: TextStyle(
-                          fontFamily: 'Arial',
-                          fontSize: 15,
-                          color: Colors.white,
-                          height: 1.5,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ])),
+                  ),
+                ),
               ],
             ),
           ),
