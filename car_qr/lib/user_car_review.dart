@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:getflutter/components/rating/gf_rating.dart';
 
-class FormValidation extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
-      title: "car review",
-      home: Ucarreview(),
-    );
-  }
-}
-
 class Ucarreview extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return UcarreviewState();
   }
 }
