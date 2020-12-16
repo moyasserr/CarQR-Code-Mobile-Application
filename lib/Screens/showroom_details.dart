@@ -1,5 +1,5 @@
-import 'package:car_qr/myappbar.dart';
-import 'package:car_qr/car_description.dart';
+import 'package:car_qr/Screens/myappbar.dart';
+import 'package:car_qr/Screens/car_description.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 

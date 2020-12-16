@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:car_qr/myappbar.dart';
+import 'package:car_qr/Screens/myappbar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class Settings extends StatefulWidget {

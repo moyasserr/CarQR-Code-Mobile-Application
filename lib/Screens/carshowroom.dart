@@ -1,5 +1,5 @@
-import 'package:car_qr/myappbar.dart';
-import 'package:car_qr/showroom_details.dart';
+import 'package:car_qr/Screens/myappbar.dart';
+import 'package:car_qr/Screens/showroom_details.dart';
 import 'package:flutter/material.dart';
 
 class Carshowroom extends StatelessWidget {

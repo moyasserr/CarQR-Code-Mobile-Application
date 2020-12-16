@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:car_qr/signup.dart';
+import 'package:car_qr/Screens/signup.dart';
 
 class FormValidation extends StatelessWidget {
   @override

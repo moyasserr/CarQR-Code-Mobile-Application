@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:car_qr/user_car_review.dart';
+import 'package:car_qr/Screens/user_car_review.dart';
 
 class Carreviews extends StatelessWidget {
   @override

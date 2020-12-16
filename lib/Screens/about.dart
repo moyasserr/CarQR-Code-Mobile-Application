@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:car_qr/myappbar.dart';
+import 'package:car_qr/Screens/myappbar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:car_qr/app_info.dart';
+import 'package:car_qr/Screens/app_info.dart';
 
 void main() {
   runApp(About());

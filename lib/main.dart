@@ -1,11 +1,11 @@
-import 'package:car_qr/about.dart';
-import 'package:car_qr/carshowroom.dart';
-import 'package:car_qr/myappbar.dart';
-import 'package:car_qr/history.dart';
-import 'package:car_qr/signin.dart';
-import 'package:car_qr/settings.dart';
+import 'package:car_qr/Screens/about.dart';
+import 'package:car_qr/Screens/carshowroom.dart';
+import 'package:car_qr/Screens/myappbar.dart';
+import 'package:car_qr/Screens/history.dart';
+import 'package:car_qr/Screens/signin.dart';
+import 'package:car_qr/Screens/settings.dart';
 import 'package:flutter/material.dart';
-import 'package:car_qr/car_description.dart';
+import 'package:car_qr/Screens/car_description.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
