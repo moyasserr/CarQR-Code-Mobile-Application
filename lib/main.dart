@@ -1,3 +1,4 @@
+import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Screens/about.dart';
 import 'package:car_qr/Screens/carshowroom.dart';
 import 'package:car_qr/Screens/myappbar.dart';
@@ -7,9 +8,26 @@ import 'package:car_qr/Screens/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:car_qr/Screens/car_description.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:car_qr/Screens/admin_cars_screen.dart';
 
 void main() {
   runApp(Nav());
+}
+
+class testApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      builder: (context) => AvailableCarsModel(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Cars',
+        theme: ThemeData.light(),
+        home: AdminCarsPanal(),
+      ),
+    );
+  }
 }
 
 class Nav extends StatelessWidget {
