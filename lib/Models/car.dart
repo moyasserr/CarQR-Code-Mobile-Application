@@ -64,7 +64,36 @@ class Car {
     this.wheelWidth = 0,
     this.color = 'N/A',
     @required this.image,
-    this.qrCode,
+    this.qrCode = 'N/A',
+  });
+
+  Car.emptyConst({
+    this.maxSpeed = 0,
+    this.transmissonType = 'N/A',
+    this.seatsNumbers = 0,
+    this.doorsType = 'N/A',
+    this.roofType = 'N/A',
+    this.carPrice = 0,
+    this.manufactureCountry = 'N/A',
+    this.manufactureYear = 0,
+    this.mileAge = 0,
+    this.carHeight = 0,
+    this.carWidth = 0,
+    this.wheelBase = 0,
+    this.truckBase = 0,
+    this.engineTorgue = 0,
+    this.engineAcceleration = 0,
+    this.fuelConsumption = 0,
+    this.fuelTankCapacity = 0,
+    this.prefferedFuelType = 'N/A',
+    this.brakeSafety = 'N/A',
+    this.brake100To0 = 0,
+    this.rimDiameter = 0,
+    this.frontSuspension,
+    this.backSuspension = 'N/A',
+    this.wheelWidth = 0,
+    this.color = 'N/A',
+    this.qrCode = 'N/A',
   });
 
   Map<String, dynamic> get map {
