@@ -68,6 +68,10 @@ class Car {
   });
 
   Car.emptyConst({
+    this.carBrand = 'N/A',
+    this.carModel = 'N/A',
+    this.cubicCentimeters = 0,
+    this.horsePower = 0,
     this.maxSpeed = 0,
     this.transmissonType = 'N/A',
     this.seatsNumbers = 0,
@@ -94,6 +98,7 @@ class Car {
     this.wheelWidth = 0,
     this.color = 'N/A',
     this.qrCode = 'N/A',
+    this.image = 'N/A',
   });
 
   Map<String, dynamic> get map {

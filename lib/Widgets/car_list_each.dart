@@ -16,13 +16,13 @@ class CarListEach extends StatelessWidget {
 
     return Card(
       child: ListTile(
-        leading: Image.asset(
+        leading: Image.network(
           car.image,
           width: 100.0,
           height: 100.0,
         ),
-        title: Text(car.carBrand),
-        subtitle: Text(car.carModel),
+        title: Text(car.carBrand.toString()),
+        subtitle: Text(car.carModel.toString()),
         trailing: Icon(Icons.more_vert),
       ),
     );
