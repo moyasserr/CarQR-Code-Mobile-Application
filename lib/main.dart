@@ -68,72 +68,110 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          backgroundColor: Colors.white,
-          appBar: MyAppBar(
-            titlex: new Text(
-              'Car Showroom',
-              style: TextStyle(fontSize: 22.0),
-            ),
-            history: () => Navigator.pushNamed(context, '/history'),
-            showrooms: () => Navigator.pushNamed(context, '/showrooms'),
-            settings: () => Navigator.pushNamed(context, '/settings'),
-            about: () => Navigator.pushNamed(context, '/about'),
+        backgroundColor: Colors.white,
+        appBar: MyAppBar(
+          titlex: new Text(
+            'Car Showroom',
+            style: TextStyle(fontSize: 22.0),
           ),
-          body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Center(
-                child: FadeTransition(
-                  opacity: animation,
+          history: () => Navigator.pushNamed(context, '/history'),
+          showrooms: () => Navigator.pushNamed(context, '/showrooms'),
+          settings: () => Navigator.pushNamed(context, '/settings'),
+          about: () => Navigator.pushNamed(context, '/about'),
+        ),
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Center(
+              child: FadeTransition(
+                opacity: animation,
+                child: Text(
+                  'All Your Car Details In Just A Scan',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.lato(
+                    textStyle: TextStyle(color: Colors.blue),
+                    fontSize: 45,
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.italic,
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: FadeTransition(
+                opacity: animation,
+                child: Image(
+                  image: AssetImage('assets/images/homelogo.png'),
+                  height: 250.0,
+                  width: 300.0,
+                ),
+              ),
+            ),
+            Center(
+              child: FadeTransition(
+                opacity: animation,
+                child: RaisedButton(
+                  padding: EdgeInsets.all(15),
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(30.0),
+                  ),
+                  textColor: Colors.white,
+                  color: Colors.blue,
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/signin');
+                  },
                   child: Text(
-                    'All Your Car Details In Just A Scan',
-                    textAlign: TextAlign.center,
+                    'Start Scanning',
                     style: GoogleFonts.lato(
-                      textStyle: TextStyle(color: Colors.blue),
-                      fontSize: 45,
-                      fontWeight: FontWeight.w700,
+                      textStyle: TextStyle(color: Colors.white),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
                       fontStyle: FontStyle.italic,
                     ),
                   ),
                 ),
               ),
-              Center(
-                child: FadeTransition(
-                  opacity: animation,
-                  child: Image(
-                    image: AssetImage('assets/images/homelogo.png'),
-                    height: 250.0,
-                    width: 300.0,
-                  ),
-                ),
+            )
+          ],
+        ),
+        drawer: Drawer(
+            child: ListView(children: <Widget>[
+          Container(
+            height: 64.0,
+            child: DrawerHeader(
+              child: Text('Car Showroom'),
+              decoration: BoxDecoration(
+                color: Colors.blue,
               ),
-              Center(
-                child: FadeTransition(
-                  opacity: animation,
-                  child: RaisedButton(
-                    padding: EdgeInsets.all(15),
-                    shape: new RoundedRectangleBorder(
-                      borderRadius: new BorderRadius.circular(30.0),
-                    ),
-                    textColor: Colors.white,
-                    color: Colors.blue,
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/signin');
-                    },
-                    child: Text(
-                      'Start Scanning',
-                      style: GoogleFonts.lato(
-                        textStyle: TextStyle(color: Colors.white),
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                  ),
-                ),
-              )
-            ],
-          )),
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.home),
+            title: Text('Showrooms'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(Icons.book),
+            title: Text('History'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(Icons.settings),
+            title: Text('Settings'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(Icons.info),
+            title: Text('About'),
+            onTap: () {},
+          ),
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text('Logout'),
+            onTap: () {},
+          ),
+        ])),
+      ),
     );
   }
 }
