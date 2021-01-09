@@ -10,6 +10,20 @@ class AdminCarsPanal extends StatefulWidget {
 }
 
 class _AdminCarsPanalState extends State<AdminCarsPanal> {
+  var _isLoading = true;
+
+  @override
+  void initState() {
+    Provider.of<AvailableCarsModel>(context, listen: false)
+        .readCars()
+        .then((_) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,13 +41,17 @@ class _AdminCarsPanalState extends State<AdminCarsPanal> {
           ),
         ],
       ),
-      body: Container(
-        child: Consumer<AvailableCarsModel>(
-          builder: (context, cars, child) => CarList(
-            cars: cars.allCars,
-          ),
-        ),
-      ),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Container(
+              child: Consumer<AvailableCarsModel>(
+                builder: (context, cars, child) => CarList(
+                  cars: cars.allCars,
+                ),
+              ),
+            ),
     );
   }
 }

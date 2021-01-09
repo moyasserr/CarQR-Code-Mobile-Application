@@ -10,31 +10,32 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as Path;
 
-class AddCar extends StatefulWidget {
+class EditCar extends StatefulWidget {
+  final String carId;
+
+  EditCar({@required this.carId});
+
   @override
-  _AddCarState createState() => _AddCarState();
+  _EditCarState createState() => _EditCarState(carId: carId);
 }
 
-class _AddCarState extends State<AddCar> {
+class _EditCarState extends State<EditCar> {
   List<TextEditingController> textController = new List();
   final _formKey = GlobalKey<FormState>();
-  Future<File> file;
-  String base64Image;
-  File tmpFile;
-  String _uploadedFileURL;
+  final String carId;
+  Car oldCar;
+  Car newCar = Car.emptyConst();
 
-  Car car = Car.emptyConst();
+  getCar(BuildContext context) async {
+    oldCar = await Provider.of<AvailableCarsModel>(context, listen: false)
+        .findById(carId);
+    print(oldCar.id);
+  }
 
-  _AddCarState() {
+  _EditCarState({@required this.carId}) {
     for (var i = 0; i < 25; i++) {
       textController.add(new TextEditingController());
     }
-  }
-
-  @override
-  void initState() {
-    print(textController.length);
-    super.initState();
   }
 
   void dispose() {
@@ -44,70 +45,50 @@ class _AddCarState extends State<AddCar> {
     super.dispose();
   }
 
-  onAdd() async {
+  onEdit() async {
     if (_formKey.currentState.validate()) {
-      await uploadFile();
-      Provider.of<AvailableCarsModel>(context, listen: false).addCar(car);
+      newCar.image = oldCar.image;
+      Provider.of<AvailableCarsModel>(context, listen: false)
+          .updateCar(carId, newCar);
       Navigator.pop(context);
     }
   }
 
-  chooseImage() {
-    setState(() {
-      file = ImagePicker.pickImage(source: ImageSource.gallery);
-    });
-  }
-
-  Future uploadFile() async {
-    StorageReference storageReference = FirebaseStorage.instance
-        .ref()
-        .child('/cars_images/${Path.basename(tmpFile.path)}}');
-    StorageUploadTask uploadTask = storageReference.putFile(tmpFile);
-    await uploadTask.onComplete;
-    print('File Uploaded');
-    await storageReference.getDownloadURL().then((fileURL) {
-      setState(() {
-        _uploadedFileURL = fileURL;
-        car.image = _uploadedFileURL;
-      });
-    });
-  }
-
-  Widget showImage() {
-    return FutureBuilder<File>(
-      future: file,
-      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            null != snapshot.data) {
-          tmpFile = snapshot.data;
-          base64Image = base64Encode(snapshot.data.readAsBytesSync());
-          return Flexible(
-            child: Image.file(
-              snapshot.data,
-              width: 100,
-              height: 100,
-            ),
-          );
-        } else if (null != snapshot.error) {
-          return const Text(
-            'Error Picking Image',
-            textAlign: TextAlign.center,
-          );
-        } else {
-          return const Text(
-            'No Image Selected',
-            textAlign: TextAlign.center,
-          );
-        }
-      },
-    );
+  void setFields() {
+    textController[0].text = oldCar.carBrand;
+    textController[1].text = oldCar.carModel;
+    textController[2].text = oldCar.cubicCentimeters.toString();
+    textController[3].text = oldCar.horsePower.toString();
+    textController[4].text = oldCar.maxSpeed.toString();
+    textController[5].text = oldCar.seatsNumbers.toString();
+    textController[6].text = oldCar.doorsType;
+    textController[7].text = oldCar.roofType;
+    textController[8].text = oldCar.manufactureCountry;
+    textController[9].text = oldCar.manufactureYear.toString();
+    textController[10].text = oldCar.carHeight.toString();
+    textController[11].text = oldCar.carWidth.toString();
+    textController[12].text = oldCar.wheelBase.toString();
+    textController[13].text = oldCar.truckBase.toString();
+    textController[14].text = oldCar.engineTorgue.toString();
+    textController[15].text = oldCar.engineAcceleration.toString();
+    textController[16].text = oldCar.fuelConsumption.toString();
+    textController[17].text = oldCar.fuelTankCapacity.toString();
+    textController[18].text = oldCar.prefferedFuelType;
+    textController[19].text = oldCar.brakeSafety;
+    textController[20].text = oldCar.brake100To0.toString();
+    textController[21].text = oldCar.rimDiameter.toString();
+    textController[22].text = oldCar.frontSuspension;
+    textController[23].text = oldCar.backSuspension;
+    textController[24].text = oldCar.wheelWidth.toString();
   }
 
   @override
   Widget build(BuildContext context) {
+    getCar(context);
+    setFields();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Car'),
+        title: Text('Edit Car'),
       ),
       body: Form(
         key: _formKey,
@@ -131,12 +112,12 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length == 0)
-                    return "Please enter Car Brand";
+                    newCar.carBrand = oldCar.carBrand;
                   else {
                     print('Brand');
-                    car.carBrand = val;
-                    return null;
+                    newCar.carBrand = val;
                   }
+                  return null;
                 },
               ),
               new Padding(
@@ -156,12 +137,12 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length == 0)
-                    return "Please enter Car Model";
+                    newCar.carModel = oldCar.carModel;
                   else {
                     print('Model');
-                    car.carModel = val;
-                    return null;
+                    newCar.carModel = val;
                   }
+                  return null;
                 },
               ),
               new Padding(
@@ -183,11 +164,11 @@ class _AddCarState extends State<AddCar> {
                 validator: (val) {
                   print('CCCC');
                   if (val.length == 0)
-                    return "Please enter CC";
+                    newCar.cubicCentimeters = oldCar.cubicCentimeters;
                   else {
-                    car.cubicCentimeters = int.parse(val);
-                    return null;
+                    newCar.cubicCentimeters = int.parse(val);
                   }
+                  return null;
                 },
               ),
               new Padding(
@@ -209,11 +190,11 @@ class _AddCarState extends State<AddCar> {
                 validator: (val) {
                   print('HP');
                   if (val.length == 0)
-                    return "Please enter Horse Power";
+                    newCar.horsePower = oldCar.horsePower;
                   else {
-                    car.horsePower = int.parse(val);
-                    return null;
+                    newCar.horsePower = int.parse(val);
                   }
+                  return null;
                 },
               ),
               new Padding(
@@ -234,7 +215,9 @@ class _AddCarState extends State<AddCar> {
                 validator: (val) {
                   print(val);
                   if (val.length != 0) {
-                    car.maxSpeed = double.parse(val);
+                    newCar.maxSpeed = double.parse(val);
+                  } else {
+                    newCar.maxSpeed = oldCar.maxSpeed;
                   }
                   return null;
                 },
@@ -256,7 +239,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.seatsNumbers = int.parse(val);
+                    newCar.seatsNumbers = int.parse(val);
+                  } else {
+                    newCar.seatsNumbers = oldCar.seatsNumbers;
                   }
                   return null;
                 },
@@ -278,7 +263,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.doorsType = val;
+                    newCar.doorsType = val;
+                  } else {
+                    newCar.doorsType = oldCar.doorsType;
                   }
                   return null;
                 },
@@ -300,7 +287,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.roofType = val;
+                    newCar.roofType = val;
+                  } else {
+                    newCar.roofType = oldCar.roofType;
                   }
                   return null;
                 },
@@ -322,7 +311,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.manufactureCountry = val;
+                    newCar.manufactureCountry = val;
+                  } else {
+                    newCar.manufactureCountry = oldCar.manufactureCountry;
                   }
                   return null;
                 },
@@ -344,7 +335,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.manufactureYear = int.parse(val);
+                    newCar.manufactureYear = int.parse(val);
+                  } else {
+                    newCar.manufactureYear = oldCar.manufactureYear;
                   }
                   return null;
                 },
@@ -366,7 +359,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.carHeight = double.parse(val);
+                    newCar.carHeight = double.parse(val);
+                  } else {
+                    newCar.carHeight = oldCar.carHeight;
                   }
                   return null;
                 },
@@ -388,7 +383,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.carWidth = double.parse(val);
+                    newCar.carWidth = double.parse(val);
+                  } else {
+                    newCar.carWidth = oldCar.carWidth;
                   }
                   return null;
                 },
@@ -410,7 +407,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.wheelBase = double.parse(val);
+                    newCar.wheelBase = double.parse(val);
+                  } else {
+                    newCar.wheelBase = oldCar.wheelBase;
                   }
                   return null;
                 },
@@ -432,7 +431,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.truckBase = double.parse(val);
+                    newCar.truckBase = double.parse(val);
+                  } else {
+                    newCar.truckBase = oldCar.truckBase;
                   }
                   return null;
                 },
@@ -454,7 +455,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.engineTorgue = double.parse(val);
+                    newCar.engineTorgue = double.parse(val);
+                  } else {
+                    newCar.engineTorgue = oldCar.engineTorgue;
                   }
                   return null;
                 },
@@ -476,7 +479,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.engineAcceleration = double.parse(val);
+                    newCar.engineAcceleration = double.parse(val);
+                  } else {
+                    newCar.engineAcceleration = oldCar.engineAcceleration;
                   }
                   return null;
                 },
@@ -498,7 +503,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.fuelConsumption = double.parse(val);
+                    newCar.fuelConsumption = double.parse(val);
+                  } else {
+                    newCar.fuelConsumption = oldCar.fuelConsumption;
                   }
                   return null;
                 },
@@ -520,7 +527,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.fuelTankCapacity = double.parse(val);
+                    newCar.fuelTankCapacity = double.parse(val);
+                  } else {
+                    newCar.fuelTankCapacity = oldCar.fuelTankCapacity;
                   }
                   return null;
                 },
@@ -542,7 +551,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.prefferedFuelType = val;
+                    newCar.prefferedFuelType = val;
+                  } else {
+                    newCar.prefferedFuelType = oldCar.prefferedFuelType;
                   }
                   return null;
                 },
@@ -564,7 +575,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.brakeSafety = val;
+                    newCar.brakeSafety = val;
+                  } else {
+                    newCar.brakeSafety = oldCar.brakeSafety;
                   }
                   return null;
                 },
@@ -586,7 +599,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.brake100To0 = double.parse(val);
+                    newCar.brake100To0 = double.parse(val);
+                  } else {
+                    newCar.brake100To0 = oldCar.brake100To0;
                   }
                   return null;
                 },
@@ -608,7 +623,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.rimDiameter = double.parse(val);
+                    newCar.rimDiameter = double.parse(val);
+                  } else {
+                    newCar.rimDiameter = oldCar.rimDiameter;
                   }
                   return null;
                 },
@@ -630,7 +647,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.frontSuspension = val;
+                    newCar.frontSuspension = val;
+                  } else {
+                    newCar.frontSuspension = oldCar.frontSuspension;
                   }
                   return null;
                 },
@@ -652,7 +671,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.backSuspension = val;
+                    newCar.backSuspension = val;
+                  } else {
+                    newCar.backSuspension = oldCar.backSuspension;
                   }
                   return null;
                 },
@@ -674,7 +695,9 @@ class _AddCarState extends State<AddCar> {
                 ),
                 validator: (val) {
                   if (val.length != 0) {
-                    car.wheelWidth = double.parse(val);
+                    newCar.wheelWidth = double.parse(val);
+                  } else {
+                    newCar.wheelWidth = oldCar.wheelWidth;
                   }
                   return null;
                 },
@@ -682,23 +705,12 @@ class _AddCarState extends State<AddCar> {
               new Padding(
                 padding: const EdgeInsets.only(top: 20.0),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  showImage(),
-                  IconButton(
-                    icon: Icon(Icons.add_a_photo),
-                    iconSize: 20.0,
-                    onPressed: chooseImage,
-                  ),
-                ],
-              ),
               new Padding(
                 padding: const EdgeInsets.only(top: 20.0),
               ),
-              FloatingActionButton(
-                onPressed: () => onAdd(),
-                child: Text('ADD'),
+              RaisedButton(
+                onPressed: () => onEdit(),
+                child: Text('Confirm'),
               ),
             ],
           ),

@@ -32,8 +32,10 @@ class Car {
   String color;
   String image;
   String qrCode;
+  String id;
 
   Car({
+    @required this.id,
     @required this.carBrand,
     @required this.carModel,
     @required this.cubicCentimeters,
@@ -103,6 +105,7 @@ class Car {
 
   Map<String, dynamic> get map {
     return {
+      "id": id,
       "carBrand": carBrand,
       "carModel": carModel,
       "cubicCentimeters": cubicCentimeters,

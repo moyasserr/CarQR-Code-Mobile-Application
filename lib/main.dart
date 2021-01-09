@@ -22,7 +22,7 @@ class testApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      builder: (context) => AvailableCarsModel(),
+      create: (context) => AvailableCarsModel(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Cars',
@@ -36,16 +36,19 @@ class testApp extends StatelessWidget {
 class Nav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      routes: {
-        '/': (context) => MyApp(),
-        '/history': (context) => History(),
-        '/signin': (context) => Signin(),
-        '/showrooms': (context) => Carshowroom(),
-        '/settings': (context) => Settings(),
-        '/car_description': (context) => CarDetails(),
-        '/about': (context) => About(),
-      },
+    return ChangeNotifierProvider(
+      create: (context) => AvailableCarsModel(),
+      child: MaterialApp(
+        routes: {
+          '/': (context) => MyApp(),
+          '/history': (context) => History(),
+          '/signin': (context) => Signin(),
+          '/showrooms': (context) => Carshowroom(),
+          '/settings': (context) => Settings(),
+          //'/car_description': (context) => CarDetails(),
+          '/about': (context) => About(),
+        },
+      ),
     );
   }
 }
@@ -79,7 +82,15 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
     try {
       barcodeScanned = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", true, ScanMode.QR);
-      return _launchURL(barcodeScanned);
+      print(barcodeScanned);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => CarDetails(
+            carId: barcodeScanned,
+          ),
+        ),
+      );
     } on PlatformException {
       barcodeScanned = 'Failed to get platform version.';
     }
