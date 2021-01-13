@@ -1,4 +1,5 @@
 class User {
+  final String uid;
   String firstName;
   String lastName;
   String eMail;
@@ -6,6 +7,7 @@ class User {
   String password;
 
   User({
+    this.uid,
     this.firstName,
     this.lastName,
     this.eMail,
@@ -15,6 +17,7 @@ class User {
 
   Map<String, dynamic> get map {
     return {
+      "uid":uid,
       "firstName": firstName,
       "lastName": lastName,
       "eMail": eMail,

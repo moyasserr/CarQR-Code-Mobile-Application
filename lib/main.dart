@@ -1,3 +1,4 @@
+import 'package:car_qr/Providers/auth.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Screens/about.dart';
 import 'package:car_qr/Screens/carshowroom.dart';
@@ -13,9 +14,25 @@ import 'package:provider/provider.dart';
 import 'package:car_qr/Screens/admin_cars_screen.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:car_qr/Screens/wrapper.dart';
+import 'package:provider/provider.dart';
+import 'package:car_qr/Providers/auth.dart';
+import 'package:car_qr/Models/user.dart';
 
 void main() {
-  runApp(Nav());
+  runApp(MyApp2());
+}
+
+class MyApp2 extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamProvider<User>.value(
+      value: AuthService().user,
+        child: MaterialApp(
+        home: Wrapper(),
+      ),
+    );
+  }
 }
 
 class testApp extends StatelessWidget {
@@ -111,6 +128,8 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
     }
   }
 
+  final AuthService _auth = AuthService();
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -169,6 +188,31 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
                   },
                   child: Text(
                     'Start Scanning',
+                    style: GoogleFonts.lato(
+                      textStyle: TextStyle(color: Colors.white),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      fontStyle: FontStyle.italic,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            Center(
+              child: FadeTransition(
+                opacity: animation,
+                child: RaisedButton(
+                  padding: EdgeInsets.all(15),
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(30.0),
+                  ),
+                  textColor: Colors.white,
+                  color: Colors.blue,
+                  onPressed: () async {
+                    await _auth.signOut();
+                  },
+                  child: Text(
+                    'Logout',
                     style: GoogleFonts.lato(
                       textStyle: TextStyle(color: Colors.white),
                       fontSize: 20,
