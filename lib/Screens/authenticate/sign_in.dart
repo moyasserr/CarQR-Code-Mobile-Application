@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:car_qr/Providers/auth.dart';
+import 'package:google_fonts/google_fonts.dart';
 class SignIn extends StatefulWidget {
   final Function toggleView;
   SignIn({this.toggleView});
@@ -41,6 +42,15 @@ class _SignInState extends State<SignIn> {
             children: <Widget>[
               SizedBox(height:20.0),
               TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Email',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:BorderSide(color:Colors.black12,width:2.0)
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:BorderSide(color:Colors.blue,width:2.0)
+                  )
+                ),
                 validator: (val)=>val.length<6 ? 'Enter a valid email' : null,
                 onChanged: (val){
                   setState(() =>email =val );
@@ -48,7 +58,17 @@ class _SignInState extends State<SignIn> {
               ),
               SizedBox(height:20.0),
               TextFormField(
+                
                 obscureText: true,
+                decoration: InputDecoration(
+                  hintText: 'Password',
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:BorderSide(color:Colors.black12,width:2.0)
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:BorderSide(color:Colors.blue,width:2.0)
+                  )
+                ),
                 validator: (val)=>val.length<6 ? 'Enter a valid password' : null,
                 onChanged: (val){
                   setState(() =>password =val );
@@ -56,10 +76,19 @@ class _SignInState extends State<SignIn> {
               ),
               SizedBox(height:20.0),
               RaisedButton(
-                color: Colors.blue,
+                padding: EdgeInsets.all(15),
+                  shape: new RoundedRectangleBorder(
+                    borderRadius: new BorderRadius.circular(10.0),
+                  ),
+                  textColor: Colors.white,
+                  color: Colors.blue,
                 child: Text(
                   'Sign in',
-                  style: TextStyle(color: Colors.white),
+                  style: GoogleFonts.lato(
+                      textStyle: TextStyle(color: Colors.white),
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
                 ),
                 onPressed: () async{
                   if(_formKey.currentState.validate()){
