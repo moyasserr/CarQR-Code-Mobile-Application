@@ -1,3 +1,4 @@
+import 'package:car_qr/Screens/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:car_qr/Providers/auth.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -12,6 +13,7 @@ class _SignInState extends State<SignIn> {
 
   final AuthService _auth = AuthService();
   final _formKey =GlobalKey <FormState>();
+  bool loading=false;
 
   // text field state
   String email='';
@@ -20,7 +22,7 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Sign In"),
@@ -91,10 +93,15 @@ class _SignInState extends State<SignIn> {
                     ),
                 ),
                 onPressed: () async{
+                  setState(()=> loading=true);
                   if(_formKey.currentState.validate()){
                     dynamic result = await _auth.signInWithEmailAndPassword(email, password);
                     if(result==null){
-                      setState(() => error='Couldn\'t sign in please check email and password then try again');
+                      setState(() { 
+                        error='Couldn\'t sign in please check email and password then try again';
+                        loading=false;
+                        });
+                      
                     }
                   }
                 },

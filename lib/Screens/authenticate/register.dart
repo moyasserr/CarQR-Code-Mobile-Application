@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:car_qr/Providers/auth.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:car_qr/Screens/loading.dart';
 
 class Register extends StatefulWidget {
 
@@ -14,6 +15,7 @@ class _RegisterState extends State<Register> {
 
   final AuthService _auth = AuthService();
   final _formKey =GlobalKey <FormState>();
+  bool loading=false;
 
   String email='';
   String password='';
@@ -21,7 +23,7 @@ class _RegisterState extends State<Register> {
   
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return loading ? Loading() : Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Sign up"),
@@ -92,10 +94,14 @@ class _RegisterState extends State<Register> {
                     ),
                 ),
                 onPressed: () async{
+                  setState(()=> loading=true);
                   if(_formKey.currentState.validate()){
                     dynamic result = await _auth.registerWithEmailAndPassword(email, password);
                     if(result==null){
-                      setState(() => error='Please enter a valid email');
+                      setState(()  {
+                        error='Please enter a valid email';
+                        loading=false;
+                        });
                     }
                   }
                 },
