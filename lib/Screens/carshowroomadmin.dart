@@ -1,21 +1,46 @@
 import 'package:car_qr/Screens/addshowroom.dart';
 import 'package:car_qr/Screens/carlist.dart';
-import 'package:car_qr/Screens/myappbar.dart';
+import 'package:car_qr/Screens/editshowroom.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../Models/showrooms.dart';
 
-class Carshowroomadmin extends StatefulWidget {
+class Abdo extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() {
-    return CarshowroomadminState();
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: CarShowrooms(),
+        ),
+      ],
+      child: MaterialApp(
+        routes: {
+          '/': (context) => Carshowroomadmin(),
+          '/add': (context) => Addshowroom(),
+          '/edit': (context) => Editshowroom(),
+          '/carlist': (context) => Carlist(),
+        },
+      ),
+    );
   }
 }
 
-class CarshowroomadminState extends State<Carshowroomadmin> {
+void main() {
+  runApp(Abdo());
+}
+
+class Carshowroomadmin extends StatefulWidget {
+  @override
+  _CarshowroomadminState createState() => _CarshowroomadminState();
+}
+
+class _CarshowroomadminState extends State<Carshowroomadmin> {
   bool isSearch = false;
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: !isSearch
@@ -53,10 +78,7 @@ class CarshowroomadminState extends State<Carshowroomadmin> {
                 new RaisedButton(
                   child: new Text("Add"),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Addshowroom()),
-                    );
+                    Navigator.pushNamed(context, "/add");
                   },
                   color: Colors.blue,
                   highlightColor: Colors.blueGrey,
@@ -64,10 +86,7 @@ class CarshowroomadminState extends State<Carshowroomadmin> {
                 new RaisedButton(
                   child: new Text("Edit"),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Addshowroom()),
-                    );
+                    Navigator.pushNamed(context, "/edit");
                   },
                   color: Colors.blue,
                   highlightColor: Colors.blueGrey,
@@ -75,10 +94,7 @@ class CarshowroomadminState extends State<Carshowroomadmin> {
                 new RaisedButton(
                   child: new Text("Car List"),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Carlist()),
-                    );
+                    Navigator.pushNamed(context, "/carlist");
                   },
                   color: Colors.blue,
                   highlightColor: Colors.blueGrey,
