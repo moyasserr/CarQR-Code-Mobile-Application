@@ -15,12 +15,12 @@ import 'package:car_qr/Screens/admin_cars_screen.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:car_qr/Screens/wrapper.dart';
-import 'package:provider/provider.dart';
-import 'package:car_qr/Providers/auth.dart';
 import 'package:car_qr/Models/user.dart';
 
+import 'Screens/carshowroomadmin.dart';
+
 void main() {
-  runApp(MyApp2());
+  runApp(Carshowroomadmin());
 }
 
 class MyApp2 extends StatelessWidget {
@@ -28,7 +28,7 @@ class MyApp2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamProvider<User>.value(
       value: AuthService().user,
-        child: MaterialApp(
+      child: MaterialApp(
         home: Wrapper(),
       ),
     );
@@ -198,7 +198,7 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            Center(
+            /*Center(
               child: FadeTransition(
                 opacity: animation,
                 child: RaisedButton(
@@ -222,7 +222,7 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
                   ),
                 ),
               ),
-            )
+            )*/
           ],
         ),
         drawer: Drawer(
@@ -259,7 +259,9 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
           ListTile(
             leading: Icon(Icons.logout),
             title: Text('Logout'),
-            onTap: () {},
+            onTap: () async {
+              await _auth.signOut();
+            },
           ),
         ])),
       ),
