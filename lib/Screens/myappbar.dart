@@ -14,7 +14,8 @@ class MyAppBar extends StatefulWidget implements PreferredSizeWidget {
       @required this.history,
       @required this.showrooms,
       @required this.settings,
-      @required this.about})
+      @required this.about,
+      List actions})
       : preferredSize = Size.fromHeight(kToolbarHeight),
         super(key: key);
 
