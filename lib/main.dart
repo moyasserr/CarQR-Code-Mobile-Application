@@ -25,7 +25,7 @@ import 'package:car_qr/Models/user.dart';
 import 'Screens/carshowroomadmin.dart';
 
 void main() {
-  runApp(Carshowroomadmin());
+  runApp(Addshowroom());
 }
 
 class MyApp2 extends StatelessWidget {
