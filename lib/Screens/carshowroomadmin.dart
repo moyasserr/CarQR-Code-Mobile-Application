@@ -1,3 +1,4 @@
+import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Screens/manage_showroom.dart';
 import 'package:car_qr/Screens/admin_showrooms.dart';
 import 'package:car_qr/Screens/carlist.dart';
@@ -13,6 +14,9 @@ class Abdo extends StatelessWidget {
       providers: [
         ChangeNotifierProvider.value(
           value: CarShowrooms(),
+        ),
+        ChangeNotifierProvider.value(
+          value: AvailableCarsModel(),
         ),
       ],
       child: MaterialApp(
@@ -88,7 +92,9 @@ class _CarshowroomadminState extends State<Carshowroomadmin> {
               padding: EdgeInsets.fromLTRB(10, 30, 10, 80),
               alignment: Alignment.bottomCenter,
               child: MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, "/carlist");
+                },
                 color: Colors.redAccent[400],
                 textColor: Colors.white,
                 child: Text("Cars List", style: TextStyle(fontSize: 23)),

@@ -1,4 +1,7 @@
+import 'package:car_qr/Providers/available_cars_model.dart';
+import 'package:car_qr/Widgets/adminshdrawer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Carlist extends StatefulWidget {
   @override
@@ -10,75 +13,59 @@ class Carlist extends StatefulWidget {
 class CarlistState extends State<Carlist> {
   bool isSearch = false;
 
+  Future<void> getcars(BuildContext context) async {
+    Provider.of<AvailableCarsModel>(context, listen: false).readCars();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // routes: {
-      //   '/addshowroom': (context) => Addshowroom(),
-      // },
-      title: "Car List",
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: !isSearch
-              ? Text("Car List")
-              : TextField(
-                  style: TextStyle(color: Colors.white),
-                  decoration: InputDecoration(
-                      icon: Icon(Icons.edit),
-                      hintText: "search showroom Here")),
-          actions: <Widget>[
-            isSearch
-                ? IconButton(
-                    icon: Icon(Icons.cancel),
-                    onPressed: () {
-                      setState(() {
-                        this.isSearch = false;
-                      });
-                    },
-                  )
-                : IconButton(
-                    icon: Icon(Icons.search),
-                    onPressed: () {
-                      setState(() {
-                        this.isSearch = true;
-                      });
-                    },
-                  )
-          ],
-        ),
-        body: SafeArea(
-          child: Column(
-            children: [
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceAround,
-              //   children: [
-              //     new RaisedButton(
-              //       child: new Text("Add"),
-              //       onPressed: () {
-              //         Navigator.push(
-              //           context,
-              //           MaterialPageRoute(builder: (context) => Signup()),
-              //         );
-              //       },
-              //       color: Colors.blue,
-              //       highlightColor: Colors.blueGrey,
-              //     ),
-              //     new RaisedButton(
-              //       child: new Text("Edit"),
-              //       onPressed: () {
-              //         Navigator.push(
-              //           context,
-              //           MaterialPageRoute(builder: (context) => Addshowroom()),
-              //         );
-              //       },
-              //       color: Colors.blue,
-              //       highlightColor: Colors.blueGrey,
-              //     ),
-              //   ],
-              // ),
-              for (var i = 0; i <= 2; i++) Car(),
-            ],
+    final carsdata = Provider.of<AvailableCarsModel>(context);
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: !isSearch
+            ? Text("Car List")
+            : TextField(
+                style: TextStyle(color: Colors.white),
+                decoration: InputDecoration(
+                    icon: Icon(Icons.edit), hintText: "search showroom Here")),
+        actions: <Widget>[
+          isSearch
+              ? IconButton(
+                  icon: Icon(Icons.cancel),
+                  onPressed: () {
+                    setState(() {
+                      this.isSearch = false;
+                    });
+                  },
+                )
+              : IconButton(
+                  icon: Icon(Icons.search),
+                  onPressed: () {
+                    setState(() {
+                      this.isSearch = true;
+                    });
+                  },
+                )
+        ],
+      ),
+      drawer: AppDrawer(),
+      body: RefreshIndicator(
+        onRefresh: () => getcars(context),
+        child: Padding(
+          padding: EdgeInsets.all(8),
+          child: ListView.builder(
+            itemCount: carsdata.allCars.length,
+            itemBuilder: (_, i) => Column(
+              children: [
+                Admincarlist(
+                  carsdata.allCars[i].id,
+                  carsdata.allCars[i].carBrand,
+                  carsdata.allCars[i].image,
+                  carsdata.allCars[i].carModel,
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -86,7 +73,13 @@ class CarlistState extends State<Carlist> {
   }
 }
 
-class Car extends StatelessWidget {
+class Admincarlist extends StatelessWidget {
+  final String carbrand;
+  final String carmodel;
+  final String id;
+  final String carimage;
+  Admincarlist(this.id, this.carbrand, this.carimage, this.carmodel);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -106,22 +99,43 @@ class Car extends StatelessWidget {
         ],
       ),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            margin: const EdgeInsets.only(right: 30.0),
-            width: 50,
-            height: 50,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              border: Border.all(width: 2, color: Colors.black),
-              image: DecorationImage(
-                  image: AssetImage('assets/logo.png'), fit: BoxFit.fill),
-            ),
+          CircleAvatar(
+            backgroundImage: NetworkImage(carimage),
           ),
-          Text('Car model', style: TextStyle(fontSize: 25, color: Colors.blue)),
-          Padding(
-            padding: const EdgeInsets.only(left: 60.0),
+
+          // Container(
+          //   margin: const EdgeInsets.only(right: 30.0),
+          //   width: 50,
+          //   height: 50,
+
+          //    decoration: BoxDecoration(
+          //      shape: BoxShape.circle,
+          //   //   border: Border.all(width: 2, color: Colors.black),
+          //   //   image: DecorationImage(
+          //   //       image: AssetImage('assets/logo.png'), fit: BoxFit.fill),
+          //   // ),
+          // ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(carbrand,
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: Colors.blue,
+                  )),
+              Text(carmodel,
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.blue,
+                  )),
+            ],
           ),
+
+          // Padding(
+          //   padding: const EdgeInsets.only(left: 60.0),
+          // ),
           IconButton(
             icon: Icon(Icons.add),
             color: Colors.lightBlue,
