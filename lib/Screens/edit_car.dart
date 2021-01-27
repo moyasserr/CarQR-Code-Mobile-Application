@@ -2,12 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Models/car.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart';
-import 'dart:convert';
-import 'dart:io';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as Path;
 
 class EditCar extends StatefulWidget {
