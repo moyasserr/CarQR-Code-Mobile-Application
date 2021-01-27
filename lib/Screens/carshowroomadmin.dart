@@ -1,29 +1,56 @@
-import 'package:car_qr/Screens/addshowroom.dart';
+import 'package:car_qr/Screens/manage_showroom.dart';
+import 'package:car_qr/Screens/admin_showrooms.dart';
 import 'package:car_qr/Screens/carlist.dart';
-import 'package:car_qr/Screens/myappbar.dart';
+import 'package:car_qr/Widgets/adminshdrawer.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../Models/showrooms.dart';
 
-class Carshowroomadmin extends StatefulWidget {
+class Abdo extends StatelessWidget {
   @override
-  State<StatefulWidget> createState() {
-    return CarshowroomadminState();
+  Widget build(BuildContext context) {
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: CarShowrooms(),
+        ),
+      ],
+      child: MaterialApp(
+        routes: {
+          '/': (context) => Carshowroomadmin(),
+          '/manageshowroom': (context) => ManageShowroom(),
+          '/adminshowrooms': (context) => AdminShowroomsScreen(),
+          '/carlist': (context) => Carlist(),
+        },
+      ),
+    );
   }
 }
 
-class CarshowroomadminState extends State<Carshowroomadmin> {
-  bool isSearch = false;
+void main() {
+  runApp(Abdo());
+}
+
+class Carshowroomadmin extends StatefulWidget {
+  @override
+  _CarshowroomadminState createState() => _CarshowroomadminState();
+}
+
+class _CarshowroomadminState extends State<Carshowroomadmin> {
+  // bool isSearch = false;
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: !isSearch
-            ? Text("admin showroom")
-            : TextField(
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                    icon: Icon(Icons.edit), hintText: "search showroom Here")),
+        title: Text("Manage Your Showrooms"),
+        // !isSearch
+        //     ? Text("admin showroom")
+        //     : TextField(
+        //         style: TextStyle(color: Colors.white),
+        //         decoration: InputDecoration(
+        //             icon: Icon(Icons.edit), hintText: "search showroom Here")),
         // actions: <Widget>[
         //   isSearch
         //       ? IconButton(
@@ -44,50 +71,45 @@ class CarshowroomadminState extends State<Carshowroomadmin> {
         //         )
         // ],
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                new RaisedButton(
-                  child: new Text("Add"),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Addshowroom()),
-                    );
-                  },
-                  color: Colors.blue,
-                  highlightColor: Colors.blueGrey,
+      drawer: AppDrawer(),
+      body: Stack(
+        children: <Widget>[
+          Container(
+              padding: EdgeInsets.fromLTRB(10, 180, 10, 80),
+              alignment: Alignment.topCenter,
+              child: Text("Check Out The Latest Cars ",
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold))),
+          Container(
+              padding: EdgeInsets.fromLTRB(10, 240, 10, 80),
+              alignment: Alignment.topCenter,
+              child: Text("In The System : ",
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold))),
+          Container(
+              padding: EdgeInsets.fromLTRB(10, 30, 10, 80),
+              alignment: Alignment.bottomCenter,
+              child: MaterialButton(
+                onPressed: () {},
+                color: Colors.redAccent[400],
+                textColor: Colors.white,
+                child: Text("Cars List", style: TextStyle(fontSize: 23)),
+                padding: EdgeInsets.all(30),
+                //shape: CircleBorder(),
+              )),
+          Container(
+              alignment: Alignment.topCenter,
+              padding: const EdgeInsets.only(top: 50.0),
+              child: RichText(
+                text: TextSpan(
+                  text: "Welcome",
+                  style: TextStyle(color: Colors.black, fontSize: 40),
+                  children: <TextSpan>[
+                    TextSpan(
+                        text: ' Admin',
+                        style: TextStyle(color: Colors.redAccent[400])),
+                  ],
                 ),
-                new RaisedButton(
-                  child: new Text("Edit"),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Addshowroom()),
-                    );
-                  },
-                  color: Colors.blue,
-                  highlightColor: Colors.blueGrey,
-                ),
-                new RaisedButton(
-                  child: new Text("Car List"),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Carlist()),
-                    );
-                  },
-                  color: Colors.blue,
-                  highlightColor: Colors.blueGrey,
-                ),
-              ],
-            ),
-            // for (var i = 0; i <= 2; i++) Car(),
-          ],
-        ),
+              )),
+        ],
       ),
     );
   }
