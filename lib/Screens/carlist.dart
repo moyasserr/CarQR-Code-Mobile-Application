@@ -1,7 +1,4 @@
-import 'package:car_qr/Screens/addshowroom.dart';
-import 'package:car_qr/Screens/myappbar.dart';
 import 'package:flutter/material.dart';
-import 'package:car_qr/Screens/signup.dart';
 
 class Carlist extends StatefulWidget {
   @override
@@ -16,9 +13,9 @@ class CarlistState extends State<Carlist> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      routes: {
-        '/addshowroom': (context) => Addshowroom(),
-      },
+      // routes: {
+      //   '/addshowroom': (context) => Addshowroom(),
+      // },
       title: "Car List",
       home: Scaffold(
         backgroundColor: Colors.white,

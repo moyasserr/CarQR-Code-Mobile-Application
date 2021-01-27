@@ -85,7 +85,7 @@ class CarShowrooms with ChangeNotifier {
     }
   }
 
-  void deleteProduct(String id) {
+  void deleteShowroom(String id) {
     final url =
         'https://carqr-e4c82-default-rtdb.firebaseio.com/showrooms/$id.json';
     final existingshowrrom =

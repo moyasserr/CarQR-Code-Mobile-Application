@@ -1,14 +1,11 @@
 import 'package:car_qr/Providers/auth.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Screens/about.dart';
-import 'package:car_qr/Screens/addshowroom.dart';
-import 'package:car_qr/Screens/carlist.dart';
 import 'package:car_qr/Screens/carshowroom.dart';
 import 'package:car_qr/Screens/myappbar.dart';
 import 'package:car_qr/Screens/history.dart';
 import 'package:car_qr/Screens/signin.dart';
 import 'package:car_qr/Screens/settings.dart';
-import 'package:car_qr/Screens/user_car_review.dart';
 import 'package:flutter/material.dart';
 import 'package:car_qr/Screens/car_description.dart';
 import 'package:flutter/services.dart';
@@ -19,8 +16,6 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:car_qr/Screens/wrapper.dart';
 import 'package:car_qr/Models/user.dart';
-
-import 'Screens/carshowroomadmin.dart';
 
 void main() {
   runApp(MyApp2());
