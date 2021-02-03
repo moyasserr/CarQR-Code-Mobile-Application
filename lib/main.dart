@@ -16,6 +16,8 @@ import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:car_qr/Screens/wrapper.dart';
 import 'package:car_qr/Models/user.dart';
+import 'package:car_qr/Screens/admin_showrooms.dart';
+import 'package:car_qr/Models/showrooms.dart';
 
 void main() {
   runApp(MyApp2());
@@ -37,12 +39,12 @@ class testApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => AvailableCarsModel(),
+      create: (context) => CarShowrooms(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Cars',
         theme: ThemeData.light(),
-        home: AdminCarsPanal(),
+        home: AdminShowroomsScreen(),
       ),
     );
   }
@@ -77,9 +79,17 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
   String _scanBarcode = 'Unknown';
   AnimationController controller;
   Animation<double> animation;
+  var _isLoading = true;
 
-  initState() {
+  void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Provider.of<User>(context, listen: false).readUser().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    });
     controller = AnimationController(
         duration: const Duration(milliseconds: 700), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
@@ -117,19 +127,11 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
     });
   }
 
-  Future<void> _launchURL(String urlQRCode) async {
-    String url = urlQRCode;
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
   final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<User>(context);
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.white,
@@ -143,60 +145,64 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
           settings: () => Navigator.pushNamed(context, '/settings'),
           about: () => Navigator.pushNamed(context, '/about'),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Center(
-              child: FadeTransition(
-                opacity: animation,
-                child: Text(
-                  'All Your Car Details In Just A Scan',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.lato(
-                    textStyle: TextStyle(color: Colors.blue),
-                    fontSize: 45,
-                    fontWeight: FontWeight.w700,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-              ),
-            ),
-            Center(
-              child: FadeTransition(
-                opacity: animation,
-                child: Image(
-                  image: AssetImage('assets/images/homelogo.png'),
-                  height: 250.0,
-                  width: 300.0,
-                ),
-              ),
-            ),
-            Center(
-              child: FadeTransition(
-                opacity: animation,
-                child: RaisedButton(
-                  padding: EdgeInsets.all(15),
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
-                  ),
-                  textColor: Colors.white,
-                  color: Colors.blue,
-                  onPressed: () {
-                    scanQR();
-                  },
-                  child: Text(
-                    'Start Scanning',
-                    style: GoogleFonts.lato(
-                      textStyle: TextStyle(color: Colors.white),
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      fontStyle: FontStyle.italic,
+        body: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Center(
+                    child: FadeTransition(
+                      opacity: animation,
+                      child: Text(
+                        user.eMail,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.lato(
+                          textStyle: TextStyle(color: Colors.blue),
+                          fontSize: 45,
+                          fontWeight: FontWeight.w700,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
-            /*Center(
+                  Center(
+                    child: FadeTransition(
+                      opacity: animation,
+                      child: Image(
+                        image: AssetImage('assets/images/homelogo.png'),
+                        height: 250.0,
+                        width: 300.0,
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: FadeTransition(
+                      opacity: animation,
+                      child: RaisedButton(
+                        padding: EdgeInsets.all(15),
+                        shape: new RoundedRectangleBorder(
+                          borderRadius: new BorderRadius.circular(30.0),
+                        ),
+                        textColor: Colors.white,
+                        color: Colors.blue,
+                        onPressed: () {
+                          scanQR();
+                        },
+                        child: Text(
+                          'Start Scanning',
+                          style: GoogleFonts.lato(
+                            textStyle: TextStyle(color: Colors.white),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  /*Center(
               child: FadeTransition(
                 opacity: animation,
                 child: RaisedButton(
@@ -221,8 +227,8 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
                 ),
               ),
             )*/
-          ],
-        ),
+                ],
+              ),
         drawer: Drawer(
             child: ListView(children: <Widget>[
           Container(
