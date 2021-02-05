@@ -39,29 +39,35 @@ class testApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => CarShowrooms(),
+      create: (context) => AvailableCarsModel(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Cars',
         theme: ThemeData.light(),
-        home: AdminShowroomsScreen(),
+        home: AdminCarsPanal(),
       ),
     );
   }
 }
 
 class Nav extends StatelessWidget {
+  final User user;
+  Nav({@required this.user});
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (context) => AvailableCarsModel(),
       child: MaterialApp(
         routes: {
-          '/': (context) => MyApp(),
+          '/': (context) => MyApp(
+                user: user,
+              ),
           '/history': (context) => History(),
           '/signin': (context) => Signin(),
           '/showrooms': (context) => Carshowroom(),
-          '/settings': (context) => Settings(),
+          '/settings': (context) => Settings(
+                user: user,
+              ),
           //'/car_description': (context) => CarDetails(),
           '/about': (context) => About(),
         },
@@ -71,8 +77,10 @@ class Nav extends StatelessWidget {
 }
 
 class MyApp extends StatefulWidget {
+  final User user;
+  MyApp({@required this.user});
   @override
-  _MyAppstate createState() => _MyAppstate();
+  _MyAppstate createState() => _MyAppstate(user: user);
 }
 
 class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
@@ -80,11 +88,14 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
   AnimationController controller;
   Animation<double> animation;
   var _isLoading = true;
+  final User user;
+
+  _MyAppstate({@required this.user});
 
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<User>(context, listen: false).readUser().then((_) {
+      user.readUser().then((_) {
         setState(() {
           _isLoading = false;
         });
@@ -131,7 +142,6 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
     return MaterialApp(
       home: Scaffold(
         backgroundColor: Colors.white,
@@ -156,7 +166,7 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
                     child: FadeTransition(
                       opacity: animation,
                       child: Text(
-                        user.eMail,
+                        user.lastName,
                         textAlign: TextAlign.center,
                         style: GoogleFonts.lato(
                           textStyle: TextStyle(color: Colors.blue),

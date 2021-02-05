@@ -5,24 +5,22 @@ import 'package:provider/provider.dart';
 import 'package:car_qr/Models/user.dart';
 
 class Settings extends StatefulWidget {
+  final User user;
+  Settings({@required this.user});
   @override
-  _SettingsState createState() => _SettingsState();
+  _SettingsState createState() => _SettingsState(user: user);
 }
 
 class _SettingsState extends State<Settings> {
   bool _dark;
-  var _isLoading = true;
+  var _isLoading = false;
+  final User user;
+
+  _SettingsState({@required this.user});
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<User>(context, listen: false).readUser().then((_) {
-        setState(() {
-          _isLoading = false;
-        });
-      });
-    });
     _dark = false;
   }
 
@@ -32,7 +30,6 @@ class _SettingsState extends State<Settings> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<User>(context);
     return MaterialApp(
       theme: ThemeData(
         brightness: _getBrightness(),

@@ -1,10 +1,13 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class User {
   final String uid;
+  final FirebaseUser fUser;
+  String token;
   String fireID;
   String firstName;
   String lastName;
@@ -13,6 +16,8 @@ class User {
 
   User({
     @required this.uid,
+    @required this.fUser,
+    this.token,
     this.fireID,
     this.firstName,
     this.lastName,
@@ -27,6 +32,8 @@ class User {
       "lastName": lastName,
       "eMail": eMail,
       "usertype": userType,
+      "fUser": fUser,
+      "token": token,
     };
   }
 
@@ -49,6 +56,9 @@ class User {
   Future<void> readUser() async {
     final url = 'https://carqr-e4c82-default-rtdb.firebaseio.com/users.json';
     try {
+      final idToken = await fUser.getIdToken();
+      final token = idToken.token;
+      this.token = token;
       final response = await http.get(url);
       final dbData = json.decode(response.body) as Map<String, dynamic>;
       dbData.forEach((key, value) {

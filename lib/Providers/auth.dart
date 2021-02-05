@@ -7,8 +7,7 @@ class AuthService {
   // create user object based on firebaseUser
   User _userFromFirebaseUser(FirebaseUser user) {
     if (user != null) {
-      User loggedUser = User(uid: user.uid);
-      loggedUser.readUser();
+      User loggedUser = User(uid: user.uid, fUser: user);
       return loggedUser;
     } else {
       return null;
@@ -61,7 +60,9 @@ class AuthService {
       AuthResult result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       FirebaseUser user = result.user;
+
       User signedinUser = User(
+        fUser: user,
         eMail: user.email,
         uid: user.uid,
         firstName: firstName,
