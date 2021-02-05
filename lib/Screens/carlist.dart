@@ -19,6 +19,7 @@ class CarlistState extends State<Carlist> {
 
   @override
   Widget build(BuildContext context) {
+    getcars(context);
     final carsdata = Provider.of<AvailableCarsModel>(context);
     return Scaffold(
       backgroundColor: Colors.white,
@@ -50,8 +51,8 @@ class CarlistState extends State<Carlist> {
         ],
       ),
       drawer: AppDrawer(),
-      body: RefreshIndicator(
-        onRefresh: () => getcars(context),
+      body: Container(
+        //onRefresh: () => getcars(context),
         child: Padding(
           padding: EdgeInsets.all(8),
           child: ListView.builder(
@@ -79,6 +80,30 @@ class Admincarlist extends StatelessWidget {
   final String id;
   final String carimage;
   Admincarlist(this.id, this.carbrand, this.carimage, this.carmodel);
+
+  Future<String> createDialog(BuildContext context) {
+    TextEditingController priceController = TextEditingController();
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Enter your price"),
+            content: TextField(
+              keyboardType: TextInputType.number,
+              controller: priceController,
+            ),
+            actions: <Widget>[
+              MaterialButton(
+                elevation: 5.0,
+                child: Text("Submit"),
+                onPressed: () {
+                  Navigator.of(context).pop(priceController.text.toString());
+                },
+              )
+            ],
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +164,13 @@ class Admincarlist extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.add),
             color: Colors.lightBlue,
-            onPressed: () {},
+            onPressed: () {
+              createDialog(context).then((value) {
+                SnackBar priceSnackbar =
+                    SnackBar(content: Text("Your price is $value"));
+                Scaffold.of(context).showSnackBar(priceSnackbar);
+              });
+            },
           ),
         ],
       ),

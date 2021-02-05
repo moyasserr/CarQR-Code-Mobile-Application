@@ -2,6 +2,11 @@ import 'package:car_qr/Models/showroom.dart';
 import 'package:car_qr/Models/showrooms.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' as Path;
+import 'package:image_picker/image_picker.dart';
+import 'dart:convert';
+import 'dart:io';
 
 class ManageShowroom extends StatefulWidget {
   @override
@@ -15,6 +20,10 @@ class _ManageShowroomState extends State<ManageShowroom> {
   final imageFocusNode = FocusNode();
   final locationFocusNode = FocusNode();
   final phonenumberFocusNode = FocusNode();
+  Future<File> file;
+  String base64Image;
+  File tmpFile;
+  String _uploadedFileURL;
   var editShowroom = CarShowRoom(
     id: null,
     showRoomName: '',
@@ -89,10 +98,13 @@ class _ManageShowroomState extends State<ManageShowroom> {
       isloading = true;
     });
     if (editShowroom.id != null) {
+      print("image path is:$editShowroom.image");
+      await uploadFile();
       await Provider.of<CarShowrooms>(context, listen: false)
           .updateShowroom(editShowroom.id, editShowroom);
     } else {
       try {
+        await uploadFile();
         await Provider.of<CarShowrooms>(context, listen: false)
             .addShowroom(editShowroom);
       } catch (error) {
@@ -118,6 +130,57 @@ class _ManageShowroomState extends State<ManageShowroom> {
       isloading = false;
     });
     Navigator.of(context).pop();
+  }
+
+  chooseImage() {
+    setState(() {
+      file = ImagePicker.pickImage(source: ImageSource.gallery);
+    });
+  }
+
+  Future uploadFile() async {
+    StorageReference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('/showroom_images/${Path.basename(tmpFile.path)}}');
+    StorageUploadTask uploadTask = storageReference.putFile(tmpFile);
+    await uploadTask.onComplete;
+    print('File Uploaded');
+    await storageReference.getDownloadURL().then((fileURL) {
+      setState(() {
+        _uploadedFileURL = fileURL;
+        editShowroom.image = _uploadedFileURL;
+      });
+    });
+  }
+
+  Widget showImage() {
+    return FutureBuilder<File>(
+      future: file,
+      builder: (BuildContext context, AsyncSnapshot<File> snapshot) {
+        if (snapshot.connectionState == ConnectionState.done &&
+            null != snapshot.data) {
+          tmpFile = snapshot.data;
+          base64Image = base64Encode(snapshot.data.readAsBytesSync());
+          return Flexible(
+            child: Image.file(
+              snapshot.data,
+              width: 100,
+              height: 100,
+            ),
+          );
+        } else if (null != snapshot.error) {
+          return const Text(
+            'Error Picking Image',
+            textAlign: TextAlign.center,
+          );
+        } else {
+          return const Text(
+            'No Image Selected',
+            textAlign: TextAlign.center,
+          );
+        }
+      },
+    );
   }
 
   @override
@@ -299,67 +362,78 @@ class _ManageShowroomState extends State<ManageShowroom> {
                       padding: const EdgeInsets.only(top: 20.0),
                     ),
                     Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: <Widget>[
-                        Container(
-                          width: 100,
-                          height: 100,
-                          margin: EdgeInsets.only(
-                            top: 8,
-                            right: 10,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: Colors.grey,
-                            ),
-                          ),
-                          child: imageController.text.isEmpty
-                              ? Text('Enter a URL')
-                              : FittedBox(
-                                  child: Image.network(
-                                    imageController.text,
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                        ),
-                        Expanded(
-                          child: TextFormField(
-                            decoration: InputDecoration(labelText: 'Image URL'),
-                            keyboardType: TextInputType.url,
-                            textInputAction: TextInputAction.done,
-                            controller: imageController,
-                            focusNode: imageFocusNode,
-                            onFieldSubmitted: (_) {
-                              formSetup();
-                            },
-                            validator: (value) {
-                              if (value.isEmpty) {
-                                return 'Please enter an image URL.';
-                              }
-                              if (!value.startsWith('http') &&
-                                  !value.startsWith('https')) {
-                                return 'Please enter a valid URL.';
-                              }
-                              if (!value.endsWith('.png') &&
-                                  !value.endsWith('.jpg') &&
-                                  !value.endsWith('.jpeg')) {
-                                return 'Please enter a valid image URL.';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              editShowroom = CarShowRoom(
-                                  showRoomName: editShowroom.showRoomName,
-                                  phoneNumber: editShowroom.phoneNumber,
-                                  location: editShowroom.location,
-                                  image: value,
-                                  id: editShowroom.id);
-                            },
-                          ),
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        showImage(),
+                        IconButton(
+                          icon: Icon(Icons.add_a_photo),
+                          iconSize: 20.0,
+                          onPressed: chooseImage,
                         ),
                       ],
                     ),
+                    // Row(
+                    //   crossAxisAlignment: CrossAxisAlignment.end,
+                    //   children: <Widget>[
+                    //     Container(
+                    //       width: 100,
+                    //       height: 100,
+                    //       margin: EdgeInsets.only(
+                    //         top: 8,
+                    //         right: 10,
+                    //       ),
+                    //       decoration: BoxDecoration(
+                    //         border: Border.all(
+                    //           width: 1,
+                    //           color: Colors.grey,
+                    //         ),
+                    //       ),
+                    //       child: imageController.text.isEmpty
+                    //           ? Text('Enter a URL')
+                    //           : FittedBox(
+                    //               child: Image.network(
+                    //                 imageController.text,
+                    //                 fit: BoxFit.cover,
+                    //               ),
+                    //             ),
+                    //     ),
+                    //     Expanded(
+                    //       child: TextFormField(
+                    //         decoration: InputDecoration(labelText: 'Image URL'),
+                    //         keyboardType: TextInputType.url,
+                    //         textInputAction: TextInputAction.done,
+                    //         controller: imageController,
+                    //         focusNode: imageFocusNode,
+                    //         onFieldSubmitted: (_) {
+                    //           formSetup();
+                    //         },
+                    //         validator: (value) {
+                    //           if (value.isEmpty) {
+                    //             return 'Please enter an image URL.';
+                    //           }
+                    //           if (!value.startsWith('http') &&
+                    //               !value.startsWith('https')) {
+                    //             return 'Please enter a valid URL.';
+                    //           }
+                    //           if (!value.endsWith('.png') &&
+                    //               !value.endsWith('.jpg') &&
+                    //               !value.endsWith('.jpeg')) {
+                    //             return 'Please enter a valid image URL.';
+                    //           }
+                    //           return null;
+                    //         },
+                    //         onSaved: (value) {
+                    //           editShowroom = CarShowRoom(
+                    //               showRoomName: editShowroom.showRoomName,
+                    //               phoneNumber: editShowroom.phoneNumber,
+                    //               location: editShowroom.location,
+                    //               image: value,
+                    //               id: editShowroom.id);
+                    //         },
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
                   ],
                 ),
               ),

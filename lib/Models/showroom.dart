@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'car.dart';
 
 class CarShowRoom with ChangeNotifier {
-  final String id;
-  final String showRoomName;
-  final String phoneNumber;
-  final String location;
-  final String image;
+  String id;
+  String showRoomName;
+  String phoneNumber;
+  String location;
+  String image;
 
   List<Car> stockCars;
 

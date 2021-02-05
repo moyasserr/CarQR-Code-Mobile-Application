@@ -13,6 +13,7 @@ class AdminShowroomsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    refresh(context);
     final showroomsData = Provider.of<CarShowrooms>(context);
     return Scaffold(
       appBar: AppBar(
@@ -28,8 +29,8 @@ class AdminShowroomsScreen extends StatelessWidget {
         ],
       ),
       drawer: AppDrawer(),
-      body: RefreshIndicator(
-        onRefresh: () => refresh(context),
+      body: Container(
+        //onRefresh: () => refresh(context),
         child: Padding(
           padding: EdgeInsets.all(8),
           child: ListView.builder(
