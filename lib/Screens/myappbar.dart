@@ -30,17 +30,17 @@ class _CustomAppBarState extends State<MyAppBar> {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      leading: Container(
-        margin: const EdgeInsets.only(left: 10.0),
-        width: 20,
-        height: 20,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(width: 2, color: Color.fromRGBO(32, 150, 243, 1)),
-          image: DecorationImage(
-              image: AssetImage('assets/images/logo.jpg'), fit: BoxFit.fill),
-        ),
-      ),
+      // leading: Container(
+      //   margin: const EdgeInsets.only(left: 10.0),
+      //   width: 20,
+      //   height: 20,
+      //   decoration: BoxDecoration(
+      //     shape: BoxShape.circle,
+      //     border: Border.all(width: 2, color: Color.fromRGBO(32, 150, 243, 1)),
+      //     image: DecorationImage(
+      //         image: AssetImage('assets/images/logo.jpg'), fit: BoxFit.fill),
+      //   ),
+      // ),
       title: widget.titlex,
       actions: <Widget>[
         PopupMenuButton<String>(

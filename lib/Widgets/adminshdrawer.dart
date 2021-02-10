@@ -1,3 +1,4 @@
+import 'package:car_qr/Screens/admin_showrooms.dart';
 import 'package:flutter/material.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -16,8 +17,7 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.shop),
             title: Text('My Showrooms'),
             onTap: () {
-              // Navigator.of(context).pushReplacementNamed('/');
-              Navigator.pushNamed(context, "/adminshowrooms");
+              Navigator.pushNamed(context, AdminShowroomsScreen.routeName);
             },
           ),
           Divider(),
