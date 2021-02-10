@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'dart:io';
 
 class ManageShowroom extends StatefulWidget {
+  static const routeName = '/manageshowroom';
   @override
   _ManageShowroomState createState() => _ManageShowroomState();
 }

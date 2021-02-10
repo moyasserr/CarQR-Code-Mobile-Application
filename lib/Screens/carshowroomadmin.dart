@@ -1,41 +1,10 @@
-import 'package:car_qr/Providers/available_cars_model.dart';
-import 'package:car_qr/Screens/manage_showroom.dart';
-import 'package:car_qr/Screens/admin_showrooms.dart';
-import 'package:car_qr/Screens/carlist.dart';
 import 'package:car_qr/Widgets/adminshdrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../Models/showrooms.dart';
 
-class Abdo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider.value(
-          value: CarShowrooms(),
-        ),
-        ChangeNotifierProvider.value(
-          value: AvailableCarsModel(),
-        ),
-      ],
-      child: MaterialApp(
-        routes: {
-          '/': (context) => Carshowroomadmin(),
-          '/manageshowroom': (context) => ManageShowroom(),
-          '/adminshowrooms': (context) => AdminShowroomsScreen(),
-          '/carlist': (context) => Carlist(),
-        },
-      ),
-    );
-  }
-}
-
-void main() {
-  runApp(Abdo());
-}
-
 class Carshowroomadmin extends StatefulWidget {
+  static const routeName = '/showroom-admin';
   @override
   _CarshowroomadminState createState() => _CarshowroomadminState();
 }
