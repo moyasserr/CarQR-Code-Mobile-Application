@@ -13,11 +13,15 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:car_qr/Screens/admin_cars_screen.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:car_qr/Screens/wrapper.dart';
-import 'package:provider/provider.dart';
-import 'package:car_qr/Providers/auth.dart';
 import 'package:car_qr/Models/user.dart';
+
+import 'Models/showrooms.dart';
+import 'Screens/admin_showrooms.dart';
+import 'Screens/carlist.dart';
+import 'Screens/carshowroomadmin.dart';
+import 'Screens/manage_showroom.dart';
+import 'Widgets/app_drawer.dart';
 
 void main() {
   runApp(MyApp2());
@@ -28,7 +32,7 @@ class MyApp2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return StreamProvider<User>.value(
       value: AuthService().user,
-        child: MaterialApp(
+      child: MaterialApp(
         home: Wrapper(),
       ),
     );
@@ -51,19 +55,34 @@ class testApp extends StatelessWidget {
 }
 
 class Nav extends StatelessWidget {
+  final User user;
+  Nav({@required this.user});
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => AvailableCarsModel(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(
+          value: CarShowrooms(user: user),
+        ),
+        ChangeNotifierProvider.value(
+          value: AvailableCarsModel(),
+        ),
+      ],
       child: MaterialApp(
         routes: {
-          '/': (context) => MyApp(),
-          '/history': (context) => History(),
-          '/signin': (context) => Signin(),
-          '/showrooms': (context) => Carshowroom(),
-          '/settings': (context) => Settings(),
-          //'/car_description': (context) => CarDetails(),
-          '/about': (context) => About(),
+          '/': (ctx) => MyApp(
+                user: user,
+              ),
+          Carshowroomadmin.routeName: (ctx) => Carshowroomadmin(),
+          AdminShowroomsScreen.routeName: (ctx) => AdminShowroomsScreen(),
+          ManageShowroom.routeName: (ctx) => ManageShowroom(),
+          Carlist.routeName: (ctx) => Carlist(),
+          // '/history': (context) => History(),
+          // '/showrooms': (context) => Carshowroom(),
+          // '/settings': (context) => Settings(
+          //       user: user,
+          //     ),
+          // '/about': (context) => About(),
         },
       ),
     );
@@ -71,17 +90,30 @@ class Nav extends StatelessWidget {
 }
 
 class MyApp extends StatefulWidget {
+  final User user;
+  MyApp({@required this.user});
   @override
-  _MyAppstate createState() => _MyAppstate();
+  _MyAppstate createState() => _MyAppstate(user: user);
 }
 
 class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
   String _scanBarcode = 'Unknown';
   AnimationController controller;
   Animation<double> animation;
+  var _isLoading = true;
+  final User user;
 
-  initState() {
+  _MyAppstate({@required this.user});
+
+  void initState() {
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      user.readUser().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    });
     controller = AnimationController(
         duration: const Duration(milliseconds: 700), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
@@ -119,150 +151,82 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
     });
   }
 
-  Future<void> _launchURL(String urlQRCode) async {
-    String url = urlQRCode;
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
   final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: MyAppBar(
-          titlex: new Text(
-            'Car Showroom',
-            style: TextStyle(fontSize: 22.0),
-          ),
-          history: () => Navigator.pushNamed(context, '/history'),
-          showrooms: () => Navigator.pushNamed(context, '/showrooms'),
-          settings: () => Navigator.pushNamed(context, '/settings'),
-          about: () => Navigator.pushNamed(context, '/about'),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: MyAppBar(
+        titlex: new Text(
+          'Car Showroom',
+          style: TextStyle(fontSize: 22.0),
         ),
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Center(
-              child: FadeTransition(
-                opacity: animation,
-                child: Text(
-                  'All Your Car Details In Just A Scan',
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.lato(
-                    textStyle: TextStyle(color: Colors.blue),
-                    fontSize: 45,
-                    fontWeight: FontWeight.w700,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-              ),
-            ),
-            Center(
-              child: FadeTransition(
-                opacity: animation,
-                child: Image(
-                  image: AssetImage('assets/images/homelogo.png'),
-                  height: 250.0,
-                  width: 300.0,
-                ),
-              ),
-            ),
-            Center(
-              child: FadeTransition(
-                opacity: animation,
-                child: RaisedButton(
-                  padding: EdgeInsets.all(15),
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
-                  ),
-                  textColor: Colors.white,
-                  color: Colors.blue,
-                  onPressed: () {
-                    scanQR();
-                  },
-                  child: Text(
-                    'Start Scanning',
-                    style: GoogleFonts.lato(
-                      textStyle: TextStyle(color: Colors.white),
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Center(
-              child: FadeTransition(
-                opacity: animation,
-                child: RaisedButton(
-                  padding: EdgeInsets.all(15),
-                  shape: new RoundedRectangleBorder(
-                    borderRadius: new BorderRadius.circular(30.0),
-                  ),
-                  textColor: Colors.white,
-                  color: Colors.blue,
-                  onPressed: () async {
-                    await _auth.signOut();
-                  },
-                  child: Text(
-                    'Logout',
-                    style: GoogleFonts.lato(
-                      textStyle: TextStyle(color: Colors.white),
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                      fontStyle: FontStyle.italic,
-                    ),
-                  ),
-                ),
-              ),
-            )
-          ],
-        ),
-        drawer: Drawer(
-            child: ListView(children: <Widget>[
-          Container(
-            height: 64.0,
-            child: DrawerHeader(
-              child: Text('Car Showroom'),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-            ),
-          ),
-          ListTile(
-            leading: Icon(Icons.home),
-            title: Text('Showrooms'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(Icons.book),
-            title: Text('History'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(Icons.settings),
-            title: Text('Settings'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(Icons.info),
-            title: Text('About'),
-            onTap: () {},
-          ),
-          ListTile(
-            leading: Icon(Icons.logout),
-            title: Text('Logout'),
-            onTap: () {},
-          ),
-        ])),
+        history: () => Navigator.pushNamed(context, '/history'),
+        showrooms: () => Navigator.pushNamed(context, '/showrooms'),
+        settings: () => Navigator.pushNamed(context, '/settings'),
+        about: () => Navigator.pushNamed(context, '/about'),
       ),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Center(
+                  child: FadeTransition(
+                    opacity: animation,
+                    child: Text(
+                      "All Your Car Details In Just A Scan",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.lato(
+                        textStyle: TextStyle(color: Colors.blue),
+                        fontSize: 45,
+                        fontWeight: FontWeight.w700,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  ),
+                ),
+                Center(
+                  child: FadeTransition(
+                    opacity: animation,
+                    child: Image(
+                      image: AssetImage('assets/images/homelogo.png'),
+                      height: 250.0,
+                      width: 300.0,
+                    ),
+                  ),
+                ),
+                Center(
+                  child: FadeTransition(
+                    opacity: animation,
+                    child: RaisedButton(
+                      padding: EdgeInsets.all(15),
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0),
+                      ),
+                      textColor: Colors.white,
+                      color: Colors.blue,
+                      onPressed: () {
+                        scanQR();
+                      },
+                      child: Text(
+                        'Start Scanning',
+                        style: GoogleFonts.lato(
+                          textStyle: TextStyle(color: Colors.white),
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+      drawer: AppDrawerrrrr(user: user),
     );
   }
 }
