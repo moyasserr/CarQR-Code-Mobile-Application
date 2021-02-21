@@ -19,7 +19,7 @@ class _CarDetailsState extends State<CarDetails> with TickerProviderStateMixin {
   Animation<double> animation;
   final String carId;
   Car car;
-
+  String carprice;
   _CarDetailsState({@required this.carId});
 
   initState() {
@@ -31,6 +31,7 @@ class _CarDetailsState extends State<CarDetails> with TickerProviderStateMixin {
   }
 
   getCar(BuildContext context) async {
+    carprice = ModalRoute.of(context).settings.arguments as String;
     car = await Provider.of<AvailableCarsModel>(context, listen: false)
         .findById(carId);
     setState(() {
@@ -131,7 +132,9 @@ class _CarDetailsState extends State<CarDetails> with TickerProviderStateMixin {
                         textAlign: TextAlign.left,
                       ),
                       Text(
-                        'Price: 300,000\$',
+                        'Price: $carprice\$'.replaceAllMapped(
+                            new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                            (Match m) => '${m[1]},'),
                         style: TextStyle(
                           fontFamily: 'Arial',
                           fontSize: 18,

@@ -10,7 +10,6 @@ class Car {
   int seatsNumbers;
   String doorsType;
   String roofType;
-  double carPrice;
   String manufactureCountry;
   int manufactureYear;
   int mileAge;
@@ -33,7 +32,7 @@ class Car {
   String image;
   String qrCode;
   String id;
-  double price;
+  String price;
 
   Car(
       {@required this.id,
@@ -46,7 +45,6 @@ class Car {
       this.seatsNumbers = 0,
       this.doorsType = 'N/A',
       this.roofType = 'N/A',
-      this.carPrice = 0,
       this.manufactureCountry = 'N/A',
       this.manufactureYear = 0,
       this.mileAge = 0,
@@ -68,10 +66,11 @@ class Car {
       this.color = 'N/A',
       @required this.image,
       this.qrCode = 'N/A',
-      this.price = 0});
+      this.price = '0'});
 
   Car.emptyConst(
-      {this.carBrand = 'N/A',
+      {this.id = 'N/A',
+      this.carBrand = 'N/A',
       this.carModel = 'N/A',
       this.cubicCentimeters = 0,
       this.horsePower = 0,
@@ -80,7 +79,6 @@ class Car {
       this.seatsNumbers = 0,
       this.doorsType = 'N/A',
       this.roofType = 'N/A',
-      this.carPrice = 0,
       this.manufactureCountry = 'N/A',
       this.manufactureYear = 0,
       this.mileAge = 0,
@@ -102,7 +100,7 @@ class Car {
       this.color = 'N/A',
       this.qrCode = 'N/A',
       this.image = 'N/A',
-      this.price = 0});
+      this.price = '0'});
 
   Map<String, dynamic> get map {
     return {
@@ -116,7 +114,6 @@ class Car {
       "seatsNumbers": seatsNumbers,
       "doorsType": doorsType,
       "roofType": roofType,
-      "carPrice": carPrice,
       "manufactureCountry": manufactureCountry,
       "manufactureYear": manufactureYear,
       "mileAge": mileAge,

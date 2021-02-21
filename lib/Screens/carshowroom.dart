@@ -21,7 +21,7 @@ class Carshowroom extends StatelessWidget {
         body: SafeArea(
           child: Column(
             children: [
-              for (var i = 0; i <= 5; i++) Car(),
+              for (var i = 0; i <= 5; i++) Cars(),
             ],
           ),
         ),
@@ -30,7 +30,7 @@ class Carshowroom extends StatelessWidget {
   }
 }
 
-class Car extends StatelessWidget {
+class Cars extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(

@@ -1,11 +1,6 @@
 import 'package:car_qr/Providers/auth.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
-import 'package:car_qr/Screens/about.dart';
-import 'package:car_qr/Screens/carshowroom.dart';
 import 'package:car_qr/Screens/myappbar.dart';
-import 'package:car_qr/Screens/history.dart';
-import 'package:car_qr/Screens/signin.dart';
-import 'package:car_qr/Screens/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:car_qr/Screens/car_description.dart';
 import 'package:flutter/services.dart';
@@ -17,8 +12,8 @@ import 'package:car_qr/Screens/wrapper.dart';
 import 'package:car_qr/Models/user.dart';
 import 'package:car_qr/Screens/admin_showrooms.dart';
 import 'package:car_qr/Models/showrooms.dart';
-
 import 'Models/showrooms.dart';
+import 'Screens/ad_sh_carlist.dart';
 import 'Screens/admin_showrooms.dart';
 import 'Screens/carlist.dart';
 import 'Screens/carshowroomadmin.dart';
@@ -63,11 +58,11 @@ class Nav extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider.value(
-          value: CarShowrooms(user: user),
+        ChangeNotifierProvider<CarShowrooms>(
+          create: (_) => CarShowrooms(user: user),
         ),
-        ChangeNotifierProvider.value(
-          value: AvailableCarsModel(),
+        ChangeNotifierProvider<AvailableCarsModel>(
+          create: (_) => AvailableCarsModel(),
         ),
       ],
       child: MaterialApp(
@@ -79,6 +74,7 @@ class Nav extends StatelessWidget {
           AdminShowroomsScreen.routeName: (ctx) => AdminShowroomsScreen(),
           ManageShowroom.routeName: (ctx) => ManageShowroom(),
           Carlist.routeName: (ctx) => Carlist(),
+          AdShCarList.routeName: (ctx) => AdShCarList(),
           // '/history': (context) => History(),
           // '/showrooms': (context) => Carshowroom(),
           // '/settings': (context) => Settings(
@@ -228,7 +224,7 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
                 ),
               ],
             ),
-      drawer: AppDrawerrrrr(user: user),
+      drawer: AppDrawer(user: user),
     );
   }
 }

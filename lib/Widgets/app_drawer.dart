@@ -3,32 +3,66 @@ import 'package:car_qr/Providers/auth.dart';
 import 'package:car_qr/Screens/carshowroomadmin.dart';
 import 'package:flutter/material.dart';
 
-class AppDrawerrrrr extends StatelessWidget {
+class AppDrawer extends StatelessWidget {
   final User user;
   final AuthService _auth = AuthService();
-  AppDrawerrrrr({@required this.user});
+  AppDrawer({@required this.user});
+
+  @override
+  Widget _createHeader(BuildContext context) {
+    return DrawerHeader(
+        margin: EdgeInsets.zero,
+        padding: EdgeInsets.zero,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.fill, image: AssetImage('assets/images/logo.jpg'))),
+        child: Stack(children: <Widget>[
+          Positioned(
+              //bottom: 1.0,
+              //  left: 16.0,
+              child: UserAccountsDrawerHeader(
+            accountName: Text("${user.firstName} ${user.lastName}"),
+            accountEmail: Text("${user.eMail}"),
+            decoration: BoxDecoration(
+                image: DecorationImage(
+                    fit: BoxFit.fill,
+                    image: AssetImage('assets/images/logo.jpg'))),
+            currentAccountPicture: CircleAvatar(
+              backgroundColor: Theme.of(context).platform == TargetPlatform.iOS
+                  ? Colors.blue
+                  : Colors.white,
+              child: Text(
+                "${user.firstName[0]}".toUpperCase(),
+                style: TextStyle(fontSize: 40.0),
+              ),
+            ),
+          )),
+        ]));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
       child: Column(
         children: <Widget>[
-          AppBar(
-            leading: Container(
-              margin: const EdgeInsets.only(left: 10.0),
-              width: 20,
-              height: 20,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                    width: 2, color: Color.fromRGBO(32, 150, 243, 1)),
-                image: DecorationImage(
-                    image: AssetImage('assets/images/logo.jpg'),
-                    fit: BoxFit.fill),
-              ),
-            ),
-            title: Text('Car Showroom'),
-            automaticallyImplyLeading: false,
-          ),
+          // AppBar(
+          //   leading: Container(
+          //     margin: const EdgeInsets.only(left: 10.0),
+          //     width: 20,
+          //     height: 20,
+          //     decoration: BoxDecoration(
+          //       shape: BoxShape.circle,
+          //       border: Border.all(
+          //           width: 2, color: Color.fromRGBO(32, 150, 243, 1)),
+          //       image: DecorationImage(
+          //           image: AssetImage('assets/images/logo.jpg'),
+          //           fit: BoxFit.fill),
+          //     ),
+          //   ),
+          //   title: Text('Car Showroom'),
+          //   automaticallyImplyLeading: false,
+          // ),
+          _createHeader(context),
           user.userType == "2"
               ? ListTile(
                   leading: Icon(Icons.admin_panel_settings),
@@ -81,6 +115,11 @@ class AppDrawerrrrr extends StatelessWidget {
             onTap: () async {
               await _auth.signOut();
             },
+          ),
+          SizedBox(height: 155.0),
+          ListTile(
+            title: Text('0.0.1'),
+            onTap: () {},
           ),
         ],
       ),

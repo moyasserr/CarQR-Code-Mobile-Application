@@ -1,5 +1,9 @@
 import 'dart:convert';
+import 'package:car_qr/Models/car.dart';
 import 'package:car_qr/Models/user.dart';
+import 'package:car_qr/Providers/available_cars_model.dart';
+import 'package:car_qr/Screens/admin_showrooms.dart';
+import 'package:provider/provider.dart';
 
 import '../Models/HTTPException.dart';
 import 'package:flutter/material.dart';
@@ -11,38 +15,54 @@ class CarShowrooms with ChangeNotifier {
 
   List<CarShowRoom> _showrooms = [];
 
+  CarShowRoom _showroom;
+
   CarShowrooms({@required this.user});
   List<CarShowRoom> get showrooms {
     return [..._showrooms];
   }
 
-  CarShowRoom findById(String id) {
-    return _showrooms.firstWhere((showroom) => showroom.id == id);
+  CarShowRoom get showroom {
+    return _showroom;
   }
 
-  Future<void> fetchShowrooms() async {
+  // CarShowRoom findById(String id) {
+  //   return _showrooms.firstWhere((showroom) => showroom.id == id);
+  // }
+
+  CarShowRoom findById(String id) {
+    return _showroom;
+  }
+
+  Future<CarShowRoom> fetchAdminShowroom() async {
     var url =
         'https://carqr-e4c82-default-rtdb.firebaseio.com/showrooms.json?auth=${user.token}';
     try {
       final response = await http.get(url);
       final dbData = json.decode(response.body) as Map<String, dynamic>;
       if (dbData == null) {
-        return;
+        return null;
       }
-      final List<CarShowRoom> dbShowrooms = [];
+      CarShowRoom dbShowroom;
       dbData.forEach((key, data) {
         if (data['adminId'] == user.uid) {
-          dbShowrooms.add(CarShowRoom(
+          dbShowroom = new CarShowRoom(
             id: key,
             showRoomName: data['showroomName'],
             phoneNumber: data['phoneNumber'],
             location: data['location'],
             image: data['image'],
-          ));
+          );
+          _showroom = dbShowroom;
+          AdminShowroomsScreen.isloading = true;
+          notifyListeners();
+          AdminShowroomsScreen.test = dbShowroom;
+          return dbShowroom;
         }
       });
-      _showrooms = dbShowrooms;
+      //_showrooms = dbShowroom;
       notifyListeners();
+      return null;
     } on Exception catch (e) {
       print(e.toString());
       throw (e);
@@ -69,7 +89,9 @@ class CarShowrooms with ChangeNotifier {
           location: showroom.location,
           image: showroom.image,
           id: json.decode(response.body)['name']);
-      _showrooms.add(newShowroom);
+      _showroom = newShowroom;
+      AdminShowroomsScreen.isloading = true;
+      //_showrooms.add(newShowroom);
       notifyListeners();
     } catch (error) {
       print(error);
@@ -77,12 +99,63 @@ class CarShowrooms with ChangeNotifier {
     }
   }
 
+  Future<void> addcarToShowroom(String id, Car car, String price) async {
+    final url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/showrooms/$id/cars.json?auth=${user.token}';
+
+    try {
+      await http.post(url,
+          body: json.encode({
+            'carID': car.id,
+            // 'carBrand': car.carBrand,
+            // 'carModel': car.carModel,
+            // 'carImage': car.image,
+            'carPrice': price,
+          }));
+
+      _showroom.stockCars.add(car);
+      notifyListeners();
+    } catch (error) {
+      print(error);
+      throw error;
+    }
+  }
+
+  Future<void> fetchShowroomCars(String id) async {
+    final url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/showrooms/$id/cars.json?auth=${user.token}';
+
+    try {
+      final response = await http.get(url);
+      final dbData = json.decode(response.body) as Map<String, dynamic>;
+      if (dbData == null) {
+        return null;
+      }
+      final List<Car> shCars = [];
+      dbData.forEach((key, data) {
+        shCars.add(Car.emptyConst(
+            id: data['carID'],
+            // carBrand: data['carBrand'],
+            // carModel: data['carModel'],
+            // image: data['carImage'],
+            price: data['carPrice']));
+
+        _showroom.stockCars = shCars;
+        notifyListeners();
+        return _showroom;
+      });
+      notifyListeners();
+      return null;
+    } on Exception catch (e) {
+      print(e.toString());
+      throw (e);
+    }
+  }
+
   Future<void> updateShowroom(String id, CarShowRoom newShowroom) async {
     final url =
         'https://carqr-e4c82-default-rtdb.firebaseio.com/showrooms/$id.json?auth=${user.token}';
-
-    final showIndex = _showrooms.indexWhere((showroom) => showroom.id == id);
-    if (showIndex >= 0) {
+    try {
       await http.patch(url,
           body: json.encode({
             'showroomName': newShowroom.showRoomName,
@@ -90,27 +163,28 @@ class CarShowrooms with ChangeNotifier {
             'location': newShowroom.location,
             'image': newShowroom.image,
           }));
-      _showrooms[showIndex] = newShowroom;
+      _showroom = newShowroom;
       notifyListeners();
-    } else {
-      print("Error updating showroom");
+    } catch (error) {
+      print(error);
+      throw error;
     }
   }
 
-  void deleteShowroom(String id) async {
+  Future<void> deleteShowroom(String id) async {
+    print("showroom id 45 :$id");
     final url =
         'https://carqr-e4c82-default-rtdb.firebaseio.com/showrooms/$id.json?auth=${user.token}';
-    final existingshowrrom =
-        _showrooms.indexWhere((showroom) => showroom.id == id);
-    var existing = _showrooms[existingshowrrom];
-    _showrooms.removeAt(existingshowrrom);
+    var exisitingShowroom = _showroom;
+    _showroom = null;
     notifyListeners();
     final response = await http.delete(url);
     if (response.statusCode >= 400) {
-      _showrooms.insert(existingshowrrom, existing);
+      print("stststs : ${response.statusCode}");
+      _showroom = exisitingShowroom;
       notifyListeners();
       throw HTTPException('Delete failed for showroom whose id is $id');
     }
-    existingshowrrom == null;
+    exisitingShowroom = null;
   }
 }

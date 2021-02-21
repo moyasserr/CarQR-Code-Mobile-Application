@@ -17,10 +17,9 @@ class ManageShowroom extends StatefulWidget {
 class _ManageShowroomState extends State<ManageShowroom> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final imageController = TextEditingController();
-  final imageFocusNode = FocusNode();
   final locationFocusNode = FocusNode();
   final phonenumberFocusNode = FocusNode();
+  bool _ispressed = false;
   Future<File> file;
   String base64Image;
   File tmpFile;
@@ -53,9 +52,8 @@ class _ManageShowroomState extends State<ManageShowroom> {
           'showRoomName': editShowroom.showRoomName,
           'phoneNumber': editShowroom.phoneNumber,
           'location': editShowroom.location,
-          'image': '',
+          'image': editShowroom.image
         };
-        imageController.text = editShowroom.image;
       }
     }
     isInit = false;
@@ -63,31 +61,23 @@ class _ManageShowroomState extends State<ManageShowroom> {
   }
 
   @override
-  void initState() {
-    imageFocusNode.addListener(updateImg);
-    super.initState();
-  }
-
-  @override
   void dispose() {
     phonenumberFocusNode.dispose();
     locationFocusNode.dispose();
-    imageFocusNode.removeListener(updateImg);
-    imageFocusNode.dispose();
     super.dispose();
   }
 
-  void updateImg() {
-    if (!imageFocusNode.hasFocus) {
-      if ((!imageController.text.startsWith('http') &&
-              !imageController.text.startsWith('https')) ||
-          (!imageController.text.endsWith('.png') &&
-              !imageController.text.endsWith('.jpg') &&
-              !imageController.text.endsWith('.jpeg'))) {
-        return;
-      }
-    }
-  }
+  // void updateImg() {
+  //   if (!imageFocusNode.hasFocus) {
+  //     if ((!imageController.text.startsWith('http') &&
+  //             !imageController.text.startsWith('https')) ||
+  //         (!imageController.text.endsWith('.png') &&
+  //             !imageController.text.endsWith('.jpg') &&
+  //             !imageController.text.endsWith('.jpeg'))) {
+  //       return;
+  //     }
+  //   }
+  // }
 
   Future<void> formSetup() async {
     final isValid = _formKey.currentState.validate();
@@ -99,10 +89,14 @@ class _ManageShowroomState extends State<ManageShowroom> {
       isloading = true;
     });
     if (editShowroom.id != null) {
-      print("image path is:$editShowroom.image");
-      await uploadFile();
-      await Provider.of<CarShowrooms>(context, listen: false)
-          .updateShowroom(editShowroom.id, editShowroom);
+      if (_ispressed == false) {
+        await Provider.of<CarShowrooms>(context, listen: false)
+            .updateShowroom(editShowroom.id, editShowroom);
+      } else {
+        await uploadFile();
+        await Provider.of<CarShowrooms>(context, listen: false)
+            .updateShowroom(editShowroom.id, editShowroom);
+      }
     } else {
       try {
         await uploadFile();
@@ -369,72 +363,13 @@ class _ManageShowroomState extends State<ManageShowroom> {
                         IconButton(
                           icon: Icon(Icons.add_a_photo),
                           iconSize: 20.0,
-                          onPressed: chooseImage,
+                          onPressed: () {
+                            _ispressed = true;
+                            chooseImage();
+                          },
                         ),
                       ],
                     ),
-                    // Row(
-                    //   crossAxisAlignment: CrossAxisAlignment.end,
-                    //   children: <Widget>[
-                    //     Container(
-                    //       width: 100,
-                    //       height: 100,
-                    //       margin: EdgeInsets.only(
-                    //         top: 8,
-                    //         right: 10,
-                    //       ),
-                    //       decoration: BoxDecoration(
-                    //         border: Border.all(
-                    //           width: 1,
-                    //           color: Colors.grey,
-                    //         ),
-                    //       ),
-                    //       child: imageController.text.isEmpty
-                    //           ? Text('Enter a URL')
-                    //           : FittedBox(
-                    //               child: Image.network(
-                    //                 imageController.text,
-                    //                 fit: BoxFit.cover,
-                    //               ),
-                    //             ),
-                    //     ),
-                    //     Expanded(
-                    //       child: TextFormField(
-                    //         decoration: InputDecoration(labelText: 'Image URL'),
-                    //         keyboardType: TextInputType.url,
-                    //         textInputAction: TextInputAction.done,
-                    //         controller: imageController,
-                    //         focusNode: imageFocusNode,
-                    //         onFieldSubmitted: (_) {
-                    //           formSetup();
-                    //         },
-                    //         validator: (value) {
-                    //           if (value.isEmpty) {
-                    //             return 'Please enter an image URL.';
-                    //           }
-                    //           if (!value.startsWith('http') &&
-                    //               !value.startsWith('https')) {
-                    //             return 'Please enter a valid URL.';
-                    //           }
-                    //           if (!value.endsWith('.png') &&
-                    //               !value.endsWith('.jpg') &&
-                    //               !value.endsWith('.jpeg')) {
-                    //             return 'Please enter a valid image URL.';
-                    //           }
-                    //           return null;
-                    //         },
-                    //         onSaved: (value) {
-                    //           editShowroom = CarShowRoom(
-                    //               showRoomName: editShowroom.showRoomName,
-                    //               phoneNumber: editShowroom.phoneNumber,
-                    //               location: editShowroom.location,
-                    //               image: value,
-                    //               id: editShowroom.id);
-                    //         },
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
                   ],
                 ),
               ),

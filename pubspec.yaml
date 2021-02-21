@@ -60,6 +60,7 @@ flutter:
     - assets/images/messi.jpg
     - assets/images/facicon.png
     - assets/images/instaicon.png
+    - assets/images/as.png
      
 
   # An image asset can refer to one or more resolution-specific "variants", see

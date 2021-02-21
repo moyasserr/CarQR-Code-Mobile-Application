@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:car_qr/Models/car.dart';
 import 'package:http/http.dart' as http;
 
-class AvailableCarsModel extends ChangeNotifier {
+class AvailableCarsModel with ChangeNotifier {
   List<Car> _cars = [];
 
   AvailableCarsModel() {}
@@ -37,7 +37,6 @@ class AvailableCarsModel extends ChangeNotifier {
           seatsNumbers: data['seatsNumbers'],
           doorsType: data['doorsType'],
           roofType: data['roofType'],
-          carPrice: data['carPrice'],
           manufactureCountry: data['manufactureCountry'],
           manufactureYear: data['manufactureYear'],
           mileAge: data['mileAge'],
@@ -84,7 +83,6 @@ class AvailableCarsModel extends ChangeNotifier {
               'seatsNumbers': car.seatsNumbers,
               'doorsType': car.doorsType,
               'roofType': car.roofType,
-              'carPrice': car.carPrice,
               'manufactureCountry': car.manufactureCountry,
               'manufactureYear': car.manufactureYear,
               'mileAge': car.mileAge,
@@ -118,7 +116,6 @@ class AvailableCarsModel extends ChangeNotifier {
         seatsNumbers: car.seatsNumbers,
         doorsType: car.doorsType,
         roofType: car.roofType,
-        carPrice: car.carPrice,
         manufactureCountry: car.manufactureCountry,
         manufactureYear: car.manufactureYear,
         mileAge: car.mileAge,
@@ -165,7 +162,6 @@ class AvailableCarsModel extends ChangeNotifier {
             'seatsNumbers': newCar.seatsNumbers,
             'doorsType': newCar.doorsType,
             'roofType': newCar.roofType,
-            'carPrice': newCar.carPrice,
             'manufactureCountry': newCar.manufactureCountry,
             'manufactureYear': newCar.manufactureYear,
             'mileAge': newCar.mileAge,

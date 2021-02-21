@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:car_qr/Models/car.dart';
 
-import 'car.dart';
-
-class CarShowRoom with ChangeNotifier {
+class CarShowRoom {
   String id;
   String showRoomName;
   String phoneNumber;
@@ -17,7 +15,9 @@ class CarShowRoom with ChangeNotifier {
       this.phoneNumber,
       this.location,
       this.image,
-      this.stockCars});
+      this.stockCars}) {
+    this.stockCars = [];
+  }
 
   // Map<String, dynamic> get map {
   //   return {

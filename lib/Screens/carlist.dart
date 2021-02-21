@@ -1,7 +1,11 @@
+import 'package:car_qr/Models/showroom.dart';
+import 'package:car_qr/Models/showrooms.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Widgets/adminshdrawer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:car_qr/Models/car.dart';
 
 class Carlist extends StatefulWidget {
   static const routeName = '/carlist';
@@ -15,22 +19,20 @@ class CarlistState extends State<Carlist> {
   bool isSearch = false;
 
   Future<void> getcars(BuildContext context) async {
-    Provider.of<AvailableCarsModel>(context, listen: false).readCars();
+    await Provider.of<AvailableCarsModel>(context, listen: false).readCars();
   }
 
   @override
   Widget build(BuildContext context) {
-    getcars(context);
-    final carsdata = Provider.of<AvailableCarsModel>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: !isSearch
-            ? Text("Car List")
+            ? Text("App Car List")
             : TextField(
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                    icon: Icon(Icons.edit), hintText: "search showroom Here")),
+                    icon: Icon(Icons.edit), hintText: "Search Cars Here")),
         actions: <Widget>[
           isSearch
               ? IconButton(
@@ -51,36 +53,49 @@ class CarlistState extends State<Carlist> {
                 )
         ],
       ),
-      drawer: AppDrawer(),
-      body: Container(
-        //onRefresh: () => getcars(context),
-        child: Padding(
-          padding: EdgeInsets.all(8),
-          child: ListView.builder(
-            itemCount: carsdata.allCars.length,
-            itemBuilder: (_, i) => Column(
-              children: [
-                Admincarlist(
-                  carsdata.allCars[i].id,
-                  carsdata.allCars[i].carBrand,
-                  carsdata.allCars[i].image,
-                  carsdata.allCars[i].carModel,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+      drawer: AdminDrawer(),
+      body: FutureBuilder<Object>(
+          future: getcars(context),
+          builder: (context, snapshot) {
+            return snapshot.connectionState == ConnectionState.waiting
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : RefreshIndicator(
+                    onRefresh: () => getcars(context),
+                    child: Padding(
+                      padding: EdgeInsets.all(8),
+                      child: Consumer<AvailableCarsModel>(
+                        builder: (context, carsdata, child) => ListView.builder(
+                          itemCount: carsdata.allCars.length,
+                          itemBuilder: (_, i) => Column(
+                            children: [
+                              Admincarlist(
+                                carsdata.allCars[i].id,
+                                carsdata.allCars[i].carBrand,
+                                carsdata.allCars[i].image,
+                                carsdata.allCars[i].carModel,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ));
+          }),
     );
   }
 }
 
 class Admincarlist extends StatelessWidget {
+  final _formKey = GlobalKey<FormState>();
   final String carbrand;
   final String carmodel;
   final String id;
   final String carimage;
   Admincarlist(this.id, this.carbrand, this.carimage, this.carmodel);
+
+  String shid;
+  Car shcar;
 
   Future<String> createDialog(BuildContext context) {
     TextEditingController priceController = TextEditingController();
@@ -88,22 +103,45 @@ class Admincarlist extends StatelessWidget {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Enter your price"),
-            content: TextField(
-              keyboardType: TextInputType.number,
-              controller: priceController,
-            ),
+            title: Text("Enter The Car Price"),
+            content: Form(
+                key: _formKey,
+                child: TextFormField(
+                    decoration: InputDecoration(labelText: "Car Price"),
+                    keyboardType: TextInputType.number,
+                    controller: priceController,
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                    ],
+                    validator: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter car price';
+                      }
+                      return null;
+                    })),
             actions: <Widget>[
               MaterialButton(
                 elevation: 5.0,
                 child: Text("Submit"),
                 onPressed: () {
+                  final isValid = _formKey.currentState.validate();
+                  if (!isValid) {
+                    return;
+                  }
+                  _formKey.currentState.save();
                   Navigator.of(context).pop(priceController.text.toString());
                 },
               )
             ],
           );
         });
+  }
+
+  Future<void> showroomdata(BuildContext context) async {
+    await Provider.of<CarShowrooms>(context, listen: false)
+        .fetchAdminShowroom();
+    CarShowRoom x = Provider.of<CarShowrooms>(context, listen: false).showroom;
+    shid = x.id;
   }
 
   @override
@@ -120,7 +158,7 @@ class Admincarlist extends StatelessWidget {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 2,
             blurRadius: 5,
-            offset: Offset(0, 3), // changes position of shadow
+            offset: Offset(0, 3),
           ),
         ],
       ),
@@ -130,19 +168,6 @@ class Admincarlist extends StatelessWidget {
           CircleAvatar(
             backgroundImage: NetworkImage(carimage),
           ),
-
-          // Container(
-          //   margin: const EdgeInsets.only(right: 30.0),
-          //   width: 50,
-          //   height: 50,
-
-          //    decoration: BoxDecoration(
-          //      shape: BoxShape.circle,
-          //   //   border: Border.all(width: 2, color: Colors.black),
-          //   //   image: DecorationImage(
-          //   //       image: AssetImage('assets/logo.png'), fit: BoxFit.fill),
-          //   // ),
-          // ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -158,18 +183,17 @@ class Admincarlist extends StatelessWidget {
                   )),
             ],
           ),
-
-          // Padding(
-          //   padding: const EdgeInsets.only(left: 60.0),
-          // ),
           IconButton(
             icon: Icon(Icons.add),
             color: Colors.lightBlue,
-            onPressed: () {
+            onPressed: () async {
+              shcar = new Car.emptyConst(id: id, image: carimage);
+              await showroomdata(context);
               createDialog(context).then((value) {
-                SnackBar priceSnackbar =
-                    SnackBar(content: Text("Your price is $value"));
-                Scaffold.of(context).showSnackBar(priceSnackbar);
+                Future.delayed(Duration(seconds: 2), () {
+                  Provider.of<CarShowrooms>(context, listen: false)
+                      .addcarToShowroom(shid, shcar, value);
+                });
               });
             },
           ),
