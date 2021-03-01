@@ -1,5 +1,8 @@
+import 'package:car_qr/Models/car.dart';
+import 'package:car_qr/Models/historyModel.dart';
 import 'package:car_qr/Providers/auth.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
+import 'package:car_qr/Providers/history_provider.dart';
 import 'package:car_qr/Screens/myappbar.dart';
 import 'package:flutter/material.dart';
 import 'package:car_qr/Screens/car_description.dart';
@@ -18,6 +21,7 @@ import 'Screens/admin_showrooms.dart';
 import 'Screens/carlist.dart';
 import 'Screens/carshowroomadmin.dart';
 import 'Screens/manage_showroom.dart';
+import 'Screens/history.dart';
 import 'Widgets/app_drawer.dart';
 
 void main() {
@@ -64,6 +68,9 @@ class Nav extends StatelessWidget {
         ChangeNotifierProvider<AvailableCarsModel>(
           create: (_) => AvailableCarsModel(),
         ),
+        ChangeNotifierProvider<HistoryProvider>(
+          create: (_) => HistoryProvider(),
+        ),
       ],
       child: MaterialApp(
         routes: {
@@ -75,6 +82,7 @@ class Nav extends StatelessWidget {
           ManageShowroom.routeName: (ctx) => ManageShowroom(),
           Carlist.routeName: (ctx) => Carlist(),
           AdShCarList.routeName: (ctx) => AdShCarList(),
+          History.routeName: (ctx) => History(user: user,),
           // '/history': (context) => History(),
           // '/showrooms': (context) => Carshowroom(),
           // '/settings': (context) => Settings(
@@ -89,6 +97,7 @@ class Nav extends StatelessWidget {
 
 class MyApp extends StatefulWidget {
   final User user;
+
   MyApp({@required this.user});
   @override
   _MyAppstate createState() => _MyAppstate(user: user);
@@ -100,6 +109,7 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
   Animation<double> animation;
   var _isLoading = true;
   final User user;
+  Car hCar;
 
   _MyAppstate({@required this.user});
 
@@ -127,9 +137,11 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
   Future<void> scanQR() async {
     String barcodeScanned;
     try {
-      barcodeScanned = await FlutterBarcodeScanner.scanBarcode(
-          "#ff6666", "Cancel", true, ScanMode.QR);
+      barcodeScanned = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.QR);
       print(barcodeScanned);
+      hCar=new Car.emptyConst(id: barcodeScanned);
+      await Provider.of<HistoryProvider>(context, listen: false).carScannedHistory(hCar, user.fireID);
+      
       Navigator.push(
         context,
         MaterialPageRoute(
