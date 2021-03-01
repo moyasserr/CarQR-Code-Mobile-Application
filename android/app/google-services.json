@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:961818438098:android:d55b8ec3fa264b063d400b",
         "android_client_info": {
-          "package_name": "com.example.car_qr"
+          "package_name": "com.Car_Scan_QR.car_qr"
         }
       },
       "oauth_client": [
