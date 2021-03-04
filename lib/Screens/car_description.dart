@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:car_qr/Models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'carreviews.dart';
@@ -7,10 +10,12 @@ import 'package:car_qr/Models/car.dart';
 
 class CarDetails extends StatefulWidget {
   final String carId;
+  final User loggedUser;
 
-  CarDetails({@required this.carId});
+  CarDetails({@required this.carId, @required this.loggedUser});
   @override
-  _CarDetailsState createState() => _CarDetailsState(carId: this.carId);
+  _CarDetailsState createState() =>
+      _CarDetailsState(carId: this.carId, loggedUser: loggedUser);
 }
 
 class _CarDetailsState extends State<CarDetails> with TickerProviderStateMixin {
@@ -21,7 +26,8 @@ class _CarDetailsState extends State<CarDetails> with TickerProviderStateMixin {
   final String carId;
   Car car;
   String carprice;
-  _CarDetailsState({@required this.carId});
+  final User loggedUser;
+  _CarDetailsState({@required this.carId, @required this.loggedUser});
 
   initState() {
     super.initState();
@@ -444,7 +450,10 @@ class _CarDetailsState extends State<CarDetails> with TickerProviderStateMixin {
                         onPressed: () {
                           Navigator.push(context,
                               MaterialPageRoute(builder: (context) {
-                            return Carreviews();
+                            return CarReviews(
+                              car: car,
+                              loggedUser: loggedUser,
+                            );
                           }));
                         },
                         child: Text(

@@ -138,19 +138,20 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
     try {
       barcodeScanned = await FlutterBarcodeScanner.scanBarcode(
           "#ff6666", "Cancel", true, ScanMode.QR);
-      print(barcodeScanned);
-      hCar = new Car.emptyConst(id: barcodeScanned);
-      await Provider.of<HistoryProvider>(context, listen: false)
-          .carScannedHistory(hCar, user.fireID);
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CarDetails(
-            carId: barcodeScanned,
+      if (barcodeScanned != "-1") {
+        hCar = new Car.emptyConst(id: barcodeScanned);
+        await Provider.of<HistoryProvider>(context, listen: false)
+            .carScannedHistory(hCar, user.fireID);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CarDetails(
+              carId: barcodeScanned,
+              loggedUser: user,
+            ),
           ),
-        ),
-      );
+        );
+      }
     } on PlatformException {
       barcodeScanned = 'Failed to get platform version.';
     }
