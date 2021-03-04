@@ -82,7 +82,9 @@ class Nav extends StatelessWidget {
           ManageShowroom.routeName: (ctx) => ManageShowroom(),
           Carlist.routeName: (ctx) => Carlist(),
           AdShCarList.routeName: (ctx) => AdShCarList(),
-          History.routeName: (ctx) => History(user: user,),
+          History.routeName: (ctx) => History(
+                user: user,
+              ),
           // '/history': (context) => History(),
           // '/showrooms': (context) => Carshowroom(),
           // '/settings': (context) => Settings(
@@ -137,20 +139,22 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
   Future<void> scanQR() async {
     String barcodeScanned;
     try {
-      barcodeScanned = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.QR);
-      print(barcodeScanned);
-      hCar=new Car.emptyConst(id: barcodeScanned);
-      await Provider.of<HistoryProvider>(context, listen: false).carScannedHistory(hCar, user.fireID);
-      
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => CarDetails(
-            carId: barcodeScanned,
-            loggedUser: user,
+      barcodeScanned = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", "Cancel", true, ScanMode.QR);
+      if (barcodeScanned != "-1") {
+        hCar = new Car.emptyConst(id: barcodeScanned);
+        await Provider.of<HistoryProvider>(context, listen: false)
+            .carScannedHistory(hCar, user.fireID);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => CarDetails(
+              carId: barcodeScanned,
+              loggedUser: user,
+            ),
           ),
-        ),
-      );
+        );
+      }
     } on PlatformException {
       barcodeScanned = 'Failed to get platform version.';
     }
