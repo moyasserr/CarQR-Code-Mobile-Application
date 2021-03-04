@@ -1,9 +1,10 @@
 import 'package:car_qr/Models/car.dart';
-import 'package:car_qr/Models/historyModel.dart';
 import 'package:car_qr/Providers/auth.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Providers/history_provider.dart';
+import 'package:car_qr/Screens/about.dart';
 import 'package:car_qr/Screens/myappbar.dart';
+import 'package:car_qr/Screens/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:car_qr/Screens/car_description.dart';
 import 'package:flutter/services.dart';
@@ -82,12 +83,10 @@ class Nav extends StatelessWidget {
           ManageShowroom.routeName: (ctx) => ManageShowroom(),
           Carlist.routeName: (ctx) => Carlist(),
           AdShCarList.routeName: (ctx) => AdShCarList(),
-          History.routeName: (ctx) => History(user: user,),
-          // '/history': (context) => History(),
+          History.routeName: (ctx) => History(user: user),
+          Settings.routeName: (ctx) => Settings(user: user),
+          About.routeName: (ctx) => About(),
           // '/showrooms': (context) => Carshowroom(),
-          // '/settings': (context) => Settings(
-          //       user: user,
-          //     ),
           // '/about': (context) => About(),
         },
       ),
@@ -137,11 +136,13 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
   Future<void> scanQR() async {
     String barcodeScanned;
     try {
-      barcodeScanned = await FlutterBarcodeScanner.scanBarcode("#ff6666", "Cancel", true, ScanMode.QR);
+      barcodeScanned = await FlutterBarcodeScanner.scanBarcode(
+          "#ff6666", "Cancel", true, ScanMode.QR);
       print(barcodeScanned);
-      hCar=new Car.emptyConst(id: barcodeScanned);
-      await Provider.of<HistoryProvider>(context, listen: false).carScannedHistory(hCar, user.fireID);
-      
+      hCar = new Car.emptyConst(id: barcodeScanned);
+      await Provider.of<HistoryProvider>(context, listen: false)
+          .carScannedHistory(hCar, user.fireID);
+
       Navigator.push(
         context,
         MaterialPageRoute(

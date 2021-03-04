@@ -15,6 +15,7 @@ class CarDetails extends StatefulWidget {
 
 class _CarDetailsState extends State<CarDetails> with TickerProviderStateMixin {
   bool isLoading = true;
+  bool checkPrice = false;
   AnimationController controller;
   Animation<double> animation;
   final String carId;
@@ -32,6 +33,9 @@ class _CarDetailsState extends State<CarDetails> with TickerProviderStateMixin {
 
   getCar(BuildContext context) async {
     carprice = ModalRoute.of(context).settings.arguments as String;
+    if (carprice == null) {
+      checkPrice = true;
+    }
     car = await Provider.of<AvailableCarsModel>(context, listen: false)
         .findById(carId);
     setState(() {
@@ -131,18 +135,20 @@ class _CarDetailsState extends State<CarDetails> with TickerProviderStateMixin {
                         ),
                         textAlign: TextAlign.left,
                       ),
-                      Text(
-                        'Price: $carprice\$'.replaceAllMapped(
-                            new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                            (Match m) => '${m[1]},'),
-                        style: TextStyle(
-                          fontFamily: 'Arial',
-                          fontSize: 18,
-                          color: Colors.black,
-                          height: 1.5,
-                        ),
-                        textAlign: TextAlign.left,
-                      ),
+                      checkPrice
+                          ? Divider(height: 0.0)
+                          : Text(
+                              'Price: $carprice\$'.replaceAllMapped(
+                                  new RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                                  (Match m) => '${m[1]},'),
+                              style: TextStyle(
+                                fontFamily: 'Arial',
+                                fontSize: 18,
+                                color: Colors.black,
+                                height: 1.5,
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
                       Text(
                         'Year of manufacture: ${car.manufactureYear}',
                         style: TextStyle(

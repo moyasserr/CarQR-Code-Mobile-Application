@@ -1,7 +1,9 @@
 import 'package:car_qr/Models/user.dart';
 import 'package:car_qr/Providers/auth.dart';
+import 'package:car_qr/Screens/about.dart';
 import 'package:car_qr/Screens/carshowroomadmin.dart';
 import 'package:car_qr/Screens/history.dart';
+import 'package:car_qr/Screens/settings.dart';
 import 'package:flutter/material.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -95,8 +97,7 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.settings),
             title: Text('Settings'),
             onTap: () {
-              // Navigator.of(context)
-              //     .pushReplacementNamed(OrdersScreen.routeName);
+              Navigator.pushNamed(context, Settings.routeName);
             },
           ),
           Divider(),
@@ -104,8 +105,7 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.info),
             title: Text('About'),
             onTap: () {
-              // Navigator.of(context)
-              //     .pushReplacementNamed(OrdersScreen.routeName);
+              Navigator.pushNamed(context, About.routeName);
             },
           ),
           Divider(),
@@ -116,7 +116,7 @@ class AppDrawer extends StatelessWidget {
               await _auth.signOut();
             },
           ),
-          SizedBox(height: 120.0),
+          SizedBox(height: MediaQuery.of(context).size.height * 0.09),
           ListTile(
             title: Text('1.0.0'),
             onTap: () {},
