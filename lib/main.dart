@@ -135,6 +135,7 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
         MaterialPageRoute(
           builder: (context) => CarDetails(
             carId: barcodeScanned,
+            loggedUser: user,
           ),
         ),
       );

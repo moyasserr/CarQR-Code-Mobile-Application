@@ -1,5 +1,7 @@
 import 'package:car_qr/Models/user.dart';
 import 'package:car_qr/Providers/auth.dart';
+import 'package:car_qr/Screens/car_list_user.dart';
+import 'package:car_qr/Screens/carshowroom.dart';
 import 'package:car_qr/Screens/carshowroomadmin.dart';
 import 'package:flutter/material.dart';
 
@@ -76,9 +78,20 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.car_repair),
             title: Text('Showrooms'),
+            onTap: () {},
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.car_repair),
+            title: Text('Cars'),
             onTap: () {
-              // Navigator.of(context)
-              //     .pushReplacementNamed(OrdersScreen.routeName);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => CarlistUser(
+                          loggedUser: user,
+                        )),
+              );
             },
           ),
           Divider(),

@@ -1,5 +1,6 @@
 import 'dart:collection';
 import 'dart:convert';
+import 'package:car_qr/Models/review.dart';
 import 'package:flutter/material.dart';
 import 'package:car_qr/Models/car.dart';
 import 'package:http/http.dart' as http;
@@ -25,7 +26,7 @@ class AvailableCarsModel with ChangeNotifier {
       final response = await http.get(url);
       final dbData = json.decode(response.body) as Map<String, dynamic>;
       final List<Car> dbCars = [];
-      dbData.forEach((key, data) {
+      dbData.forEach((key, data) async {
         dbCars.add(Car(
           id: key,
           carBrand: data['carBrand'],
@@ -59,6 +60,7 @@ class AvailableCarsModel with ChangeNotifier {
           image: data['image'],
           qrCode: data['qrCode'],
         ));
+        this.fetchCarReviews(key, dbCars);
       });
       _cars = dbCars;
       notifyListeners();
@@ -196,6 +198,108 @@ class AvailableCarsModel with ChangeNotifier {
     http.delete(url).then((res) {
       if (res.statusCode >= 400) {
         _cars.insert(existingInd, existing);
+        notifyListeners();
+        print(res.statusCode);
+        throw Exception('Delete Failid for id is $id');
+      }
+    });
+    notifyListeners();
+  }
+
+  Future<void> fetchCarReviews(String carID, List<Car> cars) async {
+    print(carID);
+    final url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$carID/reviews.json';
+    final carIndex = cars.indexWhere((car) => car.id == carID);
+    try {
+      final response = await http.get(url);
+      final dbData = json.decode(response.body) as Map<String, dynamic>;
+      print(dbData);
+      final List<Review> carReviews = [];
+      try {
+        dbData.forEach((key, data) {
+          carReviews.add(
+            Review(
+              id: key,
+              userID: data['userID'],
+              rating: data['rating'],
+              comment: data['comment'],
+            ),
+          );
+        });
+        _cars[carIndex].reviews = carReviews;
+        notifyListeners();
+      } catch (e) {
+        print(e);
+      }
+    } on Exception catch (e) {
+      print(e.toString());
+      throw (e);
+    }
+  }
+
+  void addReview(
+      String userID, String comment, double rating, String carID) async {
+    final url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$carID/reviews.json';
+    final carIndex = _cars.indexWhere((car) => car.id == carID);
+    try {
+      await http
+          .post(url,
+              body: json.encode({
+                'userID': userID,
+                'rating': rating,
+                'comment': comment,
+              }))
+          .then((value) {
+        final newReview = Review(
+          id: jsonDecode(value.body)['name'],
+          userID: userID,
+          rating: rating,
+          comment: comment,
+        );
+        _cars[carIndex].reviews.add(newReview);
+        notifyListeners();
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<void> editReview({String id, String carID, Review newReview}) async {
+    final url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$carID/reviews/$id.json';
+    final carIndex = _cars.indexWhere((car) => car.id == carID);
+
+    if (carIndex >= 0) {
+      final reviewIndex =
+          _cars[carIndex].reviews.indexWhere((review) => review.id == id);
+      await http
+          .patch(url,
+              body: json.encode({
+                'rating': newReview.rating,
+                'comment': newReview.comment,
+              }))
+          .then((value) {
+        _cars[carIndex].reviews[reviewIndex] = newReview;
+        notifyListeners();
+      }).catchError((onError) {
+        print(onError);
+      });
+    }
+  }
+
+  void deleteReview(String carID, String id) {
+    final url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$carID/reviews/$id.json';
+    final carInd = _cars.indexWhere((element) => element.id == carID);
+    final reviewInd =
+        _cars[carInd].reviews.indexWhere((element) => element.id == id);
+    var reviewTemp = _cars[carInd].reviews[reviewInd];
+    _cars[carInd].reviews.removeAt(reviewInd);
+    http.delete(url).then((res) {
+      if (res.statusCode >= 400) {
+        _cars[carInd].reviews.insert(reviewInd, reviewTemp);
         notifyListeners();
         print(res.statusCode);
         throw Exception('Delete Failid for id is $id');

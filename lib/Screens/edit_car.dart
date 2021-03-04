@@ -24,6 +24,7 @@ class _EditCarState extends State<EditCar> {
     oldCar = await Provider.of<AvailableCarsModel>(context, listen: false)
         .findById(carId);
     print(oldCar.id);
+    print("${oldCar.carBrand}");
   }
 
   _EditCarState({@required this.carId}) {

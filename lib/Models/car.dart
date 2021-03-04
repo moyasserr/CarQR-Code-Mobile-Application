@@ -1,3 +1,4 @@
+import 'package:car_qr/Models/review.dart';
 import 'package:flutter/cupertino.dart';
 
 class Car {
@@ -33,40 +34,42 @@ class Car {
   String qrCode;
   String id;
   String price;
+  List<Review> reviews = [];
 
-  Car(
-      {@required this.id,
-      @required this.carBrand,
-      @required this.carModel,
-      @required this.cubicCentimeters,
-      @required this.horsePower,
-      this.maxSpeed = 0,
-      this.transmissonType = 'N/A',
-      this.seatsNumbers = 0,
-      this.doorsType = 'N/A',
-      this.roofType = 'N/A',
-      this.manufactureCountry = 'N/A',
-      this.manufactureYear = 0,
-      this.mileAge = 0,
-      this.carHeight = 0,
-      this.carWidth = 0,
-      this.wheelBase = 0,
-      this.truckBase = 0,
-      this.engineTorgue = 0,
-      this.engineAcceleration = 0,
-      this.fuelConsumption = 0,
-      this.fuelTankCapacity = 0,
-      this.prefferedFuelType = 'N/A',
-      this.brakeSafety = 'N/A',
-      this.brake100To0 = 0,
-      this.rimDiameter = 0,
-      this.frontSuspension,
-      this.backSuspension = 'N/A',
-      this.wheelWidth = 0,
-      this.color = 'N/A',
-      @required this.image,
-      this.qrCode = 'N/A',
-      this.price = '0'});
+  Car({
+    @required this.id,
+    @required this.carBrand,
+    @required this.carModel,
+    @required this.cubicCentimeters,
+    @required this.horsePower,
+    this.maxSpeed = 0,
+    this.transmissonType = 'N/A',
+    this.seatsNumbers = 0,
+    this.doorsType = 'N/A',
+    this.roofType = 'N/A',
+    this.manufactureCountry = 'N/A',
+    this.manufactureYear = 0,
+    this.mileAge = 0,
+    this.carHeight = 0,
+    this.carWidth = 0,
+    this.wheelBase = 0,
+    this.truckBase = 0,
+    this.engineTorgue = 0,
+    this.engineAcceleration = 0,
+    this.fuelConsumption = 0,
+    this.fuelTankCapacity = 0,
+    this.prefferedFuelType = 'N/A',
+    this.brakeSafety = 'N/A',
+    this.brake100To0 = 0,
+    this.rimDiameter = 0,
+    this.frontSuspension,
+    this.backSuspension = 'N/A',
+    this.wheelWidth = 0,
+    this.color = 'N/A',
+    @required this.image,
+    this.qrCode = 'N/A',
+    this.price = '0',
+  });
 
   Car.emptyConst(
       {this.id = 'N/A',
