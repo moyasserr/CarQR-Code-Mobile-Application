@@ -1,4 +1,3 @@
-import 'package:car_qr/Screens/myappbar.dart';
 import 'package:car_qr/Screens/car_description.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +8,12 @@ class Showroomdetails extends StatelessWidget {
     return MaterialApp(
         home: Scaffold(
       backgroundColor: Colors.white,
-      appBar: MyAppBar(
-        titlex: new Text(
+      appBar: AppBar(
+        title: new Text(
           'Car Showroom Name',
           style: TextStyle(fontSize: 22.0),
         ),
-        history: () => Navigator.pushNamed(context, '/history'),
-        showrooms: () => Navigator.pushNamed(context, '/showrooms'),
-        settings: () => Navigator.pushNamed(context, '/settings'),
-        about: () => Navigator.pushNamed(context, '/about'),
+        
       ),
       body: Column(
         children: [

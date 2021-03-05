@@ -3,7 +3,6 @@ import 'package:car_qr/Providers/auth.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Providers/history_provider.dart';
 import 'package:car_qr/Screens/about.dart';
-import 'package:car_qr/Screens/myappbar.dart';
 import 'package:car_qr/Screens/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:car_qr/Screens/car_description.dart';
@@ -169,15 +168,12 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: MyAppBar(
-        titlex: new Text(
+      appBar: AppBar(
+        title: new Text(
           'Car Showroom',
           style: TextStyle(fontSize: 22.0),
         ),
-        history: () => Navigator.pushNamed(context, '/history'),
-        showrooms: () => Navigator.pushNamed(context, '/showrooms'),
-        settings: () => Navigator.pushNamed(context, '/settings'),
-        about: () => Navigator.pushNamed(context, '/about'),
+        
       ),
       body: _isLoading
           ? Center(

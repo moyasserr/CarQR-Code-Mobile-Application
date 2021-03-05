@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:car_qr/Screens/myappbar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:car_qr/Models/user.dart';
 
@@ -36,15 +35,11 @@ class _SettingsState extends State<Settings> {
       // ),
 
       backgroundColor: _dark ? null : Colors.grey.shade200,
-      appBar: MyAppBar(
-        titlex: new Text(
+      appBar: AppBar(
+        title: new Text(
           'App Settings',
           style: TextStyle(fontSize: 22.0),
         ),
-        history: () => Navigator.pushNamed(context, '/history'),
-        showrooms: () => Navigator.pushNamed(context, '/showrooms'),
-        settings: () => Navigator.pushNamed(context, '/settings'),
-        about: () => Navigator.pushNamed(context, '/about'),
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -74,69 +69,12 @@ class _SettingsState extends State<Settings> {
                               fontWeight: FontWeight.w500,
                             ),
                           ),
-                          leading: CircleAvatar(
-                            backgroundImage:
-                                ExactAssetImage('assets/images/messi.jpg'),
-                          ),
-                          trailing: Icon(
-                            Icons.edit,
-                            color: Colors.white,
-                          ),
                         ),
                       ),
                       const SizedBox(height: 10.0),
-                      Card(
-                        elevation: 4.0,
-                        margin:
-                            const EdgeInsets.fromLTRB(32.0, 8.0, 32.0, 16.0),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0)),
-                        child: Column(
-                          children: <Widget>[
-                            ListTile(
-                              leading: Icon(
-                                Icons.lock_outline,
-                                color: Colors.blue,
-                              ),
-                              title: Text("Change Password"),
-                              trailing: Icon(Icons.keyboard_arrow_right),
-                              onTap: () {
-                                //open change password
-                              },
-                            ),
-                            _buildDivider(),
-                            ListTile(
-                              leading: Icon(
-                                FontAwesomeIcons.language,
-                                color: Colors.blue,
-                              ),
-                              title: Text("Change Language"),
-                              trailing: Icon(Icons.keyboard_arrow_right),
-                              onTap: () {
-                                //open change language
-                              },
-                            ),
-                            _buildDivider(),
-                            // ListTile(
-                            //     leading: Icon(
-                            //       Icons.exit_to_app,
-                            //       color: Colors.blue,
-                            //     ),
-                            //     title: Text("Logout"),
-                            //     trailing: Icon(Icons.keyboard_arrow_right),
-                            //     onTap: () {})
-                          ],
-                        ),
-                      ),
+                      
                       const SizedBox(height: 20.0),
-                      Text(
-                        "Advanced Settings",
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.blue,
-                        ),
-                      ),
+                      
                       SwitchListTile(
                         activeColor: Colors.blue,
                         contentPadding: const EdgeInsets.all(0),
