@@ -16,7 +16,7 @@ class AppInfo extends StatelessWidget {
         Center(
           child: Column(children: <Widget>[
             Text(
-              "Car QR Scan App",
+              "Scan Car QR App",
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: Colors.black,

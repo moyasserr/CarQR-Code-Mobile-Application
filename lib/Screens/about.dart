@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:car_qr/Screens/app_info.dart';
+import 'package:car_qr/Screens/terms_conditions.dart';
+import 'package:car_qr/Screens/contact_us.dart';
+import 'package:car_qr/Screens/faq.dart';
 
 class About extends StatelessWidget {
   static const routeName = '/about';
@@ -38,7 +41,10 @@ class About extends StatelessWidget {
                         title: Text("FAQ"),
                         trailing: Icon(Icons.keyboard_arrow_right),
                         onTap: () {
-                          //open change password
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return FAQ();
+                          }));
                         },
                       ),
                       _buildDivider(),
@@ -50,7 +56,10 @@ class About extends StatelessWidget {
                         title: Text("Contact Us"),
                         trailing: Icon(Icons.keyboard_arrow_right),
                         onTap: () {
-                          //open change language
+                          Navigator.push(context,
+                              MaterialPageRoute(builder: (context) {
+                            return ContactUs();
+                          }));
                         },
                       ),
                       _buildDivider(),
@@ -61,7 +70,12 @@ class About extends StatelessWidget {
                           ),
                           title: Text("Terms and Conditions"),
                           trailing: Icon(Icons.keyboard_arrow_right),
-                          onTap: () {}),
+                          onTap: () {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
+                              return TermsConditions();
+                            }));
+                          }),
                       _buildDivider(),
                       GestureDetector(
                           onTap: () {
