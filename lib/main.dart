@@ -1,9 +1,14 @@
+import 'dart:async';
+
 import 'package:car_qr/Models/car.dart';
 import 'package:car_qr/Providers/auth.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Providers/history_provider.dart';
 import 'package:car_qr/Screens/about.dart';
 import 'package:car_qr/Screens/settings.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:car_qr/Screens/car_description.dart';
 import 'package:flutter/services.dart';
@@ -109,6 +114,12 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
   var _isLoading = true;
   final User user;
   Car hCar;
+  final Firestore _db = Firestore.instance;
+  final FirebaseMessaging _fcm = FirebaseMessaging();
+  final AuthService _auth = AuthService();
+  final FirebaseAuth _authh = FirebaseAuth.instance;
+
+  StreamSubscription iosSubscription;
 
   _MyAppstate({@required this.user});
 
@@ -117,6 +128,7 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       user.readUser().then((_) {
         setState(() {
+          print("${user.token}");
           _isLoading = false;
         });
       });
@@ -125,6 +137,76 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
         duration: const Duration(milliseconds: 700), vsync: this);
     animation = CurvedAnimation(parent: controller, curve: Curves.easeIn);
     controller.forward();
+
+    _saveDeviceToken();
+
+    _fcm.configure(
+      onMessage: (Map<String, dynamic> message) async {
+        print("onMessage: $message");
+        // final snackbar = SnackBar(
+        //   content: Text(message['notification']['title']),
+        //   action: SnackBarAction(
+        //     label: 'Go',
+        //     onPressed: () => null,
+        //   ),
+        // );
+
+        // Scaffold.of(context).showSnackBar(snackbar);
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            content: ListTile(
+              title: Text(message['notification']['title']),
+              subtitle: Text(message['notification']['body']),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                color: Colors.amber,
+                child: Text('Ok'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          ),
+        );
+      },
+      onLaunch: (Map<String, dynamic> message) async {
+        print("onLaunch: $message");
+        // TODO optional
+      },
+      onResume: (Map<String, dynamic> message) async {
+        print("onResume: $message");
+        // TODO optional
+      },
+    );
+  }
+
+  _saveDeviceToken() async {
+    // Get the current user
+    //String uid = 'jeffd23';
+    FirebaseUser user = await _authh.currentUser();
+
+    // Get the token for this device
+    String fcmToken = await _fcm.getToken();
+
+    // Save it to Firestore
+    if (fcmToken != null) {
+      var tokens = _db
+          .collection('users')
+          .document(user.uid)
+          .collection('tokens')
+          .document(fcmToken);
+
+      await tokens.setData({
+        'token': fcmToken,
+        'createdAt': FieldValue.serverTimestamp(),
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    if (iosSubscription != null) iosSubscription.cancel();
+    super.dispose();
   }
 
   startBarcodeScanStream() async {
@@ -162,8 +244,6 @@ class _MyAppstate extends State<MyApp> with TickerProviderStateMixin {
       _scanBarcode = barcodeScanned;
     });
   }
-
-  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
