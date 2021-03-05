@@ -10,7 +10,7 @@ class Loading extends StatelessWidget {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SpinKitRing(color: Colors.blue, size: 50.0),
+            CircularProgressIndicator(),
             Text(
               'Please wait...',
               textAlign: TextAlign.center,

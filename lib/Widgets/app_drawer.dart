@@ -129,7 +129,7 @@ class AppDrawer extends StatelessWidget {
               await _auth.signOut();
             },
           ),
-          SizedBox(height: MediaQuery.of(context).size.height * 0.09),
+          //SizedBox(height: MediaQuery.of(context).size.height-20),
           ListTile(
             title: Text('1.0.0'),
             onTap: () {},

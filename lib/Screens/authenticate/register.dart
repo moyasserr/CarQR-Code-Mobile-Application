@@ -4,8 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:car_qr/Screens/loading.dart';
 
 class Register extends StatefulWidget {
-  // final Function toggleView;
-  // Register({this.toggleView});
+  final Function toggleView;
+  Register({this.toggleView});
   @override
   _RegisterState createState() => _RegisterState();
 }
@@ -32,6 +32,12 @@ class _RegisterState extends State<Register> {
         ? Loading()
         : Scaffold(
             appBar: AppBar(
+                leading: IconButton(
+                  icon: new Icon(Icons.arrow_back),
+                  onPressed: () {
+                    widget.toggleView();
+                  },
+                ),
                 iconTheme: IconThemeData(color: Colors.white),
                 backgroundColor: Colors.blue[800],
                 centerTitle: true,
