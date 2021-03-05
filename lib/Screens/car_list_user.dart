@@ -3,6 +3,7 @@ import 'package:car_qr/Models/showrooms.dart';
 import 'package:car_qr/Models/user.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Widgets/adminshdrawer.dart';
+import 'package:car_qr/Widgets/app_drawer.dart';
 import 'package:car_qr/Widgets/car_list_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -61,7 +62,7 @@ class CarlistUserState extends State<CarlistUser> {
                 )
         ],
       ),
-      drawer: AdminDrawer(),
+      drawer: AppDrawer(user: loggedUser),
       body: FutureBuilder<Object>(
           future: getcars(context),
           builder: (context, snapshot) {

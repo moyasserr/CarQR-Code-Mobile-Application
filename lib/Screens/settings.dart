@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:car_qr/Screens/myappbar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:car_qr/Models/user.dart';
 
@@ -36,15 +35,11 @@ class _SettingsState extends State<Settings> {
       // ),
 
       backgroundColor: _dark ? null : Colors.grey.shade200,
-      appBar: MyAppBar(
-        titlex: new Text(
+      appBar: AppBar(
+        title: new Text(
           'App Settings',
           style: TextStyle(fontSize: 22.0),
         ),
-        history: () => Navigator.pushNamed(context, '/history'),
-        showrooms: () => Navigator.pushNamed(context, '/showrooms'),
-        settings: () => Navigator.pushNamed(context, '/settings'),
-        about: () => Navigator.pushNamed(context, '/about'),
       ),
       body: Stack(
         fit: StackFit.expand,

@@ -1,8 +1,6 @@
-import 'package:car_qr/Screens/authenticate/register.dart';
 import 'package:car_qr/Screens/loading.dart';
 import 'package:flutter/material.dart';
 import 'package:car_qr/Providers/auth.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class SignIn extends StatefulWidget {
   final Function toggleView;

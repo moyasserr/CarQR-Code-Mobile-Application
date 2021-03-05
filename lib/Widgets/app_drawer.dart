@@ -1,8 +1,8 @@
 import 'package:car_qr/Models/user.dart';
 import 'package:car_qr/Providers/auth.dart';
 import 'package:car_qr/Screens/about.dart';
+import 'package:car_qr/Screens/admin_cars_screen.dart';
 import 'package:car_qr/Screens/car_list_user.dart';
-import 'package:car_qr/Screens/carshowroom.dart';
 import 'package:car_qr/Screens/carshowroomadmin.dart';
 import 'package:car_qr/Screens/history.dart';
 import 'package:car_qr/Screens/settings.dart';
@@ -50,23 +50,6 @@ class AppDrawer extends StatelessWidget {
     return Drawer(
       child: Column(
         children: <Widget>[
-          // AppBar(
-          //   leading: Container(
-          //     margin: const EdgeInsets.only(left: 10.0),
-          //     width: 20,
-          //     height: 20,
-          //     decoration: BoxDecoration(
-          //       shape: BoxShape.circle,
-          //       border: Border.all(
-          //           width: 2, color: Color.fromRGBO(32, 150, 243, 1)),
-          //       image: DecorationImage(
-          //           image: AssetImage('assets/images/logo.jpg'),
-          //           fit: BoxFit.fill),
-          //     ),
-          //   ),
-          //   title: Text('Car Showroom'),
-          //   automaticallyImplyLeading: false,
-          // ),
           _createHeader(context),
           user.userType == "2"
               ? ListTile(
@@ -76,7 +59,15 @@ class AppDrawer extends StatelessWidget {
                     Navigator.pushNamed(context, Carshowroomadmin.routeName);
                   },
                 )
-              : Divider(height: 0.0),
+              : user.userType == "0"
+                  ? ListTile(
+                      leading: Icon(Icons.admin_panel_settings),
+                      title: Text('Admin Pannel'),
+                      onTap: () {
+                        Navigator.pushNamed(context, AdminCarsPanal.routeName);
+                      },
+                    )
+                  : Divider(height: 0.0),
           Divider(),
           ListTile(
             leading: Icon(Icons.car_repair),

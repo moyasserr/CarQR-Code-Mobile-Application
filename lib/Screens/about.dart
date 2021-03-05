@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:car_qr/Screens/myappbar.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:car_qr/Screens/app_info.dart';
 
@@ -9,15 +8,11 @@ class About extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: MyAppBar(
-        titlex: new Text(
+      appBar: AppBar(
+        title: new Text(
           'Help',
           style: TextStyle(fontSize: 22.0),
         ),
-        history: () => Navigator.pushNamed(context, '/history'),
-        showrooms: () => Navigator.pushNamed(context, '/showrooms'),
-        settings: () => Navigator.pushNamed(context, '/settings'),
-        about: () => Navigator.pushNamed(context, '/about'),
       ),
       body: Stack(
         fit: StackFit.expand,

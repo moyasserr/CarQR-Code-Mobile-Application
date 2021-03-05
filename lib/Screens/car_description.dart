@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:car_qr/Models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -81,53 +79,95 @@ class _CarDetailsState extends State<CarDetails> with TickerProviderStateMixin {
                             color: const Color(0xff2c2c2c),
                           ),
                           child: Column(children: <Widget>[
-                            Text(
-                              car.carBrand,
-                              style: TextStyle(
-                                fontFamily: 'Arial',
-                                fontSize: 15,
-                                color: Colors.white,
-                                height: 1.5,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            Text(
-                              //'911 Carrera'
-                              car.carModel,
-                              style: TextStyle(
-                                fontFamily: 'Arial',
-                                fontSize: 15,
-                                color: Colors.white,
-                                height: 1.5,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
-                                  BuildButtonColumn(
-                                      Colors.white,
-                                      Icons.time_to_leave,
-                                      '${car.cubicCentimeters} CC'),
-                                  BuildButtonColumn(Colors.white, Icons.toys,
-                                      '${car.horsePower} HP'),
-                                  BuildButtonColumn(Colors.white,
-                                      Icons.auto_fix_high, car.transmissonType),
-                                ]),
+                                  Text(
+                                    car.carBrand,
+                                    style: TextStyle(
+                                      fontFamily: 'Arial',
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                      height: 1.5,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(width: 4.0),
+                                  Text(
+                                    //'911 Carrera'
+                                    car.carModel,
+                                    style: TextStyle(
+                                      fontFamily: 'Arial',
+                                      fontSize: 15,
+                                      color: Colors.white,
+                                      height: 1.5,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+
                             Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  BuildButtonColumn(Colors.white, Icons.speed,
-                                      '${car.maxSpeed} KM/H'),
-                                  BuildButtonColumn(Colors.white,
-                                      Icons.list_alt, '${car.doorsType}'),
-                                  BuildButtonColumn(
-                                      Colors.white,
-                                      Icons.airline_seat_flat,
-                                      '${car.seatsNumbers}'),
-                                ]),
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Column(
+                                  children: [
+                                    BuildButtonColumn(
+                                        Colors.white,
+                                        Icons.time_to_leave,
+                                        '${car.cubicCentimeters} CC'),
+                                    BuildButtonColumn(Colors.white, Icons.speed,
+                                        '${car.maxSpeed} KM/H'),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    BuildButtonColumn(Colors.white, Icons.toys,
+                                        '${car.horsePower} HP'),
+                                    BuildButtonColumn(Colors.white,
+                                        Icons.list_alt, '${car.doorsType}'),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    BuildButtonColumn(
+                                        Colors.white,
+                                        Icons.auto_fix_high,
+                                        car.transmissonType),
+                                    BuildButtonColumn(
+                                        Colors.white,
+                                        Icons.airline_seat_flat,
+                                        '${car.seatsNumbers}'),
+                                  ],
+                                ),
+                              ],
+                              // children: [
+                              //   BuildButtonColumn(
+                              //       Colors.white,
+                              //       Icons.time_to_leave,
+                              //       '${car.cubicCentimeters} CC'),
+                              //   BuildButtonColumn(Colors.white, Icons.toys,
+                              //       '${car.horsePower} HP'),
+                              //   BuildButtonColumn(Colors.white,
+                              //       Icons.auto_fix_high, car.transmissonType),
+                              // ]),
+                            ),
+                            // Row(
+                            //     mainAxisAlignment:
+                            //         MainAxisAlignment.spaceEvenly,
+                            //     children: [
+                            //       BuildButtonColumn(Colors.white, Icons.speed,
+                            //           '${car.maxSpeed} KM/H'),
+                            //       BuildButtonColumn(Colors.white,
+                            //           Icons.list_alt, '${car.doorsType}'),
+                            //       BuildButtonColumn(
+                            //           Colors.white,
+                            //           Icons.airline_seat_flat,
+                            //           '${car.seatsNumbers}'),
+                            //     ]),
                           ])),
                       Divider(color: Colors.black),
                       Text(

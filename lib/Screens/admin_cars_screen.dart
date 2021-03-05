@@ -5,6 +5,7 @@ import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Screens/add_car.dart';
 
 class AdminCarsPanal extends StatefulWidget {
+  static const routeName = '/adminapp';
   @override
   _AdminCarsPanalState createState() => _AdminCarsPanalState();
 }
