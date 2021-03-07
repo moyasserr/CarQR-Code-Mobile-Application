@@ -1,14 +1,9 @@
-import 'package:car_qr/Models/showroom.dart';
-import 'package:car_qr/Models/showrooms.dart';
 import 'package:car_qr/Models/user.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
-import 'package:car_qr/Widgets/adminshdrawer.dart';
 import 'package:car_qr/Widgets/app_drawer.dart';
 import 'package:car_qr/Widgets/car_list_user.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:car_qr/Models/car.dart';
 
 class CarlistUser extends StatefulWidget {
   static const routeName = '/carlist';
@@ -24,11 +19,25 @@ class CarlistUser extends StatefulWidget {
 class CarlistUserState extends State<CarlistUser> {
   bool isSearch = false;
   final User loggedUser;
+  final myController = TextEditingController();
 
   CarlistUserState({@required this.loggedUser});
 
+  void initState() {
+    super.initState();
+
+    // Start listening to changes.
+    myController.addListener(search);
+  }
+
   Future<void> getcars(BuildContext context) async {
     await Provider.of<AvailableCarsModel>(context, listen: false).readCars();
+  }
+
+  void search() {
+    print("test test test test");
+    Provider.of<AvailableCarsModel>(context, listen: false)
+        .searchCars(myController.text);
   }
 
   @override
@@ -39,9 +48,11 @@ class CarlistUserState extends State<CarlistUser> {
         title: !isSearch
             ? Text("App Car List")
             : TextField(
+                controller: myController,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                    icon: Icon(Icons.edit), hintText: "Search Cars Here")),
+                    icon: Icon(Icons.edit), hintText: "Search Cars Here"),
+              ),
         actions: <Widget>[
           isSearch
               ? IconButton(

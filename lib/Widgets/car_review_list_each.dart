@@ -1,5 +1,6 @@
 import 'package:car_qr/Models/review.dart';
 import 'package:flutter/material.dart';
+import 'package:getflutter/components/rating/gf_rating.dart';
 
 class CarReviewListEach extends StatelessWidget {
   final Review review;
@@ -12,27 +13,9 @@ class CarReviewListEach extends StatelessWidget {
       child: ListTile(
         leading: Text('Test'),
         title: Text(review.comment.toString()),
-        subtitle: Text(review.rating.toString()),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: Icon(Icons.image),
-              onPressed: () async {
-                await showDialog(
-                  context: context,
-                  builder: (_) {
-                    return Dialog(
-                      child: Container(
-                        width: 300,
-                        height: 300,
-                      ),
-                    );
-                  },
-                );
-              },
-            ),
-          ],
+        subtitle: GFRating(
+          color: Colors.yellow,
+          value: review.rating,
         ),
       ),
     );

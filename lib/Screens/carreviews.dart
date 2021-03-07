@@ -56,11 +56,12 @@ class _CarReviewsState extends State<CarReviews> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Ucarreview(
-                            loggedUser: loggedUser,
-                            car: car,
-                            reviewInd: reviewInd,
-                          )),
+                    builder: (context) => Ucarreview(
+                      loggedUser: loggedUser,
+                      car: car,
+                      reviewInd: reviewInd,
+                    ),
+                  ),
                 );
               },
               child: Icon(Icons.edit),
@@ -80,7 +81,7 @@ class _CarReviewsState extends State<CarReviews> {
               child: Icon(Icons.add),
             ),
       bottomNavigationBar: BottomAppBar(
-        color: Colors.yellow,
+        color: Colors.blue,
         child: Container(
           height: 50.0,
         ),

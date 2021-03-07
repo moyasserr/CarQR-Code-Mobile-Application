@@ -19,10 +19,21 @@ class _EditCarState extends State<EditCar> {
   final String carId;
   Car oldCar;
   Car newCar = Car.emptyConst();
+  bool _isLoading = true;
+
+  void initState() {
+    super.initState();
+
+    getCar(context);
+  }
 
   getCar(BuildContext context) async {
     oldCar = await Provider.of<AvailableCarsModel>(context, listen: false)
         .findById(carId);
+    setFields();
+    setState(() {
+      _isLoading = false;
+    });
     print(oldCar.id);
     print("${oldCar.carBrand}");
   }
@@ -50,7 +61,7 @@ class _EditCarState extends State<EditCar> {
   }
 
   void setFields() {
-    textController[0].text = oldCar.carBrand;
+    textController[0].text = "${oldCar.carBrand}";
     textController[1].text = oldCar.carModel;
     textController[2].text = oldCar.cubicCentimeters.toString();
     textController[3].text = oldCar.horsePower.toString();
@@ -79,638 +90,638 @@ class _EditCarState extends State<EditCar> {
 
   @override
   Widget build(BuildContext context) {
-    getCar(context);
-    setFields();
     return Scaffold(
       appBar: AppBar(
         title: Text('Edit Car'),
       ),
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          child: Column(
-            children: <Widget>[
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[0],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+      body: _isLoading
+          ? CircularProgressIndicator()
+          : Form(
+              key: _formKey,
+              child: SingleChildScrollView(
+                child: Column(
+                  children: <Widget>[
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
                     ),
-                  ),
-                  labelText: 'Car Brand (required)',
-                ),
-                validator: (val) {
-                  if (val.length == 0)
-                    newCar.carBrand = oldCar.carBrand;
-                  else {
-                    print('Brand');
-                    newCar.carBrand = val;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[1],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new TextFormField(
+                      controller: textController[0],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Car Brand (required)',
+                      ),
+                      validator: (val) {
+                        if (val.length == 0)
+                          newCar.carBrand = oldCar.carBrand;
+                        else {
+                          print('Brand');
+                          newCar.carBrand = val;
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  labelText: 'Car Model (required)',
-                ),
-                validator: (val) {
-                  if (val.length == 0)
-                    newCar.carModel = oldCar.carModel;
-                  else {
-                    print('Model');
-                    newCar.carModel = val;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[2],
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
                     ),
-                  ),
-                  labelText: 'CC (required)',
-                ),
-                validator: (val) {
-                  print('CCCC');
-                  if (val.length == 0)
-                    newCar.cubicCentimeters = oldCar.cubicCentimeters;
-                  else {
-                    newCar.cubicCentimeters = int.parse(val);
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[3],
-                keyboardType: TextInputType.number,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new TextFormField(
+                      controller: textController[1],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Car Model (required)',
+                      ),
+                      validator: (val) {
+                        if (val.length == 0)
+                          newCar.carModel = oldCar.carModel;
+                        else {
+                          print('Model');
+                          newCar.carModel = val;
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  labelText: 'Horse Power (required)',
-                ),
-                validator: (val) {
-                  print('HP');
-                  if (val.length == 0)
-                    newCar.horsePower = oldCar.horsePower;
-                  else {
-                    newCar.horsePower = int.parse(val);
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[4],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
                     ),
-                  ),
-                  labelText: 'Max Speed',
-                ),
-                validator: (val) {
-                  print(val);
-                  if (val.length != 0) {
-                    newCar.maxSpeed = double.parse(val);
-                  } else {
-                    newCar.maxSpeed = oldCar.maxSpeed;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[5],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new TextFormField(
+                      controller: textController[2],
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'CC (required)',
+                      ),
+                      validator: (val) {
+                        print('CCCC');
+                        if (val.length == 0)
+                          newCar.cubicCentimeters = oldCar.cubicCentimeters;
+                        else {
+                          newCar.cubicCentimeters = int.parse(val);
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  labelText: 'Seats Number',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.seatsNumbers = int.parse(val);
-                  } else {
-                    newCar.seatsNumbers = oldCar.seatsNumbers;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[6],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
                     ),
-                  ),
-                  labelText: 'Doors Type',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.doorsType = val;
-                  } else {
-                    newCar.doorsType = oldCar.doorsType;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[7],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new TextFormField(
+                      controller: textController[3],
+                      keyboardType: TextInputType.number,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Horse Power (required)',
+                      ),
+                      validator: (val) {
+                        print('HP');
+                        if (val.length == 0)
+                          newCar.horsePower = oldCar.horsePower;
+                        else {
+                          newCar.horsePower = int.parse(val);
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  labelText: 'Roof Type ',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.roofType = val;
-                  } else {
-                    newCar.roofType = oldCar.roofType;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[8],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
                     ),
-                  ),
-                  labelText: 'Manufacture Country',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.manufactureCountry = val;
-                  } else {
-                    newCar.manufactureCountry = oldCar.manufactureCountry;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[9],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new TextFormField(
+                      controller: textController[4],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Max Speed',
+                      ),
+                      validator: (val) {
+                        print(val);
+                        if (val.length != 0) {
+                          newCar.maxSpeed = double.parse(val);
+                        } else {
+                          newCar.maxSpeed = oldCar.maxSpeed;
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  labelText: 'Manufacture Year ',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.manufactureYear = int.parse(val);
-                  } else {
-                    newCar.manufactureYear = oldCar.manufactureYear;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[10],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
                     ),
-                  ),
-                  labelText: 'Car Height',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.carHeight = double.parse(val);
-                  } else {
-                    newCar.carHeight = oldCar.carHeight;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[11],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new TextFormField(
+                      controller: textController[5],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Seats Number',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.seatsNumbers = int.parse(val);
+                        } else {
+                          newCar.seatsNumbers = oldCar.seatsNumbers;
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  labelText: 'Car Width',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.carWidth = double.parse(val);
-                  } else {
-                    newCar.carWidth = oldCar.carWidth;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[12],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
                     ),
-                  ),
-                  labelText: 'Wheel Base',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.wheelBase = double.parse(val);
-                  } else {
-                    newCar.wheelBase = oldCar.wheelBase;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[13],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new TextFormField(
+                      controller: textController[6],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Doors Type',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.doorsType = val;
+                        } else {
+                          newCar.doorsType = oldCar.doorsType;
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  labelText: 'Truck Base',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.truckBase = double.parse(val);
-                  } else {
-                    newCar.truckBase = oldCar.truckBase;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[14],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
                     ),
-                  ),
-                  labelText: 'Engine Torgue',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.engineTorgue = double.parse(val);
-                  } else {
-                    newCar.engineTorgue = oldCar.engineTorgue;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[15],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new TextFormField(
+                      controller: textController[7],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Roof Type ',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.roofType = val;
+                        } else {
+                          newCar.roofType = oldCar.roofType;
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  labelText: 'Engine Acceleration',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.engineAcceleration = double.parse(val);
-                  } else {
-                    newCar.engineAcceleration = oldCar.engineAcceleration;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[16],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
                     ),
-                  ),
-                  labelText: 'Fuel Consumption',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.fuelConsumption = double.parse(val);
-                  } else {
-                    newCar.fuelConsumption = oldCar.fuelConsumption;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[17],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new TextFormField(
+                      controller: textController[8],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Manufacture Country',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.manufactureCountry = val;
+                        } else {
+                          newCar.manufactureCountry = oldCar.manufactureCountry;
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  labelText: 'Fuel Tank Capacity',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.fuelTankCapacity = double.parse(val);
-                  } else {
-                    newCar.fuelTankCapacity = oldCar.fuelTankCapacity;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[18],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
                     ),
-                  ),
-                  labelText: 'Preffered Fuel Type',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.prefferedFuelType = val;
-                  } else {
-                    newCar.prefferedFuelType = oldCar.prefferedFuelType;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[19],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new TextFormField(
+                      controller: textController[9],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Manufacture Year ',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.manufactureYear = int.parse(val);
+                        } else {
+                          newCar.manufactureYear = oldCar.manufactureYear;
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  labelText: 'Brake Safety',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.brakeSafety = val;
-                  } else {
-                    newCar.brakeSafety = oldCar.brakeSafety;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[20],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
                     ),
-                  ),
-                  labelText: 'Brake 100 To 0',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.brake100To0 = double.parse(val);
-                  } else {
-                    newCar.brake100To0 = oldCar.brake100To0;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[21],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new TextFormField(
+                      controller: textController[10],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Car Height',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.carHeight = double.parse(val);
+                        } else {
+                          newCar.carHeight = oldCar.carHeight;
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  labelText: 'Rim Diameter',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.rimDiameter = double.parse(val);
-                  } else {
-                    newCar.rimDiameter = oldCar.rimDiameter;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[22],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
                     ),
-                  ),
-                  labelText: 'Front Suspension',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.frontSuspension = val;
-                  } else {
-                    newCar.frontSuspension = oldCar.frontSuspension;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[23],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new TextFormField(
+                      controller: textController[11],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Car Width',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.carWidth = double.parse(val);
+                        } else {
+                          newCar.carWidth = oldCar.carWidth;
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                  labelText: 'Back Suspension',
-                ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.backSuspension = val;
-                  } else {
-                    newCar.backSuspension = oldCar.backSuspension;
-                  }
-                  return null;
-                },
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new TextFormField(
-                controller: textController[24],
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25),
-                    borderSide: BorderSide(
-                      width: 3,
-                      style: BorderStyle.none,
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
                     ),
-                  ),
-                  labelText: 'Wheel Width',
+                    new TextFormField(
+                      controller: textController[12],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Wheel Base',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.wheelBase = double.parse(val);
+                        } else {
+                          newCar.wheelBase = oldCar.wheelBase;
+                        }
+                        return null;
+                      },
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                    ),
+                    new TextFormField(
+                      controller: textController[13],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Truck Base',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.truckBase = double.parse(val);
+                        } else {
+                          newCar.truckBase = oldCar.truckBase;
+                        }
+                        return null;
+                      },
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                    ),
+                    new TextFormField(
+                      controller: textController[14],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Engine Torgue',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.engineTorgue = double.parse(val);
+                        } else {
+                          newCar.engineTorgue = oldCar.engineTorgue;
+                        }
+                        return null;
+                      },
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                    ),
+                    new TextFormField(
+                      controller: textController[15],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Engine Acceleration',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.engineAcceleration = double.parse(val);
+                        } else {
+                          newCar.engineAcceleration = oldCar.engineAcceleration;
+                        }
+                        return null;
+                      },
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                    ),
+                    new TextFormField(
+                      controller: textController[16],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Fuel Consumption',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.fuelConsumption = double.parse(val);
+                        } else {
+                          newCar.fuelConsumption = oldCar.fuelConsumption;
+                        }
+                        return null;
+                      },
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                    ),
+                    new TextFormField(
+                      controller: textController[17],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Fuel Tank Capacity',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.fuelTankCapacity = double.parse(val);
+                        } else {
+                          newCar.fuelTankCapacity = oldCar.fuelTankCapacity;
+                        }
+                        return null;
+                      },
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                    ),
+                    new TextFormField(
+                      controller: textController[18],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Preffered Fuel Type',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.prefferedFuelType = val;
+                        } else {
+                          newCar.prefferedFuelType = oldCar.prefferedFuelType;
+                        }
+                        return null;
+                      },
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                    ),
+                    new TextFormField(
+                      controller: textController[19],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Brake Safety',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.brakeSafety = val;
+                        } else {
+                          newCar.brakeSafety = oldCar.brakeSafety;
+                        }
+                        return null;
+                      },
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                    ),
+                    new TextFormField(
+                      controller: textController[20],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Brake 100 To 0',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.brake100To0 = double.parse(val);
+                        } else {
+                          newCar.brake100To0 = oldCar.brake100To0;
+                        }
+                        return null;
+                      },
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                    ),
+                    new TextFormField(
+                      controller: textController[21],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Rim Diameter',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.rimDiameter = double.parse(val);
+                        } else {
+                          newCar.rimDiameter = oldCar.rimDiameter;
+                        }
+                        return null;
+                      },
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                    ),
+                    new TextFormField(
+                      controller: textController[22],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Front Suspension',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.frontSuspension = val;
+                        } else {
+                          newCar.frontSuspension = oldCar.frontSuspension;
+                        }
+                        return null;
+                      },
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                    ),
+                    new TextFormField(
+                      controller: textController[23],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Back Suspension',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.backSuspension = val;
+                        } else {
+                          newCar.backSuspension = oldCar.backSuspension;
+                        }
+                        return null;
+                      },
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                    ),
+                    new TextFormField(
+                      controller: textController[24],
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(25),
+                          borderSide: BorderSide(
+                            width: 3,
+                            style: BorderStyle.none,
+                          ),
+                        ),
+                        labelText: 'Wheel Width',
+                      ),
+                      validator: (val) {
+                        if (val.length != 0) {
+                          newCar.wheelWidth = double.parse(val);
+                        } else {
+                          newCar.wheelWidth = oldCar.wheelWidth;
+                        }
+                        return null;
+                      },
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                    ),
+                    new Padding(
+                      padding: const EdgeInsets.only(top: 20.0),
+                    ),
+                    RaisedButton(
+                      onPressed: () => onEdit(),
+                      child: Text('Confirm'),
+                    ),
+                  ],
                 ),
-                validator: (val) {
-                  if (val.length != 0) {
-                    newCar.wheelWidth = double.parse(val);
-                  } else {
-                    newCar.wheelWidth = oldCar.wheelWidth;
-                  }
-                  return null;
-                },
               ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              new Padding(
-                padding: const EdgeInsets.only(top: 20.0),
-              ),
-              RaisedButton(
-                onPressed: () => onEdit(),
-                child: Text('Confirm'),
-              ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }
