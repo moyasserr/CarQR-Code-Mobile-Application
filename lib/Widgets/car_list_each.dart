@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:car_qr/Models/car.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
-import 'package:car_qr/Screens/edit_car.dart';
+import 'package:car_qr/Screens/App_Admin/edit_car.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class CarListEach extends StatelessWidget {

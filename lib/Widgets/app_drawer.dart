@@ -1,9 +1,9 @@
 import 'package:car_qr/Models/user.dart';
 import 'package:car_qr/Providers/auth.dart';
 import 'package:car_qr/Screens/about.dart';
-import 'package:car_qr/Screens/admin_cars_screen.dart';
+import 'package:car_qr/Screens/App_Admin/admin_cars_screen.dart';
 import 'package:car_qr/Screens/car_list_user.dart';
-import 'package:car_qr/Screens/carshowroomadmin.dart';
+import 'package:car_qr/Screens/Admin_Showroom/carshowroomadmin.dart';
 import 'package:car_qr/Screens/history.dart';
 import 'package:car_qr/Screens/settings.dart';
 import 'package:car_qr/Screens/user_showrooms.dart';

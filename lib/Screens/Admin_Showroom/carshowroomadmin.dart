@@ -2,7 +2,7 @@ import 'package:car_qr/Models/user.dart';
 import 'package:car_qr/Widgets/adminshdrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../Models/showrooms.dart';
+import '../../Providers/showrooms.dart';
 
 class Carshowroomadmin extends StatefulWidget {
   static const routeName = '/showroom-admin';

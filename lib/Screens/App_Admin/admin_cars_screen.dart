@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:car_qr/Widgets/car_list.dart';
 import 'package:provider/provider.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
-import 'package:car_qr/Screens/add_car.dart';
+import 'package:car_qr/Screens/App_Admin/add_car.dart';
 
 class AdminCarsPanal extends StatefulWidget {
   static const routeName = '/adminapp';

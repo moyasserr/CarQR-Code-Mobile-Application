@@ -1,4 +1,4 @@
-import 'package:car_qr/Models/showrooms.dart';
+import 'package:car_qr/Providers/showrooms.dart';
 import 'package:car_qr/Models/user.dart';
 import 'package:car_qr/Screens/showroom_details.dart';
 import 'package:car_qr/Widgets/app_drawer.dart';

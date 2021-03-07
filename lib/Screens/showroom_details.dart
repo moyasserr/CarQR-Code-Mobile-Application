@@ -1,6 +1,6 @@
 import 'package:car_qr/Models/car.dart';
 import 'package:car_qr/Models/showroom.dart';
-import 'package:car_qr/Models/showrooms.dart';
+import 'package:car_qr/Providers/showrooms.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Screens/car_description.dart';
 import 'package:google_fonts/google_fonts.dart';

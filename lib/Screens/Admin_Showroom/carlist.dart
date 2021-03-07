@@ -1,5 +1,5 @@
 import 'package:car_qr/Models/showroom.dart';
-import 'package:car_qr/Models/showrooms.dart';
+import 'package:car_qr/Providers/showrooms.dart';
 import 'package:car_qr/Models/user.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Widgets/adminshdrawer.dart';

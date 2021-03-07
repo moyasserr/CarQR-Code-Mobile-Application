@@ -25,13 +25,11 @@ class HistoryState extends State<History> {
     await Provider.of<HistoryProvider>(context, listen: false)
         .readCarHistory(widget.user.fireID);
     hCars = await Provider.of<HistoryProvider>(context, listen: false).cars;
-    
 
     for (int i = 0; i < hCars.length; i++) {
       car = await Provider.of<AvailableCarsModel>(context, listen: false)
           .findById(hCars[i].id);
-          hCars[i] = car;
-          
+      hCars[i] = car;
     }
   }
 
@@ -102,18 +100,16 @@ class HistoryState extends State<History> {
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) => CarDetails(
+                                              loggedUser: widget.user,
                                               carId: carsdata.cars[i].id),
                                         ),
                                       );
                                     },
                                     child: HistoryCarList(
                                       id: carsdata.cars[i].id,
-                                      carbrand: carsdata
-                                          .cars[i].carBrand,
-                                      carimage:
-                                          carsdata.cars[i].image,
-                                      carmodel: carsdata
-                                          .cars[i].carModel,
+                                      carbrand: carsdata.cars[i].carBrand,
+                                      carimage: carsdata.cars[i].image,
+                                      carmodel: carsdata.cars[i].carModel,
                                     ),
                                   )
                                 ],

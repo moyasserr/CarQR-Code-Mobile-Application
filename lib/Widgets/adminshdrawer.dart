@@ -1,8 +1,8 @@
 import 'package:car_qr/Models/user.dart';
 import 'package:car_qr/Providers/auth.dart';
-import 'package:car_qr/Screens/ad_sh_carlist.dart';
-import 'package:car_qr/Screens/admin_showrooms.dart';
-import 'package:car_qr/Screens/carshowroomadmin.dart';
+import 'package:car_qr/Screens/Admin_Showroom/ad_sh_carlist.dart';
+import 'package:car_qr/Screens/Admin_Showroom/admin_showrooms.dart';
+import 'package:car_qr/Screens/Admin_Showroom/carshowroomadmin.dart';
 import 'package:flutter/material.dart';
 
 class AdminDrawer extends StatelessWidget {
