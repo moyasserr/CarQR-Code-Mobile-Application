@@ -15,7 +15,9 @@ class UserShowrooms extends StatefulWidget {
 
 class _UserShowroomsState extends State<UserShowrooms> {
   Future<void> refresh(BuildContext context) async {
-    await Provider.of<CarShowrooms>(context, listen: false).fetchShowrooms();
+    await Provider.of<CarShowrooms>(context, listen: false)
+        .fetchShowrooms()
+        .then((value) {});
   }
 
   @override
@@ -43,14 +45,21 @@ class _UserShowroomsState extends State<UserShowrooms> {
                             itemCount: showroomdata.showrooms.length,
                             itemBuilder: (_, i) => Column(
                               children: [
-                                Showrooms(
-                                  id: showroomdata.showrooms[i].id,
-                                  showroomName:
-                                      showroomdata.showrooms[i].showRoomName,
-                                  image: showroomdata.showrooms[i].image,
-                                  phonenumber:
-                                      showroomdata.showrooms[i].phoneNumber,
-                                  address: showroomdata.showrooms[i].location,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(
+                                        context, Showroomdetails.routeName,
+                                        arguments: showroomdata.showrooms[i]);
+                                  },
+                                  child: Showrooms(
+                                    id: showroomdata.showrooms[i].id,
+                                    showroomName:
+                                        showroomdata.showrooms[i].showRoomName,
+                                    image: showroomdata.showrooms[i].image,
+                                    phonenumber:
+                                        showroomdata.showrooms[i].phoneNumber,
+                                    address: showroomdata.showrooms[i].location,
+                                  ),
                                 ),
                                 Divider(),
                               ],
@@ -74,49 +83,44 @@ class Showrooms extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-        onTap: () {
-          Navigator.pushNamed(context, Showroomdetails.routeName,
-              arguments: [showroomName, phonenumber, address, image, id]);
-        },
-        child: Card(
-          elevation: 10.0,
-          margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
-          child: Container(
-            // height: 150,
-            decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
-            child: ListTile(
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                leading: Container(
-                  padding: const EdgeInsets.only(right: 12.0),
-                  width: 50,
-                  height: 50,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    border: Border.all(width: 1, color: Colors.white),
-                    image: DecorationImage(
-                        image: new NetworkImage(image), fit: BoxFit.fill),
-                  ),
-                ),
-                title: Text(
-                  '${showroomName[0].toUpperCase()}${showroomName.substring(1)}',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18.0),
-                ),
-                // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
+    return Card(
+      elevation: 10.0,
+      margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+      child: Container(
+        // height: 150,
+        decoration: BoxDecoration(color: Color.fromRGBO(64, 75, 96, .9)),
+        child: ListTile(
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            leading: Container(
+              padding: const EdgeInsets.only(right: 12.0),
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(width: 1, color: Colors.white),
+                image: DecorationImage(
+                    image: new NetworkImage(image), fit: BoxFit.fill),
+              ),
+            ),
+            title: Text(
+              '${showroomName[0].toUpperCase()}${showroomName.substring(1)}',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0),
+            ),
+            // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
 
-                subtitle: Row(
-                  children: <Widget>[
-                    Icon(Icons.car_repair, color: Colors.yellowAccent),
-                    Text(" Showroom", style: TextStyle(color: Colors.white))
-                  ],
-                ),
-                trailing: Icon(Icons.keyboard_arrow_right,
-                    color: Colors.white, size: 30.0)),
-          ),
-        ));
+            subtitle: Row(
+              children: <Widget>[
+                Icon(Icons.car_repair, color: Colors.yellowAccent),
+                Text(" Showroom", style: TextStyle(color: Colors.white))
+              ],
+            ),
+            trailing: Icon(Icons.keyboard_arrow_right,
+                color: Colors.white, size: 30.0)),
+      ),
+    );
   }
 }

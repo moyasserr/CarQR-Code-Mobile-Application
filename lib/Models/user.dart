@@ -37,8 +37,12 @@ class User {
     };
   }
 
-  register() {
-    const url = 'https://carqr-e4c82-default-rtdb.firebaseio.com/users.json';
+  register() async {
+    final idToken = await fUser.getIdToken();
+    final token = idToken.token;
+    this.token = token;
+    final url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/users.json?auth=${this.token}';
     return http
         .post(url,
             body: json.encode({
@@ -54,11 +58,12 @@ class User {
   }
 
   Future<void> readUser() async {
-    final url = 'https://carqr-e4c82-default-rtdb.firebaseio.com/users.json';
+    final idToken = await fUser.getIdToken();
+    final token = idToken.token;
+    this.token = token;
+    final url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/users.json?auth=${this.token}';
     try {
-      final idToken = await fUser.getIdToken();
-      final token = idToken.token;
-      this.token = token;
       final response = await http.get(url);
       final dbData = json.decode(response.body) as Map<String, dynamic>;
       dbData.forEach((key, value) {
@@ -76,6 +81,4 @@ class User {
       print(e);
     }
   }
-
-
 }

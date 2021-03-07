@@ -1,15 +1,45 @@
 {
   "project_info": {
     "project_number": "961818438098",
+    "firebase_url": "https://carqr-e4c82-default-rtdb.firebaseio.com",
     "project_id": "carqr-e4c82",
     "storage_bucket": "carqr-e4c82.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:961818438098:android:d55b8ec3fa264b063d400b",
+        "mobilesdk_app_id": "1:961818438098:android:f72e7b8695750b3d3d400b",
         "android_client_info": {
           "package_name": "com.Car_Scan_QR.car_qr"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "961818438098-sq008gja7jn16m69hhj56gman0884jpc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJSzW6VCibTexIbDZTa3Uujd5B1Eimvt8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "961818438098-sq008gja7jn16m69hhj56gman0884jpc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961818438098:android:d55b8ec3fa264b063d400b",
+        "android_client_info": {
+          "package_name": "com.example.car_qr"
         }
       },
       "oauth_client": [

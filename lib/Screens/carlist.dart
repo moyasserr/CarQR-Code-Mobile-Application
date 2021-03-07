@@ -1,5 +1,6 @@
 import 'package:car_qr/Models/showroom.dart';
 import 'package:car_qr/Models/showrooms.dart';
+import 'package:car_qr/Models/user.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Widgets/adminshdrawer.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +10,8 @@ import 'package:car_qr/Models/car.dart';
 
 class Carlist extends StatefulWidget {
   static const routeName = '/carlist';
+  final User user;
+  Carlist({@required this.user});
   @override
   State<StatefulWidget> createState() {
     return CarlistState();
@@ -53,7 +56,7 @@ class CarlistState extends State<Carlist> {
                 )
         ],
       ),
-      drawer: AdminDrawer(),
+      drawer: AdminDrawer(user: widget.user),
       body: FutureBuilder<Object>(
           future: getcars(context),
           builder: (context, snapshot) {

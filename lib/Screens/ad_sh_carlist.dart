@@ -1,5 +1,6 @@
 import 'package:car_qr/Models/showroom.dart';
 import 'package:car_qr/Models/showrooms.dart';
+import 'package:car_qr/Models/user.dart';
 import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Screens/car_description.dart';
 import 'package:car_qr/Widgets/adminshdrawer.dart';
@@ -10,6 +11,8 @@ import 'package:car_qr/Models/car.dart';
 
 class AdShCarList extends StatefulWidget {
   static const routeName = '/adshcarlist';
+  final User user;
+  AdShCarList({@required this.user});
   @override
   _AdShCarListState createState() => _AdShCarListState();
 }
@@ -66,7 +69,7 @@ class _AdShCarListState extends State<AdShCarList> {
                 )
         ],
       ),
-      drawer: AdminDrawer(),
+      drawer: AdminDrawer(user: widget.user),
       body: FutureBuilder<Object>(
           future: getshcars(context),
           builder: (context, snapshot) {

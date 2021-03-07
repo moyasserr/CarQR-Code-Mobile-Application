@@ -16,173 +16,138 @@ class Showroomdetails extends StatefulWidget {
 
 class _ShowroomdetailsState extends State<Showroomdetails> {
   List<String> showroomdetails = [];
-  CarShowRoom showroom;
+  CarShowRoom shcar;
+  bool isloading = true;
   Car car;
-  Future<void> getshcars(BuildContext context) async {
-    showroomdetails = ModalRoute.of(context).settings.arguments as List<String>;
-    showroom = await Provider.of<CarShowrooms>(context, listen: false)
-        .findshowroom(showroomdetails[4]);
+  Future<void> test() async {
+    for (var i = 0; i < shcar.stockCars.length; i++) {
+      // var x = shcar.stockCars[i].price;
+      shcar.stockCars[i] =
+          await Provider.of<AvailableCarsModel>(context, listen: false)
+              .findById(shcar.stockCars[i].id);
+      print("carbrand : ${shcar.stockCars[i].carBrand}");
+      // shcar.stockCars[i].price = x;
+    }
+  }
 
-    await Provider.of<CarShowrooms>(context, listen: false)
-        .fetchShowroomCars(showroomdetails[4]);
-    print("test ${showroom.stockCars.length}");
-    // print("sasasasas${showroomdetails[4]}");
-    // for (int i = 0; i < showroom.stockCars.length; i++) {
-    //   car = await Provider.of<AvailableCarsModel>(context, listen: false)
-    //       .findById(showroom.stockCars[i].id);
-    //   car.price = showroom.stockCars[i].price;
-    //   showroom.stockCars[i] = car;
-    // }
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(Duration.zero, () {
+      this.test().then((value) {
+        setState(() {
+          isloading = false;
+        });
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    showroomdetails = ModalRoute.of(context).settings.arguments as List<String>;
-
+    shcar = ModalRoute.of(context).settings.arguments as CarShowRoom;
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blue[900],
           title: new Text(
-            '${showroomdetails[0][0].toUpperCase()}${showroomdetails[0].substring(1)}',
+            // '${shcar.showRoomName[0].toUpperCase()}${shcar.showRoomName.substring(1)}',
+            'sadsaadsdassda',
             style: TextStyle(fontSize: 22.0),
           ),
         ),
-        // body: Column(
-        //   children: [
-        //     Row(
-        //       children: [
-        //         Container(
-        //           padding: EdgeInsets.all(20.0),
-        //           margin: const EdgeInsets.all(15.0),
-        //           width: 100,
-        //           height: 100,
-        //           decoration: BoxDecoration(
-        //             shape: BoxShape.circle,
-        //             border: Border.all(width: 2, color: Colors.blue[900]),
-        //             image: DecorationImage(
-        //                 image: new NetworkImage(showroomdetails[3]),
-        //                 fit: BoxFit.fill),
-        //           ),
-        //         ),
-        //         Column(
-        //           crossAxisAlignment: CrossAxisAlignment.start,
-        //           children: [
-        //             Text(
-        //               'PhoneNumber: ${showroomdetails[1]}',
-        //               textAlign: TextAlign.center,
-        //               style: GoogleFonts.lato(
-        //                 textStyle: TextStyle(color: Colors.blue),
-        //                 fontSize: 18,
-        //                 fontWeight: FontWeight.w700,
-        //                 fontStyle: FontStyle.italic,
-        //               ),
-        //             ),
-        //             Container(
-        //               width: 200.0,
-        //               child: Text(
-        //                 'Location:  ${showroomdetails[2]}',
-        //                 textAlign: TextAlign.center,
-        //                 overflow: TextOverflow.fade,
-        //                 style: GoogleFonts.lato(
-        //                   textStyle: TextStyle(color: Colors.blue),
-        //                   fontSize: 18,
-        //                   fontWeight: FontWeight.w700,
-        //                   fontStyle: FontStyle.italic,
-        //                 ),
-        //               ),
-        //             )
-        //           ],
-        //         )
-        //       ],
-        //     ),
-        //     Row(
-        //       children: [
-        //         Container(
-        //           padding: EdgeInsets.all(20.0),
-        //           margin: EdgeInsets.symmetric(vertical: 15.0),
-        //           child: Text(
-        //             'Availble Cars: ',
-        //             textAlign: TextAlign.center,
-        //             style: GoogleFonts.lato(
-        //               textStyle: TextStyle(color: Colors.red[900]),
-        //               fontSize: 22,
-        //               fontWeight: FontWeight.w700,
-        //               fontStyle: FontStyle.italic,
-        //             ),
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        body: FutureBuilder<Object>(
-            future: getshcars(context),
-            builder: (context, snapshot) {
-              return snapshot.connectionState == ConnectionState.waiting
-                  ? Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : showroom.stockCars == null
-                      ? Center(
-                          child: Text(
-                            "No Cars Added Yet",
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.lato(
-                              textStyle: TextStyle(color: Colors.blue),
-                              fontSize: 35,
-                              fontWeight: FontWeight.w700,
-                              fontStyle: FontStyle.italic,
+        body: isloading
+            ? CircularProgressIndicator()
+            : ListView(
+                children: [
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(20.0),
+                            margin: const EdgeInsets.all(15.0),
+                            width: 100,
+                            height: 100,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border:
+                                  Border.all(width: 2, color: Colors.blue[900]),
+                              image: DecorationImage(
+                                  image: new NetworkImage(shcar.image),
+                                  fit: BoxFit.fill),
                             ),
                           ),
-                        )
-                      : RefreshIndicator(
-                          onRefresh: () => getshcars(context),
-                          child: Padding(
-                            padding: EdgeInsets.all(8),
-                            child: Consumer<CarShowrooms>(
-                              builder: (context, carsdata, child) =>
-                                  ListView.builder(
-                                itemCount: carsdata.showroom.stockCars.length,
-                                itemBuilder: (_, i) => Column(
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => CarDetails(
-                                                carId: carsdata
-                                                    .showroom.stockCars[i].id),
-                                            settings: RouteSettings(
-                                              arguments:
-                                                  showroom.stockCars[i].price,
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      child: Showroomcars(
-                                        id: carsdata.showroom.stockCars[i].id,
-                                        carbrand: carsdata
-                                            .showroom.stockCars[i].carBrand,
-                                        carimage: carsdata
-                                            .showroom.stockCars[i].image,
-                                        carmodel: carsdata
-                                            .showroom.stockCars[i].carModel,
-                                      ),
-                                    )
-                                  ],
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'PhoneNumber: ${shcar.phoneNumber}',
+                                textAlign: TextAlign.center,
+                                style: GoogleFonts.lato(
+                                  textStyle: TextStyle(color: Colors.blue),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  fontStyle: FontStyle.italic,
                                 ),
                               ),
+                              Container(
+                                width: 200.0,
+                                child: Text(
+                                  'Location:  ${shcar.location}',
+                                  textAlign: TextAlign.center,
+                                  overflow: TextOverflow.fade,
+                                  style: GoogleFonts.lato(
+                                    textStyle: TextStyle(color: Colors.blue),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700,
+                                    fontStyle: FontStyle.italic,
+                                  ),
+                                ),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Container(
+                            padding: EdgeInsets.all(20.0),
+                            margin: EdgeInsets.symmetric(vertical: 15.0),
+                            child: Text(
+                              'Availble Cars: ',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.lato(
+                                textStyle: TextStyle(color: Colors.red[900]),
+                                fontSize: 22,
+                                fontWeight: FontWeight.w700,
+                                fontStyle: FontStyle.italic,
+                              ),
                             ),
-                          ));
-            }));
+                          ),
+                        ],
+                      ),
+                      for (var i = 0; i < shcar.stockCars.length; i++)
+                        Showroomcars(
+                          carId: shcar.stockCars[i].id,
+                          carbrand: shcar.stockCars[i].carBrand,
+                          carimage: shcar.stockCars[i].image,
+                          carmodel: shcar.stockCars[i].carModel,
+                          carprice: shcar.stockCars[i].price,
+                        )
+                    ],
+                  ),
+                ],
+              ));
   }
 }
 
 class Showroomcars extends StatelessWidget {
+  String carId;
   String carbrand;
   String carmodel;
-  String id;
   String carimage;
-  Showroomcars({this.id, this.carbrand, this.carimage, this.carmodel});
+  String carprice;
+  Showroomcars(
+      {this.carId, this.carbrand, this.carimage, this.carmodel, this.carprice});
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -217,7 +182,7 @@ class Showroomcars extends StatelessWidget {
             Padding(
               padding: EdgeInsets.all(6),
               child: Text(
-                'Car Price',
+                carprice,
                 style: GoogleFonts.lato(
                   textStyle: TextStyle(color: Colors.blue),
                   fontSize: 20,

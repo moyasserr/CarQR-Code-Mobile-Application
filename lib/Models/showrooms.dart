@@ -158,12 +158,7 @@ class CarShowrooms with ChangeNotifier {
       }
       final List<Car> shCars = [];
       dbData.forEach((key, data) {
-        shCars.add(Car.emptyConst(
-            id: data['carID'],
-            // carBrand: data['carBrand'],
-            // carModel: data['carModel'],
-            // image: data['carImage'],
-            price: data['carPrice']));
+        shCars.add(Car.emptyConst(id: data['carID'], price: data['carPrice']));
 
         _showroom.stockCars = shCars;
         notifyListeners();
@@ -171,6 +166,32 @@ class CarShowrooms with ChangeNotifier {
       });
       notifyListeners();
       return null;
+    } on Exception catch (e) {
+      print(e.toString());
+      throw (e);
+    }
+  }
+
+  Future<void> fetchCarsOfShowroom(
+      String showroomID, List<CarShowRoom> showrooms) async {
+    final url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/showrooms/$showroomID/cars.json?auth=${user.token}';
+    final showroomIndex =
+        showrooms.indexWhere((showroom) => showroom.id == showroomID);
+    try {
+      final response = await http.get(url);
+      final dbData = json.decode(response.body) as Map<String, dynamic>;
+      final List<Car> shCars = [];
+      try {
+        dbData.forEach((key, data) {
+          shCars
+              .add(Car.emptyConst(id: data['carID'], price: data['carPrice']));
+        });
+        _showrooms[showroomIndex].stockCars = shCars;
+        notifyListeners();
+      } catch (e) {
+        print(e);
+      }
     } on Exception catch (e) {
       print(e.toString());
       throw (e);

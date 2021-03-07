@@ -1,5 +1,6 @@
 import 'package:car_qr/Models/showroom.dart';
 import 'package:car_qr/Models/showrooms.dart';
+import 'package:car_qr/Models/user.dart';
 import 'package:car_qr/Widgets/adminshdrawer.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,8 @@ import 'manage_showroom.dart';
 class AdminShowroomsScreen extends StatefulWidget {
   static const routeName = '/adminshowrooms';
   static bool isloading = false;
+  final User user;
+  AdminShowroomsScreen({@required this.user});
   static CarShowRoom test;
   @override
   _AdminShowroomsScreenState createState() => _AdminShowroomsScreenState();
@@ -26,7 +29,7 @@ class _AdminShowroomsScreenState extends State<AdminShowroomsScreen> {
         appBar: AppBar(
           title: const Text('Showroom Profile'),
         ),
-        drawer: AdminDrawer(),
+        drawer: AdminDrawer(user: widget.user),
         body: FutureBuilder<Object>(
             future: refresh(context),
             builder: (context, snapshot) {

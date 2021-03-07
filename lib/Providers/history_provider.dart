@@ -1,21 +1,26 @@
 import 'dart:convert';
 import 'package:car_qr/Models/car.dart';
 import 'package:car_qr/Models/historyModel.dart';
+import 'package:car_qr/Models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class HistoryProvider with ChangeNotifier {
+  final User user;
   HistoryModel carsHistory;
   List<Car> cars = [];
   List<String> carKeys = [];
 
-  int checkHistory(String carID){
+  HistoryProvider({@required this.user});
+
+  int checkHistory(String carID) {
     final carIndex = cars.indexWhere((car) => car.id == carID);
     return carIndex;
   }
 
   Future<void> carScannedHistory(Car car, String userID) async {
-    final url ='https://carqr-e4c82-default-rtdb.firebaseio.com/users/$userID/history.json';
+    final url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/users/$userID/history.json?auth=${user.token}';
     int checkResult;
 
     try {
@@ -27,25 +32,24 @@ class HistoryProvider with ChangeNotifier {
             }));
         return;
       }
-      checkResult=checkHistory(car.id);
-      if(checkResult==-1){
+      checkResult = checkHistory(car.id);
+      if (checkResult == -1) {
         await http.post(url,
             body: json.encode({
               'carID': car.id,
             }));
-      }
-      else
-      {
-        final url2 ='https://carqr-e4c82-default-rtdb.firebaseio.com/users/$userID/history/${carKeys[checkResult]}.json';
+      } else {
+        final url2 =
+            'https://carqr-e4c82-default-rtdb.firebaseio.com/users/$userID/history/${carKeys[checkResult]}.json?auth=${user.token}';
         final response = await http.delete(url2);
         if (response.statusCode >= 400) {
-            print('Delete failed ${car.id}');
-          } else {
-            await http.post(url,
-                body: json.encode({
-                  'carID': car.id,
-                }));
-          }
+          print('Delete failed ${car.id}');
+        } else {
+          await http.post(url,
+              body: json.encode({
+                'carID': car.id,
+              }));
+        }
       }
 
       cars.add(car);
@@ -58,7 +62,7 @@ class HistoryProvider with ChangeNotifier {
 
   Future<void> readCarHistory(String userID) async {
     final url =
-        'https://carqr-e4c82-default-rtdb.firebaseio.com/users/$userID/history.json';
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/users/$userID/history.json?auth=${user.token}';
 
     try {
       final response = await http.get(url);
