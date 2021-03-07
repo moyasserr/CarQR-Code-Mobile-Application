@@ -64,45 +64,41 @@ class CarListEachUser extends StatelessWidget {
                 )),
       ),
       child: Card(
-        child: ListTile(
-          leading: Image.network(
-            car.image,
-            width: 100.0,
-            height: 100.0,
+        elevation: 10.0,
+        margin: new EdgeInsets.symmetric(horizontal: 10.0, vertical: 6.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Color.fromRGBO(64, 75, 96, .9),
           ),
-          title: Text(car.carBrand.toString()),
-          subtitle: Text(car.carModel.toString()),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              IconButton(
-                icon: Icon(Icons.image),
-                onPressed: () async {
-                  await showDialog(
-                    context: context,
-                    builder: (_) {
-                      return Dialog(
-                        child: Container(
-                          width: 300,
-                          height: 300,
-                          child: QrImage(
-                            data: car.id,
-                            version: QrVersions.auto,
-                            size: 200.0,
-                          ),
-                        ),
-                      );
-                    },
-                  );
-                },
+          child: ListTile(
+            contentPadding:
+                EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+            leading: Container(
+              padding: const EdgeInsets.only(right: 12.0),
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(width: 1, color: Colors.white),
+                image: DecorationImage(
+                    image: new NetworkImage(car.image), fit: BoxFit.fill),
               ),
-              IconButton(
-                icon: Icon(Icons.delete_forever),
-                onPressed: () {
-                  showAlertDialog(context);
-                },
-              ),
-            ],
+            ),
+            title: Text(
+              car.carBrand.toString(),
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18.0),
+            ),
+            subtitle: Row(
+              children: <Widget>[
+                Text("Model : ${car.carModel.toString()}",
+                    style: TextStyle(color: Colors.white))
+              ],
+            ),
+            trailing: Icon(Icons.keyboard_arrow_right,
+                color: Colors.white, size: 30.0),
           ),
         ),
       ),

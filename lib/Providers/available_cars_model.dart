@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 
 class AvailableCarsModel with ChangeNotifier {
   List<Car> _cars = [];
+  List<Car> _carsClone = [];
   final User user;
 
   AvailableCarsModel({@required this.user});
@@ -19,6 +20,23 @@ class AvailableCarsModel with ChangeNotifier {
       await readCars();
     }
     return _cars.firstWhere((car) => car.id == id);
+  }
+
+  void searchCars(String keyword) {
+    List<Car> tempCars = [];
+
+    if (keyword == "") {
+      _cars = _carsClone;
+    } else {
+      for (int i = 0; i < _cars.length; i++) {
+        if (_cars[i].carBrand.toLowerCase().contains((keyword.toLowerCase()))) {
+          tempCars.add(_cars[i]);
+        }
+      }
+      _cars = tempCars;
+    }
+
+    notifyListeners();
   }
 
   Future<void> readCars() async {
@@ -66,6 +84,7 @@ class AvailableCarsModel with ChangeNotifier {
         this.fetchCarReviews(key, dbCars);
       });
       _cars = dbCars;
+      _carsClone = _cars;
       notifyListeners();
     } on Exception catch (e) {
       print(e.toString());

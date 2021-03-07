@@ -9,13 +9,14 @@ class HistoryProvider with ChangeNotifier {
   List<Car> cars = [];
   List<String> carKeys = [];
 
-  int checkHistory(String carID){
+  int checkHistory(String carID) {
     final carIndex = cars.indexWhere((car) => car.id == carID);
     return carIndex;
   }
 
   Future<void> carScannedHistory(Car car, String userID) async {
-    final url ='https://carqr-e4c82-default-rtdb.firebaseio.com/users/$userID/history.json';
+    final url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/users/$userID/history.json';
     int checkResult;
 
     try {
@@ -27,25 +28,24 @@ class HistoryProvider with ChangeNotifier {
             }));
         return;
       }
-      checkResult=checkHistory(car.id);
-      if(checkResult==-1){
+      checkResult = checkHistory(car.id);
+      if (checkResult == -1) {
         await http.post(url,
             body: json.encode({
               'carID': car.id,
             }));
-      }
-      else
-      {
-        final url2 ='https://carqr-e4c82-default-rtdb.firebaseio.com/users/$userID/history/${carKeys[checkResult]}.json';
+      } else {
+        final url2 =
+            'https://carqr-e4c82-default-rtdb.firebaseio.com/users/$userID/history/${carKeys[checkResult]}.json';
         final response = await http.delete(url2);
         if (response.statusCode >= 400) {
-            print('Delete failed ${car.id}');
-          } else {
-            await http.post(url,
-                body: json.encode({
-                  'carID': car.id,
-                }));
-          }
+          print('Delete failed ${car.id}');
+        } else {
+          await http.post(url,
+              body: json.encode({
+                'carID': car.id,
+              }));
+        }
       }
 
       cars.add(car);
