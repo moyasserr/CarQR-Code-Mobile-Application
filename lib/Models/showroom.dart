@@ -18,13 +18,4 @@ class CarShowRoom {
       this.stockCars}) {
     this.stockCars = [];
   }
-
-  // Map<String, dynamic> get map {
-  //   return {
-  //     "showRoomName": showRoomName,
-  //     "phoneNumber": phoneNumber,
-  //     "location": location,
-  //     "stockCars": stockCars,
-  //   };
-  // }
 }

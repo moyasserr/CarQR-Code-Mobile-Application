@@ -4,6 +4,8 @@ import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Providers/history_provider.dart';
 import 'package:car_qr/Screens/about.dart';
 import 'package:car_qr/Screens/settings.dart';
+import 'package:car_qr/Screens/showroom_details.dart';
+import 'package:car_qr/Screens/user_showrooms.dart';
 import 'package:flutter/material.dart';
 import 'package:car_qr/Screens/car_description.dart';
 import 'package:flutter/services.dart';
@@ -86,8 +88,8 @@ class Nav extends StatelessWidget {
           Settings.routeName: (ctx) => Settings(user: user),
           About.routeName: (ctx) => About(),
           AdminCarsPanal.routeName: (ctx) => AdminCarsPanal(),
-          // '/showrooms': (context) => Carshowroom(),
-          // '/about': (context) => About(),
+          UserShowrooms.routeName: (ctx) => UserShowrooms(user: user),
+          Showroomdetails.routeName: (ctx) => Showroomdetails(),
         },
       ),
     );

@@ -25,14 +25,6 @@ class _AdminShowroomsScreenState extends State<AdminShowroomsScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Showroom Profile'),
-          // actions: <Widget>[
-          //   IconButton(
-          //     icon: const Icon(Icons.add),
-          //     onPressed: () {
-          //       Navigator.pushNamed(context, ManageShowroom.routeName);
-          //     },
-          //   ),
-          // ],
         ),
         drawer: AdminDrawer(),
         body: FutureBuilder<Object>(
@@ -87,28 +79,6 @@ class _AdminShowroomsScreenState extends State<AdminShowroomsScreen> {
                             ),
                           ),
                         ));
-              // : RefreshIndicator(
-              //     onRefresh: () => refresh(context),
-              //     child: Padding(
-              //       padding: EdgeInsets.all(8),
-              //       child: Consumer<CarShowrooms>(
-              //         builder: (context, showroomsData, child) =>
-              //             ListView.builder(
-              //           itemCount: showroomsData.showrooms.length,
-              //           itemBuilder: (_, i) => Column(
-              //             children: [
-              //               AdminShowroomItem(
-              //                 showroomsData.showrooms[i].id,
-              //                 showroomsData.showrooms[i].showRoomName,
-              //                 showroomsData.showrooms[i].image,
-              //               ),
-              //               Divider(),
-              //             ],
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   );
             }));
   }
 }
@@ -387,65 +357,6 @@ class AdminShowroomItem extends StatelessWidget {
                               ),
                             ],
                           )),
-                      // Padding(
-                      //     padding: EdgeInsets.only(
-                      //         left: 25.0, right: 25.0, top: 25.0),
-                      //     child: new Row(
-                      //       mainAxisSize: MainAxisSize.max,
-                      //       mainAxisAlignment: MainAxisAlignment.start,
-                      //       children: <Widget>[
-                      //         Expanded(
-                      //           child: Container(
-                      //             child: new Text(
-                      //               'Pin Code',
-                      //               style: TextStyle(
-                      //                   fontSize: 16.0,
-                      //                   fontWeight: FontWeight.bold),
-                      //             ),
-                      //           ),
-                      //           flex: 2,
-                      //         ),
-                      //         Expanded(
-                      //           child: Container(
-                      //             child: new Text(
-                      //               'State',
-                      //               style: TextStyle(
-                      //                   fontSize: 16.0,
-                      //                   fontWeight: FontWeight.bold),
-                      //             ),
-                      //           ),
-                      //           flex: 2,
-                      //         ),
-                      //       ],
-                      //     )),
-                      // Padding(
-                      //     padding: EdgeInsets.only(
-                      //         left: 25.0, right: 25.0, top: 2.0),
-                      //     child: new Row(
-                      //       mainAxisSize: MainAxisSize.max,
-                      //       mainAxisAlignment: MainAxisAlignment.start,
-                      //       children: <Widget>[
-                      //         Flexible(
-                      //           child: Padding(
-                      //             padding: EdgeInsets.only(right: 10.0),
-                      //             child: new TextField(
-                      //               decoration: const InputDecoration(
-                      //                   hintText: "Enter Pin Code"),
-                      //               //enabled: !_status,
-                      //             ),
-                      //           ),
-                      //           flex: 2,
-                      //         ),
-                      //         Flexible(
-                      //           child: new TextField(
-                      //             decoration: const InputDecoration(
-                      //                 hintText: "Enter State"),
-                      //             //enabled: !_status,
-                      //           ),
-                      //           flex: 2,
-                      //         ),
-                      //       ],
-                      //     )),
                     ],
                   ),
                 ),
@@ -456,35 +367,4 @@ class AdminShowroomItem extends StatelessWidget {
       ),
     );
   }
-  // @override
-  // Widget build(BuildContext context) {
-  //   return ListTile(
-  //     title: Text(showroomName),
-  //     leading: CircleAvatar(
-  //       backgroundImage: NetworkImage(image),
-  //     ),
-  //     trailing: Container(
-  //       width: 100,
-  //       child: Row(
-  //         children: <Widget>[
-  //           IconButton(
-  //             icon: Icon(Icons.edit),
-  //             onPressed: () {
-  //               Navigator.pushNamed(context, ManageShowroom.routeName,
-  //                   arguments: id);
-  //             },
-  //             color: Theme.of(context).primaryColor,
-  //           ),
-  //           IconButton(
-  //             icon: Icon(Icons.delete),
-  //             onPressed: () {
-  //               createDialog(context);
-  //             },
-  //             color: Theme.of(context).errorColor,
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 }

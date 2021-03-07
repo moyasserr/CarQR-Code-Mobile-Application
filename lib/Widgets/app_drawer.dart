@@ -6,6 +6,7 @@ import 'package:car_qr/Screens/car_list_user.dart';
 import 'package:car_qr/Screens/carshowroomadmin.dart';
 import 'package:car_qr/Screens/history.dart';
 import 'package:car_qr/Screens/settings.dart';
+import 'package:car_qr/Screens/user_showrooms.dart';
 import 'package:flutter/material.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -72,7 +73,9 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.car_repair),
             title: Text('Showrooms'),
-            onTap: () {},
+            onTap: () {
+              Navigator.pushNamed(context, UserShowrooms.routeName);
+            },
           ),
           Divider(),
           ListTile(

@@ -1,10 +1,7 @@
 import 'dart:convert';
 import 'package:car_qr/Models/car.dart';
 import 'package:car_qr/Models/user.dart';
-import 'package:car_qr/Providers/available_cars_model.dart';
 import 'package:car_qr/Screens/admin_showrooms.dart';
-import 'package:provider/provider.dart';
-
 import '../Models/HTTPException.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +15,7 @@ class CarShowrooms with ChangeNotifier {
   CarShowRoom _showroom;
 
   CarShowrooms({@required this.user});
+
   List<CarShowRoom> get showrooms {
     return [..._showrooms];
   }
@@ -26,12 +24,12 @@ class CarShowrooms with ChangeNotifier {
     return _showroom;
   }
 
-  // CarShowRoom findById(String id) {
-  //   return _showrooms.firstWhere((showroom) => showroom.id == id);
-  // }
-
   CarShowRoom findById(String id) {
     return _showroom;
+  }
+
+  Future<CarShowRoom> findshowroom(String id) async {
+    return _showrooms.firstWhere((showroom) => showroom.id == id);
   }
 
   Future<CarShowRoom> fetchAdminShowroom() async {
@@ -69,6 +67,33 @@ class CarShowrooms with ChangeNotifier {
     }
   }
 
+  Future<void> fetchShowrooms() async {
+    var url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/showrooms.json?auth=${user.token}';
+    try {
+      final response = await http.get(url);
+      final dbData = json.decode(response.body) as Map<String, dynamic>;
+      if (dbData == null) {
+        return null;
+      }
+      List<CarShowRoom> dbshowrooms = [];
+      dbData.forEach((key, data) {
+        dbshowrooms.add(CarShowRoom(
+          id: key,
+          showRoomName: data['showroomName'],
+          phoneNumber: data['phoneNumber'],
+          location: data['location'],
+          image: data['image'],
+        ));
+      });
+      _showrooms = dbshowrooms;
+      notifyListeners();
+    } on Exception catch (e) {
+      print(e.toString());
+      throw (e);
+    }
+  }
+
   Future<void> addShowroom(CarShowRoom showroom) async {
     final url =
         'https://carqr-e4c82-default-rtdb.firebaseio.com/showrooms.json?auth=${user.token}';
@@ -91,7 +116,7 @@ class CarShowrooms with ChangeNotifier {
           id: json.decode(response.body)['name']);
       _showroom = newShowroom;
       AdminShowroomsScreen.isloading = true;
-      //_showrooms.add(newShowroom);
+      _showrooms.add(newShowroom);
       notifyListeners();
     } catch (error) {
       print(error);
