@@ -1,14 +1,16 @@
 import 'dart:collection';
 import 'dart:convert';
 import 'package:car_qr/Models/review.dart';
+import 'package:car_qr/Models/user.dart';
 import 'package:flutter/material.dart';
 import 'package:car_qr/Models/car.dart';
 import 'package:http/http.dart' as http;
 
 class AvailableCarsModel with ChangeNotifier {
   List<Car> _cars = [];
+  final User user;
 
-  AvailableCarsModel() {}
+  AvailableCarsModel({@required this.user});
 
   UnmodifiableListView<Car> get allCars => UnmodifiableListView(_cars);
 
@@ -20,7 +22,8 @@ class AvailableCarsModel with ChangeNotifier {
   }
 
   Future<void> readCars() async {
-    const url = 'https://carqr-e4c82-default-rtdb.firebaseio.com/cars.json';
+    final url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars.json?auth=${user.token}';
     try {
       print("success");
       final response = await http.get(url);
@@ -71,7 +74,8 @@ class AvailableCarsModel with ChangeNotifier {
   }
 
   addCar(Car car) {
-    const url = 'https://carqr-e4c82-default-rtdb.firebaseio.com/cars.json';
+    final url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars.json?auth=${user.token}';
     return http
         .post(url,
             body: json.encode({
@@ -148,7 +152,8 @@ class AvailableCarsModel with ChangeNotifier {
   }
 
   Future<void> updateCar(String id, Car newCar) async {
-    final url = 'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$id.json';
+    final url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$id.json?auth=${user.token}';
 
     final carIndex = _cars.indexWhere((car) => car.id == id);
     if (carIndex >= 0) {
@@ -191,7 +196,8 @@ class AvailableCarsModel with ChangeNotifier {
   }
 
   void deleteCar(String id) {
-    final url = 'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$id.json';
+    final url =
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$id.json?auth=${user.token}';
     final existingInd = _cars.indexWhere((element) => element.id == id);
     var existing = _cars[existingInd];
     _cars.removeAt(existingInd);
@@ -209,7 +215,7 @@ class AvailableCarsModel with ChangeNotifier {
   Future<void> fetchCarReviews(String carID, List<Car> cars) async {
     print(carID);
     final url =
-        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$carID/reviews.json';
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$carID/reviews.json?auth=${user.token}';
     final carIndex = cars.indexWhere((car) => car.id == carID);
     try {
       final response = await http.get(url);
@@ -241,7 +247,7 @@ class AvailableCarsModel with ChangeNotifier {
   void addReview(
       String userID, String comment, double rating, String carID) async {
     final url =
-        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$carID/reviews.json';
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$carID/reviews.json?auth=${user.token}';
     final carIndex = _cars.indexWhere((car) => car.id == carID);
     try {
       await http
@@ -268,7 +274,7 @@ class AvailableCarsModel with ChangeNotifier {
 
   Future<void> editReview({String id, String carID, Review newReview}) async {
     final url =
-        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$carID/reviews/$id.json';
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$carID/reviews/$id.json?auth=${user.token}';
     final carIndex = _cars.indexWhere((car) => car.id == carID);
 
     if (carIndex >= 0) {
@@ -290,8 +296,9 @@ class AvailableCarsModel with ChangeNotifier {
   }
 
   void deleteReview(String carID, String id) {
+    print(user.token);
     final url =
-        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$carID/reviews/$id.json';
+        'https://carqr-e4c82-default-rtdb.firebaseio.com/cars/$carID/reviews/$id.json?auth=${user.token}';
     final carInd = _cars.indexWhere((element) => element.id == carID);
     final reviewInd =
         _cars[carInd].reviews.indexWhere((element) => element.id == id);

@@ -45,20 +45,20 @@ class MyApp2 extends StatelessWidget {
   }
 }
 
-class testApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => AvailableCarsModel(),
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Cars',
-        theme: ThemeData.light(),
-        home: AdminCarsPanal(),
-      ),
-    );
-  }
-}
+// class testApp extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return ChangeNotifierProvider(
+//       create: (context) => AvailableCarsModel(),
+//       child: MaterialApp(
+//         debugShowCheckedModeBanner: false,
+//         title: 'Cars',
+//         theme: ThemeData.light(),
+//         home: AdminCarsPanal(),
+//       ),
+//     );
+//   }
+// }
 
 class Nav extends StatelessWidget {
   final User user;
@@ -71,7 +71,7 @@ class Nav extends StatelessWidget {
           create: (_) => CarShowrooms(user: user),
         ),
         ChangeNotifierProvider<AvailableCarsModel>(
-          create: (_) => AvailableCarsModel(),
+          create: (_) => AvailableCarsModel(user: user),
         ),
         ChangeNotifierProvider<HistoryProvider>(
           create: (_) => HistoryProvider(),
